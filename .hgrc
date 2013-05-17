@@ -1,0 +1,62 @@
+[ui]
+username = 
+
+[auth]
+xxxx.prefix = http://xxxxx/hg
+xxxx.username = 
+xxxx.password = 
+
+[alias]
+nudge = push --rev .
+show = log -pr
+tip = log -r tip
+. = summary
+, = glog -l15 --template '\033[33;40m{rev} \033[37;40m{desc|firstline|fill68} \033[1;30;40m({date|age} by {author|person})\033[0;37;40m \033[33;40m{tags}\033[37;40m \033[35;40m{branches}\033[37;40m\n\n'
+
+[web]
+contact = your_name@xxxxx.com
+description = your_name's Mercurial Repository
+style = gitweb
+allow_push = *
+push_ssl = false
+allow_archive = bz2 gz
+
+[extensions]
+pretxnchangegroup.forbid_2heads = /path to/forbid_2head.py
+fetch =
+color =
+rebase = 
+progress =
+bookmarks =
+hgext.mq =
+hgext.record =
+hgext.extdiff =
+hgext.graphlog = 
+
+[defaults]
+diff = --unified 5
+cdiff = -q
+commit = -v
+
+[diff]
+git=True
+showfunc = 1
+unified = 8
+
+[extdiff]
+cmd.kdiff3 =
+
+[bookmarks]
+track.current = True
+
+[merge-tools]
+kdiff3.args = $base $local $other -o $output
+
+[hooks]
+changegroup=hg diff --stat -r $HG_NODE -r tip
+# Prevent "hg pull" if MQ patches are applied.
+prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
+# Prevent "hg push" if MQ patches are applied.
+preoutgoing.mq-no-push = ! hg qtop > /dev/null 2>&1
+# Prevent "hg update" if MQ patches are applied.
+preupdate.mq-no-update = ! hg qtop > /dev/null 2>&1

@@ -1,0 +1,17 @@
+# Add CMake files
+--type-set=cmake=.txt,.cmake 
+--type-set=jsp=.jsp,jspf,.jspx,.jhtm,.jhtml
+
+# Ignore directories
+--ignore-dir=build
+--ignore-dir=.metadata
+--ignore-dir=clesses
+--ignore-dir=bin
+--ignore-dir=tmp
+--ignore-dir=target
+
+# Style
+--sort-files
+--smart-case
+--context=1
+--follow
