@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-05-15 15:23:25 (zzhelyaz)>
+;; Time-stamp: <2013-05-19 15:08:10 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -77,6 +77,7 @@
         ac-slime
         clojure-mode
         nrepl
+        nrepl-ritz
         ac-nrepl
         elein
         dash
@@ -897,7 +898,9 @@ plus add font-size: 10pt"
 
 (require 'clojure-mode)
 (require 'elein)
+
 (require 'nrepl)
+(setq nrepl-history-file "~/.emacs.d/nrepl-history")
 
 (require 'ac-nrepl)
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
@@ -905,12 +908,22 @@ plus add font-size: 10pt"
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'nrepl-mode))
 
-(define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
+;; eldoc facilities when we are connected
+(add-hook 'nrepl-connected-hook
+          (lambda ()
+            (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)
+            (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+            (nrepl-enable-on-existing-clojure-buffers)))
 
 (add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
 (add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
-(defun clojure () (interactive) (nrepl-jack-in))
+(require 'nrepl-ritz)
+
+;; Should be run when you are in project
+(defun clojure ()
+  (interactive)
+  (nrepl-ritz-jack-in))
 
 ;;----------------------------------------------------------------------------
 ;; Switching between source and test (must be named <source>_test.clj)
@@ -1047,7 +1060,7 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                                        Python
 
-;; Jedi dependency 
+;; Jedi dependency
 (require 'epc)
 
 ;; Jedi - python code completion library (third party)
