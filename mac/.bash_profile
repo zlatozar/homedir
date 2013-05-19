@@ -139,13 +139,6 @@ alias tree='tree -Csu'            # nice alternative to 'ls'
 complete -W "$(echo `cat ~/.bash_history | egrep '^ssh ' | sort | uniq | sed 's/^ssh //'`;)" ssh
 
 #------------------------------#
-# Key bindings                 #
-#------------------------------#
-
-# appends 2>&1 |less
-bind "'\C-o': '\C-e 2>&1 |less -R'"
-
-#------------------------------#
 # Usefull functions            #
 #------------------------------#
 
