@@ -100,6 +100,8 @@ alias diff=colordiff
 
 alias e="emacs -nw -q --eval '(setq make-backup-files nil)'"
 alias em="emacsclient -c -n"
+alias _emacs="nohup /Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs &"
+
 alias reload='source ~/.bash_profile'
 
 alias df='df -h'
@@ -288,6 +290,9 @@ export MAVEN_OPTS="-Xms512m -Xmx1024m"
 # Install: python setup.py install --record files.txt
 # Remove:  cat files.txt | xargs rm -rf
 export PYTHONPATH=
+
+# Common Lisp
+# sudo port install sbcl +fancy
 
 # Git
 export GIT_PS1_SHOWDIRTYSTATE=1
