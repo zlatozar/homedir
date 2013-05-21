@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-05-19 15:08:10 (zzhelyaz)>
+;; Time-stamp: <2013-05-21 11:08:41 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -223,10 +223,8 @@
 ;; Set *scratch* buffer mode
 (setq initial-major-mode 'text-mode)
 
-;; Import system PATH variables
-(if (string-equal "darwin" (symbol-name system-type))
-    (setenv "PATH" (concat "~/bin:/opt/local/bin:/opt/local/sbin:" (getenv "PATH")))
-  (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH")))
+;; Import system PATH variable (~/.bash_profile for BSD systems)
+(setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
 
 ;;_______________________________________________________________________________
 ;;                                                     Main third party packages
@@ -403,10 +401,10 @@ plus add font-size: 10pt"
 (real-global-auto-complete-mode t)
 
 ;; Exclude very large buffers from `dabbrev'
-(defun sanityinc/dabbrev-friend-buffer (other-buffer)
+(defun my/dabbrev-friend-buffer (other-buffer)
   (< (buffer-size other-buffer) (* 1 1024 1024)))
 
-(setq dabbrev-friend-buffer-function 'sanityinc/dabbrev-friend-buffer)
+(setq dabbrev-friend-buffer-function 'my/dabbrev-friend-buffer)
 
 ;;_______________________________________________________________________________
 ;;                                                                Manage Buffers
@@ -493,6 +491,7 @@ plus add font-size: 10pt"
                       (name . "^\\*Man")
                       (name . "^\\*Completions\\*$")
                       (name . "^\\*slime-events\\*$")
+                      (name . "^\\*slime-compilation\\*$")
                       (name . "^\\*inferior-lisp\\*$")
                       (name . "^\\*tramp")
                       (name . "^\\*nrepl-")
@@ -763,7 +762,6 @@ plus add font-size: 10pt"
   (define-key mode-map (kbd "s-<backspace>") 'paredit-splice-sexp-killing-backward)
   (define-key mode-map (kbd "s-t") 'transpose-sexps))
 
-(eval-after-load "lisp-mode" '(setup-paredit-for-mode-map emacs-lisp-mode-map))
 (eval-after-load "slime-repl" '(setup-paredit-for-mode-map slime-repl-mode-map))
 (eval-after-load "scheme-mode" '(setup-paredit-for-mode-map scheme-mode-map))
 (eval-after-load "clojure-mode" '(setup-paredit-for-mode-map clojure-mode-map))
@@ -816,6 +814,7 @@ plus add font-size: 10pt"
   (my/set-up-hippie-expand-for-elisp)
   (my/remove-elc-on-save)
   (ac-emacs-lisp-mode-setup)
+  (setup-paredit-for-mode-map emacs-lisp-mode-map)
   (turn-on-eldoc-mode))
 
 (add-hook 'emacs-lisp-mode-hook 'my/emacs-lisp-setup)
@@ -842,33 +841,39 @@ plus add font-size: 10pt"
 ;;                                                                   Common Lisp
 
 (require 'slime)
-
-;; "M-- M-x slime" to choose implementation
-(eval-after-load "slime"
-  '(progn
-     (setq slime-lisp-implementations
-           '((sbcl ("sbcl") :coding-system utf-8-unix)
-             (clisp ("clisp"))))
-     (slime-setup
-      '(slime-fancy slime-asdf))
-     (setq
-      ;; Use fuzzy completion (Esc-Tab)
-      slime-complete-symbol-function 'slime-fuzzy-complete-symbol)))
-
-;; C-c M-o clears everything, only leaves a new prompt
-(global-set-key "\C-z" 'slime-selector)
-(setq slime-autodoc-use-multiline-p t)
-
-;; `auto-complete' in Slime (third party)
 (require 'ac-slime)
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
 
-;; Fix backspace in REPL
-(defun override-slime-repl-bindings-with-paredit ()
-  (define-key slime-repl-mode-map
-    (read-kbd-macro paredit-backward-delete-key) nil))
+(autoload 'slime-fuzzy-init "slime-fuzzy" "" nil)
+(eval-after-load 'slime-fuzzy
+  '(require 'slime-repl))
 
-(add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
+(defun my/set-up-slime-repl-auto-complete ()
+  "Bind TAB to `indent-for-tab-command', as in regular Slime buffers."
+  (local-set-key (kbd "TAB") 'indent-for-tab-command))
+
+(eval-after-load 'slime
+  '(progn
+     (add-to-list 'slime-lisp-implementations
+                  '(sbcl ("sbcl") :coding-system utf-8-unix))
+
+     (setup-paredit-for-mode-map lisp-mode-map)
+     (setq slime-net-coding-system 'utf-8-unix)
+     (slime-setup '(slime-fancy slime-asdf))
+     (setq slime-complete-symbol*-fancy t)
+     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+
+     ;; Stop SLIME's REPL from grabbing DEL
+     (defun override-slime-repl-bindings-with-paredit ()
+       (define-key slime-repl-mode-map (read-kbd-macro paredit-backward-delete-key) nil))
+
+     (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
+     (add-hook 'slime-repl-mode-hook (lambda () (setq show-trailing-whitespace nil)))
+     (add-hook 'slime-mode-hook 'set-up-slime-ac)
+     (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+     (add-hook 'slime-repl-mode-hook 'my/set-up-slime-repl-auto-complete)
+
+     (eval-after-load 'auto-complete
+       '(add-to-list 'ac-modes 'slime-repl-mode))))
 
 ;; Common Lisp HyperSpec location (this may vary)
 (require 'hyperspec)
