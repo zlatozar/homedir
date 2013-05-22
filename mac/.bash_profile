@@ -285,11 +285,11 @@ export MAVEN_OPTS="-Xms512m -Xmx1024m"
 # See: https://github.com/juven/maven-bash-completion
 
 #
-# PYTHON
+# PYTHON (port select --list python)
 #
-# Install: python setup.py install --record files.txt
+# Install: python setup.py install --user --record files.txt
 # Remove:  cat files.txt | xargs rm -rf
-export PYTHONPATH=
+# User installed packages are in ~/Library/Python/2.7/lib/python/site-packages
 
 # Common Lisp
 # sudo port install sbcl +fancy
