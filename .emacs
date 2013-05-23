@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-05-21 11:08:41 (zzhelyaz)>
+;; Time-stamp: <2013-05-23 13:58:28 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -233,8 +233,9 @@
 
 (message "-= Basic Packages =-")
 
-;; Advanced undo operations
+;; C-/ for undo. C-? (C-S-/) for redo.
 (require 'undo-tree)
+;; (global-undo-tree-mode)
 
 ;; Edit multiple lines
 (require 'multiple-cursors)
@@ -555,6 +556,19 @@ plus add font-size: 10pt"
 (setq tramp-default-method "ssh")
 (setq tramp-auto-save-directory "~/.emacs.d/tramp")
 
+;; Swap two buffers
+(defun my/swap-buffer ()
+  (interactive)
+  (cond ((one-window-p) (display-buffer (other-buffer)))
+        ((let* ((buffer-a (current-buffer))
+                (window-b (cadr (window-list)))
+                (buffer-b (window-buffer window-b)))
+           (set-window-buffer window-b buffer-a)
+           (switch-to-buffer buffer-b)
+           (other-window 1)))))
+
+(global-set-key (kbd "C-x /") 'my/swap-buffer)
+
 ;;_______________________________________________________________________________
 ;;                                                                      Spelling
 
@@ -661,9 +675,10 @@ plus add font-size: 10pt"
 
 ;; `yasinppet' code templates (third party)
 (require 'yasnippet)
-(yas-global-mode 1)
-(define-key yas-minor-mode-map (kbd "C-1") 'yas/expand)
+(define-key yas-minor-mode-map [(tab)] nil)
 (define-key yas-minor-mode-map (kbd "TAB") nil)
+(define-key yas-minor-mode-map (kbd "\C-x\C-y") 'yas-expand)
+(yas-global-mode 1)
 
 ;; `ediff' customizations
 (defconst ediff-ignore-similar-regions t)
@@ -1065,40 +1080,14 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                                        Python
 
-;; Jedi dependency
-(require 'epc)
-
 ;; Jedi - python code completion library (third party)
 (setq jedi:setup-keys t)
+(setq jedi:complete-on-dot t)
 (setq jedi:tooltip-method '(pos-tip))
-(autoload 'jedi:setup "jedi" nil t)
 
-(add-hook 'python-mode-hook 'jedi:ac-setup)
+(add-hook 'python-mode-hook 'jedi:setup)
 
-;; Needed for outline mode
-(defvar py-outline-regexp "^\\([ \t]*\\)\\(def\\|class\\|if\\|elif\\|else\\|while\\|for\\|try\\|except\\|with\\)"
-  "This variable defines what constitutes a 'headline' to outline mode.")
-
-(defun py-outline-level ()
-  "Report outline level for Python outlining."
-  (save-excursion
-    (end-of-line)
-    (let ((indentation (progn
-                         (re-search-backward py-outline-regexp)
-                         (match-string-no-properties 1))))
-      (if (and (> (length indentation) 0)
-               (string= "\t" (substring indentation 0 1)))
-          (length indentation)
-        (/ (length indentation) py-indent-offset)))))
-
-(add-hook 'python-mode-hook
-          '(lambda ()
-             (outline-minor-mode 1)
-             (setq
-              outline-regexp py-outline-regexp
-              outline-level 'py-outline-level)))
-
-;; 'pyflakes' should be installed
+;; 'pyflakes' should be installed (third party)
 (require 'flymake-python-pyflakes)
 (add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
 
