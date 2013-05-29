@@ -59,8 +59,8 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 # runs emacs as server if not
 export ALTERNATE_EDITOR=""
 
-export EDITOR="emacs -nw -q"
-export VISUAL="emacs -nw -q"
+export EDITOR="emacs -Q -D"
+export VISUAL="emacs -Q -D"
 export PAGER="less --quit-if-one-screen -Mg"
 
 # some very specific programs that are not in distribution
@@ -98,7 +98,7 @@ alias L='less --ignore-case --line-numbers --hilite-unread --hilite-search --LON
 
 alias diff=colordiff
 
-alias e="emacs -nw -q --eval '(setq make-backup-files nil)'"
+alias e="emacs -Q -D --eval '(setq make-backup-files nil)'"
 alias em="emacsclient -c -n"
 alias _emacs="nohup /Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs &"
 
@@ -210,6 +210,22 @@ function extract() {
     else
         echo "'$1' is not a valid file"
     fi
+}
+
+function up() {
+    usage='USAGE: up <number>'
+    if [[ $# -ne 1 ]] ; then 
+        echo $usage && exit 65
+    fi
+
+    num=$1
+    upstr='.'
+    iter=0
+    until [ $iter -eq $num ] ; do
+        upstr="${upstr}/.."
+        let iter=iter+1
+    done
+    cd $upstr
 }
 
 function remindme() {
