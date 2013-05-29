@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-05-23 13:58:28 (zzhelyaz)>
+;; Time-stamp: <2013-05-29 10:54:51 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -540,6 +540,7 @@ plus add font-size: 10pt"
 
 ;; Smart M-x (third party)
 (require 'smex)
+(setq smex-save-file "~/.emacs.d/smex-items")
 (smex-initialize)
 
 (global-set-key (kbd "M-x") 'smex)
@@ -1189,6 +1190,16 @@ plus add font-size: 10pt"
 (defun eshell/l (&rest args)
   (eshell/ls "-lh" args))
 
+(defun my/toggle-eshell ()
+  "Bring up a full-screen eshell or restore previous configuration"
+  (interactive)
+  (if (string= "eshell-mode" major-mode)
+      (jump-to-register :eshell-fullscreen)
+    (progn
+      (window-configuration-to-register :eshell-fullscreen)
+      (eshell)
+      (delete-other-windows))))
+
 ;;_______________________________________________________________________________
 ;;                                                              USEFUL FUNCTIONS
 
@@ -1314,7 +1325,7 @@ plus add font-size: 10pt"
 (global-set-key (kbd "s-b") 'pop-global-mark)    ; back to prev location
 (global-set-key (kbd "s-f") 'ffap)
 (global-set-key (kbd "s-g") 'grep-find)
-(global-set-key (kbd "s-h") 'eshell)
+(global-set-key (kbd "s-h") 'my/toggle-eshell)
 (global-set-key (kbd "s-i") 'insert-file-name)
 (global-set-key (kbd "s-o") 'occur)
 
