@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-05-29 10:54:51 (zzhelyaz)>
+;; Time-stamp: <2013-06-05 10:26:01 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -180,6 +180,7 @@
 (put 'upcase-region    'disabled nil)
 (put 'narrow-to-page   'disabled nil)
 (put 'narrow-to-region 'disabled nil)
+(put 'erase-buffer     'disabled nil)
 
 ;; Hippie expand configuration
 (defconst dabbrev-always-check-other-buffers t)

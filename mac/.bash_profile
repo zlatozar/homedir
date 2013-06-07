@@ -100,7 +100,7 @@ alias diff=colordiff
 
 alias e="emacs -Q -D --eval '(setq make-backup-files nil)'"
 alias em="emacsclient -c -n"
-alias _emacs="nohup /Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs &"
+alias _emacs="nohup /Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --debug-init &"
 
 alias reload='source ~/.bash_profile'
 
