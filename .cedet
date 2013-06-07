@@ -1,6 +1,6 @@
 ;; mode:-*-emacs-lisp-*- -*- coding: utf-8; -*-
 
-;; Time-stamp: <2013-05-21 11:23:01 (zzhelyaz)>
+;; Time-stamp: <2013-06-03 13:42:47 (zzhelyaz)>
 
 ;;________________________________________________________________________________
 ;;                                                                  Minimal CEDET
@@ -210,7 +210,7 @@
 ;; Filter unwanted source file
 (setq ecb-source-file-regexps
       (quote
-       ((".*" (".*_flymake.cpp\\|\\(^\\(\\.\\|#\\)\\|\\(~$\\|\\.\\(pyc\\|elc\\|o\\|class\\|a\\|so\\|dep\\)$\\)\\)")))))
+       ((".*" (".*_flymake.cpp\\|\\(^\\(\\.\\|#\\)\\|\\(~$\\|\\.\\(pyc\\|elc\\|fasl\\|o\\|class\\|a\\|so\\|dep\\)$\\)\\)")))))
 
 ;; Left-click mouse button to work
 (setq ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))

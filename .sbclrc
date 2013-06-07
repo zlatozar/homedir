@@ -1,0 +1,19 @@
+(require :sb-aclrepl)
+
+;; Quicklisp includes ASDF2. I like to set up ASDF2 to scan a particular directory tree, ~/projects/lisp/, for local systems.
+
+;; Create a config file named ~/.config/common-lisp/source-registry.conf.d/projects.conf that has this in it:
+;;      (:tree (:home "projects/lisp/"))
+;;
+;; With that file in place, you can add new projects to that directory tree, and after an
+;;      (asdf:initialize-source-registry)
+;; 
+;; the project's systems will be loadable with asdf:load-system.  You can unpack tarballs, check
+;; things out from source control systems, or create new projects and they'll all be easily available for loading.
+
+;;; The following lines added by ql:add-to-init-file:
+#-quicklisp
+(let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
+                                       (user-homedir-pathname))))
+  (when (probe-file quicklisp-init)
+    (load quicklisp-init)))
