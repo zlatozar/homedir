@@ -101,6 +101,7 @@ alias diff=colordiff
 alias e="emacs -Q -D --eval '(setq make-backup-files nil)'"
 alias em="emacsclient -c -n"
 alias _emacs="nohup /Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --debug-init &"
+alias git-root='cd $(git rev-parse --show-cdup)'
 
 alias reload='source ~/.bash_profile'
 
@@ -108,18 +109,9 @@ alias df='df -h'
 alias dirsize='du -hs'
 alias biggest='BLOCKSIZE=1048576; du -x | sort -nr | head -10'
 
-alias psu="ps -eo pcpu -o pid -o command -o user|sort -nr|head"
+alias psu='ps -eo pcpu -o pid -o command -o user|sort -nr|head'
 alias proc='ps -jfx'
 alias ports='netstat -ltn -p tcp'
-
-# less colors for man pages
-export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
-export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
-export LESS_TERMCAP_me=$'\E[0m'           # end mode
-export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
-export LESS_TERMCAP_so=$'\E[33;01;44m'    # begin standout-mode - info box
-export LESS_TERMCAP_ue=$'\E[0m'           # end underline
-export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
 # ls section
 export LC_COLLATE=C

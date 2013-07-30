@@ -104,6 +104,7 @@ alias diff=colordiff
 
 alias e="emacs -Q -D --eval '(setq make-backup-files nil)'"
 alias em="emacsclient -c -n"
+alias git-root='cd $(git rev-parse --show-cdup)'
 
 alias reload='source ~/.bashrc'
 
@@ -111,7 +112,7 @@ alias df='df -Tah -x tmpfs -x usbfs'
 alias dirsize='du -hs'
 alias biggest='BLOCKSIZE=1048576; du -x | sort -nr | head -10'
 
-alias psu="ps -eo pcpu -o pid -o command -o user|sort -nr|head"
+alias psu='ps -eo pcpu -o pid -o command -o user|sort -nr|head'
 alias cpu="ps -e -o pcpu,cpu,nice,state,cputime,args --sort pcpu | sed '/^ 0.0 /d'"
 alias memu='ps -e -o rss=,args= | sort -b -k1,1n | pr -TW$COLUMNS'
 alias pst='pstree -hAcpul'
