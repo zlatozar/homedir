@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-06-05 10:26:01 (zzhelyaz)>
+;; Time-stamp: <2013-07-30 18:49:21 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -71,6 +71,7 @@
         goto-chg
         iedit
         multiple-cursors
+        find-file-in-project
 
         paredit
         highlight-parentheses
@@ -410,6 +411,23 @@ plus add font-size: 10pt"
 
 ;;_______________________________________________________________________________
 ;;                                                                Manage Buffers
+
+;; Function to create new functions that look for a specific pattern
+(defun ffip-create-pattern-file-finder (&rest patterns)
+  (lexical-let ((patterns patterns))
+    (lambda ()
+      (interactive)
+      (let ((ffip-patterns patterns))
+        (find-file-in-project)))))
+
+;; Find file in project, with specific patterns
+(global-unset-key (kbd "C-x C-o"))
+(global-set-key (kbd "C-x C-o ja")
+                (ffip-create-pattern-file-finder "*.java"))
+(global-set-key (kbd "C-x C-o cl")
+                (ffip-create-pattern-file-finder "*.cl"))
+(global-set-key (kbd "C-x C-o py")
+                (ffip-create-pattern-file-finder "*.py"))
 
 ;; Set the name of the host and current path/file in title bar
 (setq frame-title-format
