@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-07-30 18:49:21 (zzhelyaz)>
+;; Time-stamp: <2013-08-02 15:50:22 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -63,6 +63,8 @@
 (setq my:el-get-packages
       '(cedet
         ecb
+        ;; should be compatible with installed 'mu'
+        mu4e
 
         auto-complete
         auto-complete-clang
@@ -572,7 +574,7 @@ plus add font-size: 10pt"
 
 ;; Set up remote buffers
 ;; C-x C-f /machine:file - for remote
-;; C-x C-f /sudo:root@localhost:/var/log - for privileges; for local use M-x sudo-edit
+;; C-x C-f /sudo:user@remote.machine:/var/log - for privileges; for local use M-x sudo-edit
 (setq tramp-default-method "ssh")
 (setq tramp-auto-save-directory "~/.emacs.d/tramp")
 
@@ -1330,10 +1332,7 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                             Personal settings
 
-(setq user-full-name "Your full name here"
-      user-mail-address "your@email-address.com"
-
-      enable-local-variables :safe
+(setq enable-local-variables :safe
       default-major-mode 'text-mode
       default-fill-column 100)
 
@@ -1365,7 +1364,7 @@ plus add font-size: 10pt"
 (global-set-key (kbd "\C-c;") 'comment-or-uncomment-region)
 (global-set-key (kbd "\C-cc") 'copy-line)
 (global-set-key (kbd "\C-ck") 'browse-kill-ring)
-(global-set-key (kbd "\C-cr") 'my/ido-choose-from-recentf)
+(global-set-key (kbd "\C-cs") 'my/ido-choose-from-recentf)
 (global-set-key (kbd "\C-cw") 'my/wordnet-current-word)
 (global-set-key (kbd "C-c C-d") 'delete-this-buffer-and-file)
 (global-set-key (kbd "C-x C-f") 'ido-find-file)

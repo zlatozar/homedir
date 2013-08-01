@@ -1,0 +1,2 @@
+machine imap.gmail.com login zlatozar@gmail.com port 993 password xxxxxxxxxxxxxxx
+machine smtp.gmail.com login zlatozar@gmail.com port 587 password xxxxxxxxxxxxxxx
