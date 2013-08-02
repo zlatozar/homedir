@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-08-02 15:50:22 (zzhelyaz)>
+;; Time-stamp: <2013-08-02 16:15:30 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -74,6 +74,7 @@
         iedit
         multiple-cursors
         find-file-in-project
+        powerline
 
         paredit
         highlight-parentheses
