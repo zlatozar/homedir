@@ -1363,8 +1363,8 @@ plus add font-size: 10pt"
 (global-set-key (kbd "\C-F") 'iwb)
 
 (global-set-key (kbd "\C-c;") 'comment-or-uncomment-region)
+(global-set-key (kbd "\C-cb") 'browse-kill-ring)
 (global-set-key (kbd "\C-cc") 'copy-line)
-(global-set-key (kbd "\C-ck") 'browse-kill-ring)
 (global-set-key (kbd "\C-cs") 'my/ido-choose-from-recentf)
 (global-set-key (kbd "\C-cw") 'my/wordnet-current-word)
 (global-set-key (kbd "C-c C-d") 'delete-this-buffer-and-file)
