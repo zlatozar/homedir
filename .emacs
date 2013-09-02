@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-08-28 13:31:27 (zzhelyaz)>
+;; Time-stamp: <2013-09-02 15:30:51 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -1382,7 +1382,7 @@ plus add font-size: 10pt"
 (global-set-key (kbd "M-Z") 'zap-up-to-char)
 
 ;;_______________________________________________________________________________
-;;                                                                      Org-mode
+;;                                                            Org-mode and Email
 
 (load "~/.org-mode")
 
