@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-09-02 15:30:51 (zzhelyaz)>
+;; Time-stamp: <2013-09-03 12:00:01 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -703,6 +703,28 @@ plus add font-size: 10pt"
 (define-key yas-minor-mode-map (kbd "\C-x\C-y") 'yas-expand)
 (yas-global-mode 1)
 
+(defun yas-ido-expand ()
+  "Lets you select (and expand) a yasnippet key"
+  (interactive)
+  (let ((original-point (point)))
+    (while (and
+            (not (= (point) (point-min) ))
+            (not
+             (string-match "[[:space:]\n]" (char-to-string (char-before)))))
+      (backward-word 1))
+    (let* ((init-word (point))
+           (word (buffer-substring init-word original-point))
+           (list (yas-active-keys)))
+      (goto-char original-point)
+      (let ((key (remove-if-not
+                  (lambda (s) (string-match (concat "^" word) s)) list)))
+        (if (= (length key) 1)
+            (setq key (pop key))
+          (setq key (ido-completing-read "key: " list nil nil word)))
+        (delete-char (- init-word original-point))
+        (insert key)
+        (yas-expand)))))
+
 ;; `ediff' customizations
 (defconst ediff-ignore-similar-regions t)
 (defconst ediff-use-last-dir t)
@@ -1403,6 +1425,7 @@ plus add font-size: 10pt"
 (global-set-key (kbd "s-h") 'my/toggle-eshell)
 (global-set-key (kbd "s-i") 'insert-file-name)
 (global-set-key (kbd "s-o") 'occur)
+(global-set-key (kbd "s-y") 'yas-ido-expand)
 
 (global-set-key (kbd "s-.") 'goto-last-change)
 (global-set-key (kbd "s-,") 'goto-last-change-reverse)
