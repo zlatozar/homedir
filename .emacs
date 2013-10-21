@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-09-03 12:00:01 (zzhelyaz)>
+;; Time-stamp: <2013-09-13 11:21:48 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -1420,6 +1420,7 @@ plus add font-size: 10pt"
 (global-set-key (kbd "s-/") 'hippie-expand)
 ;; "s-a" 'org-agenda-list
 (global-set-key (kbd "s-b") 'pop-global-mark)    ; back to prev location
+(global-set-key (kbd "s-d") 'delete-this-buffer-and-file)
 (global-set-key (kbd "s-f") 'ffap)
 (global-set-key (kbd "s-g") 'grep-find)
 (global-set-key (kbd "s-h") 'my/toggle-eshell)
@@ -1446,7 +1447,6 @@ plus add font-size: 10pt"
 (global-set-key (kbd "\C-cc") 'copy-line)
 (global-set-key (kbd "\C-cs") 'my/ido-choose-from-recentf)
 (global-set-key (kbd "\C-cw") 'my/wordnet-current-word)
-(global-set-key (kbd "C-c C-d") 'delete-this-buffer-and-file)
 (global-set-key (kbd "C-x C-f") 'ido-find-file)
 
 (global-set-key (kbd "<C-S-down>") 'move-line-down)
