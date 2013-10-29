@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-09-13 11:21:48 (zzhelyaz)>
+;; Time-stamp: <2013-10-29 15:56:37 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -80,8 +80,8 @@
         highlight-parentheses
         ac-slime
         clojure-mode
-        nrepl
-        nrepl-ritz
+        ;; cider
+        ;; nrepl-ritz
         ac-nrepl
         elein
         dash
@@ -598,14 +598,6 @@ plus add font-size: 10pt"
 (setq ispell-program-name "aspell"
       ispell-extra-args '("--sug-mode=normal"))
 
-;; Requires 'cocoAspell' installed
-(if (eq system-type 'darwin)
-    (if (file-executable-p "/usr/local/bin/aspell")
-        (progn
-          (setq ispell-program-name "/usr/local/bin/aspell")
-          (setq
-           ispell-extra-args '("-d" "/Library/Application Support/cocoAspell/aspell6-en-6.0-0/en.multi")))))
-
 ;; `flyspell' for particular programming modes
 (defun turn-on-flyspell ()
   "Force flyspell-mode on using a positive arg. For use in hooks."
@@ -796,7 +788,7 @@ plus add font-size: 10pt"
           '(lisp-mode-hook
             slime-repl-mode-hook
             clojure-mode-hook
-            nrepl-mode-hook
+            cider-mode-hook
             scheme-mode-hook
             emacs-lisp-mode-hook
             ielm-mode-hook)))
@@ -825,7 +817,7 @@ plus add font-size: 10pt"
 (eval-after-load "slime-repl" '(setup-paredit-for-mode-map slime-repl-mode-map))
 (eval-after-load "scheme-mode" '(setup-paredit-for-mode-map scheme-mode-map))
 (eval-after-load "clojure-mode" '(setup-paredit-for-mode-map clojure-mode-map))
-(eval-after-load "nrepl-mode" '(setup-paredit-for-mode-map nrepl-mode-map))
+(eval-after-load "cider-mode" '(setup-paredit-for-mode-map cider-mode-map))
 
 (lisp-family 'enable-paredit-mode)
 (lisp-family 'highlight-parentheses-mode)
@@ -1017,34 +1009,36 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                                       Clojure
 
+;; TODO: Ritz and cider are quite unstable for now
+
 (require 'clojure-mode)
 (require 'elein)
 
-(require 'nrepl)
-(setq nrepl-history-file "~/.emacs.d/nrepl-history")
+;; (require 'cider)
+;; (setq cider-history-file "~/.emacs.d/cider-history")
 
-(require 'ac-nrepl)
-(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'nrepl-mode))
+;; (require 'ac-nrepl)
+;; (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+;; (add-hook 'cider-mode-hook 'ac-nrepl-setup)
+;; (eval-after-load "auto-complete"
+;;   '(add-to-list 'ac-modes 'cider-repl-mode))
 
-;; eldoc facilities when we are connected
-(add-hook 'nrepl-connected-hook
-          (lambda ()
-            (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)
-            (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
-            (nrepl-enable-on-existing-clojure-buffers)))
+;; ;; eldoc facilities when we are connected
+;; (add-hook 'cider-connected-hook
+;;           (lambda ()
+;;             (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)
+;;             (add-hook 'cider-interaction-mode-hook 'cider-turn-on-eldoc-mode)
+;;             (cider-enable-on-existing-clojure-buffers)))
 
-(add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
-(add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (add-hook 'cider-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
-(require 'nrepl-ritz)
+;; (require 'nrepl-ritz)
 
-;; Should be run when you are in project
-(defun clojure ()
-  (interactive)
-  (nrepl-ritz-jack-in))
+;; ;; Should be run when you are in project
+;; (defun clojure ()
+;;   (interactive)
+;;   (nrepl-ritz-jack-in))
 
 ;;----------------------------------------------------------------------------
 ;; Switching between source and test (must be named <source>_test.clj)
