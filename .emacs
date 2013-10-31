@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-10-29 15:56:37 (zzhelyaz)>
+;; Time-stamp: <2013-10-31 10:39:36 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -228,7 +228,7 @@
 ;; Set *scratch* buffer mode
 (setq initial-major-mode 'text-mode)
 
-;; Import system PATH variable (~/.bash_profile for BSD systems)
+;; Import system PATH variable (for MacOS see  mac/.emacs snippets)
 (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
 
 ;;_______________________________________________________________________________
