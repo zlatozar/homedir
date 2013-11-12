@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-10-31 10:39:36 (zzhelyaz)>
+;; Time-stamp: <2013-11-12 09:29:16 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -86,6 +86,7 @@
         elein
         dash
         elisp-slime-nav
+        geiser
 
         google-c-style
         cmake-mode
@@ -1009,7 +1010,7 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                                       Clojure
 
-;; TODO: Ritz and cider are quite unstable for now
+;; TODO: Ritz and Cider are quite unstable for now
 
 (require 'clojure-mode)
 (require 'elein)
@@ -1081,17 +1082,24 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                                        Scheme
 
-(setq scheme-program-name "csi -:c")
+;; M-x run-racket
+(load-file "~/.emacs.d/el-get/geiser/elisp/geiser.el")
 
-;; Where eggs (here we need 'slime' and 'chicken-doc') are installed (this may vary)
-(add-to-list 'load-path "/opt/local/lib/chicken/6/")
-(autoload 'chicken-slime "chicken-slime" "SWANK backend for Chicken" t)
+(setq geiser-active-implementations '(racket))
+(setq geiser-repl-history-filename "~/.emacs.d/geiser-history")
 
-;; Slime by running the function `chicken-slime'
-(add-hook 'scheme-mode-hook
-          (lambda ()
-            (slime-mode t)
-            (auto-fill-mode t)))
+;;_______________________________________________________________________________
+;;                                                                        Prolog
+
+;; el-get-install prolog-el do not works for now
+(require 'prolog)
+
+(autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
+(autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
+(setq prolog-system 'swi)
+
+(setq auto-mode-alist (append '(("\\.pl$" . prolog-mode))
+                              auto-mode-alist))
 
 ;;_______________________________________________________________________________
 ;;                                             Generic C/C++ (see CEDET settings)
@@ -1405,9 +1413,10 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                             Personal settings
 
-(setq enable-local-variables :safe
+(setq default-fill-column 100
       default-major-mode 'text-mode
-      default-fill-column 100)
+      initial-buffer-choice "~/projects/"
+      default-directory "~/projects/")
 
 ;; Use M-x describe-bindings for more information
 

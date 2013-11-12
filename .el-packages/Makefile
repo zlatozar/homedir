@@ -46,7 +46,7 @@ endef
 default: all
 
 # Do not forget to update .PHONY
-all: valgrind.elc hyperspec-naggum.elc flymake-python-pyflakes slime litable notes
+all: valgrind.elc prolog.elc hyperspec-naggum.elc flymake-python-pyflakes slime litable notes
 
 .el.elc:
 	@echo -e "\n** Bite compiling ===> " $@
@@ -55,6 +55,9 @@ all: valgrind.elc hyperspec-naggum.elc flymake-python-pyflakes slime litable not
 
 valgrind.el:
 	wget -N http://www.suspectclass.com/sgifford/abandoned/emacs/valgrind.el
+
+prolog.el:
+	wget -N http://bruda.ca/_media/emacs/prolog.el
 
 hyperspec-naggum:
 	@ echo "Eddi Weitz version"
