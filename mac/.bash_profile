@@ -245,8 +245,7 @@ function urlcap() {
 }
 
 function search() {
-    find -regex '.*~$\|.*/\.\(git\|hg\|svn\|bin\|metadata\project\|classpath\)\(/\|$\)' \
-         -prune -o -type f -print0 | xargs -r0 grep -HnI "$1"
+    find $(pwd) -type d '(' -name .git ')' -prune -o -type f -exec grep -nH -e "$1" {} +
 }
 
 #------------------------------#
