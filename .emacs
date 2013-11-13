@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-11-13 17:12:40 (zzhelyaz)>
+;; Time-stamp: <2013-11-13 17:20:10 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -928,62 +928,6 @@ plus add font-size: 10pt"
 
      (eval-after-load 'auto-complete
        '(add-to-list 'ac-modes 'slime-repl-mode))))
-
-(defslime-repl-shortcut slime-max-debug ("max-debug")
-  (:handler
-   (lambda ()
-     (interactive)
-     (insert "(declaim (optimize (debug 3) (speed 0) (safety 3) (compilation-speed 0)))")
-     (slime-repl-send-input)))
-  (:one-liner "Declaim max debug properties"))
-
-(defun slime-find-all-system-names ()
-  (flet ((first-char (string &optional (string-start 0))
-                     (substring string string-start (1+ string-start))))
-    (cl-union
-     (mapcar
-      (lambda (b)
-        (let ((string-start 0)
-              (package-name (with-current-buffer b (slime-current-package))))
-          (when (equal "#" (first-char package-name string-start))
-            (incf string-start))
-          (when (equal ":" (first-char package-name string-start))
-            (incf string-start))
-          (downcase (substring package-name string-start))))
-      (cl-remove-if-not
-       (lambda (b) (equal (buffer-local-value 'major-mode b)
-                          'lisp-mode))
-       (buffer-list)))
-     (slime-eval '(cl:nunion
-                   (swank:list-asdf-systems)
-                   (cl:mapcar 'ql-dist:name
-                              (ql:system-list))
-                   :test 'cl:string=))
-     :test 'string-equal)))
-
-;; Quickload a system
-(defslime-repl-shortcut slime-repl-quickload
-  ("quickload" "+ql" "ql")
-  (:handler (lambda ()
-              (interactive)
-              (let* ((system-names
-                      (slime-find-all-system-names))
-                     (default-value (slime-find-asd-file
-                                     (or default-directory
-                                         (buffer-file-name))
-                                     system-names))
-                     (prompt (concat "System "
-                                     (if default-value
-                                         (format " (default `%s'): " default-value)
-                                       ": ")))
-                     (system (completing-read prompt
-                                              (slime-bogus-completion-alist system-names)
-                                              nil nil nil
-                                              'slime-system-history
-                                              default-value)))
-                (insert "(ql:quickload :" system ")")
-                (slime-repl-send-input t))))
-  (:one-liner "Quickload a system"))
 
 ;; Common Lisp HyperSpec location (this may vary)
 (require 'hyperspec)
