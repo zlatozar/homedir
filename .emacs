@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-11-12 09:29:16 (zzhelyaz)>
+;; Time-stamp: <2013-11-13 17:08:38 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -86,7 +86,7 @@
         elein
         dash
         elisp-slime-nav
-        geiser
+        scheme-complete
 
         google-c-style
         cmake-mode
@@ -1082,11 +1082,23 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                                        Scheme
 
-;; M-x run-racket
-(load-file "~/.emacs.d/el-get/geiser/elisp/geiser.el")
+(require 'chicken)
+(require 'flymake-chicken)
 
-(setq geiser-active-implementations '(racket))
-(setq geiser-repl-history-filename "~/.emacs.d/geiser-history")
+(setq scheme-program-name "csi -:c")
+
+(autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
+
+(eval-after-load 'scheme
+                 '(define-key scheme-mode-map [C-tab] 'scheme-smart-complete))
+
+(add-hook 'scheme-mode-hook
+          (lambda ()
+            (make-local-variable 'eldoc-documentation-function)
+            (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
+            (eldoc-mode)))
+
+(setq lisp-indent-function 'scheme-smart-indent-function)
 
 ;;_______________________________________________________________________________
 ;;                                                                        Prolog
