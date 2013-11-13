@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-11-13 17:08:38 (zzhelyaz)>
+;; Time-stamp: <2013-11-13 17:12:40 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -146,6 +146,7 @@
 
 ;; Highlight parents
 (show-paren-mode t)
+(setq show-paren-style 'expression)
 
 (setq completion-ignore-case t
       read-file-name-completion-ignore-case t)
