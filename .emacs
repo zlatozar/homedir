@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-11-13 17:20:10 (zzhelyaz)>
+;; Time-stamp: <2013-11-14 09:41:40 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -66,46 +66,52 @@
         ;; should be compatible with installed 'mu'
         mu4e
 
-        auto-complete
+        ;; Programming
         auto-complete-clang
-        undo-tree
+        auto-complete
         browse-kill-ring
-        goto-chg
-        iedit
         multiple-cursors
         find-file-in-project
+        undo-tree
+        goto-chg
+        iedit
         powerline
+        full-ack
+        yasnippet
 
-        paredit
+        ;; Lisp family
         highlight-parentheses
-        ac-slime
+        elisp-slime-nav
+        scheme-complete
         clojure-mode
+        paredit
         ;; cider
         ;; nrepl-ritz
+        ac-slime
         ac-nrepl
         elein
         dash
-        elisp-slime-nav
-        scheme-complete
 
+        ;; C/C++
         google-c-style
         cmake-mode
         doxymacs
         eassist
-        flymake-cursor
-        full-ack
 
+        ;; JavaScript
         js-comint
 
+        ;; Python
         jedi
 
-        yasnippet
-        psvn
+        ;; Version control
         magit
+        psvn
 
+        ;; Misc
+        emacs-w3m
         htmlize
-        smex
-        emacs-w3m))
+        smex))
 
 (el-get 'sync my:el-get-packages)
 
@@ -146,7 +152,6 @@
 
 ;; Highlight parents
 (show-paren-mode t)
-(setq show-paren-style 'expression)
 
 (setq completion-ignore-case t
       read-file-name-completion-ignore-case t)
@@ -276,9 +281,6 @@
 ;; Parentheses view (third party)
 (require 'highlight-parentheses)
 
-;; Show the `flymake' errors in the mini buffer (third party)
-(require 'flymake-cursor)
-
 ;; Easy way to publish code fragments (third party)
 (require 'htmlize)
 
@@ -352,7 +354,8 @@ plus add font-size: 10pt"
                 "http://www.cplusplus.com/query/search.cgi?q=" ""])
 
               ("key-bindings" . "http://www.emacswiki.org/emacs/Reference_Sheet_by_Aaron_Hawley")
-              ("elisp" . "http://www.gnu.org/software/emacs/manual/html_mono/elisp.html"))
+              ("elisp" . "http://www.gnu.org/software/emacs/manual/html_mono/elisp.html")
+              ("scheme" . "http://api.call-cc.org/doc/"))
             webjump-sample-sites))))
 
 ;;_______________________________________________________________________________
