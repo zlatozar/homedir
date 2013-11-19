@@ -1,4 +1,17 @@
 (use utils)
+(use trace)
 (use apropos)
-;; (use readline)
-;; (current-input-port (make-gnu-readline-port))
+(use irregex)
+
+;; To have Tab completion and history
+(use readline)
+(current-input-port (make-gnu-readline-port))
+(gnu-history-install-file-manager
+  (string-append (or (get-environment-variable "HOME") ".") "/.csi.history"))
+
+;; For portable scripts add this at the begging:
+;; #!/bin/bash
+;; #|
+;; exec csi -ss $0 ${1+"$@"}
+;; exit
+;; |#
