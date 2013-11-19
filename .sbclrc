@@ -1,5 +1,8 @@
 (require :sb-aclrepl)
 
+;; Add maximum debug information
+(sb-ext:restrict-compiler-policy 'debug 3)
+
 ;; Quicklisp includes ASDF2. I like to set up ASDF2 to scan a particular directory tree, ~/projects/lisp/, for local systems.
 
 ;; Create a config file named ~/.config/common-lisp/source-registry.conf.d/projects.conf that has this in it:
