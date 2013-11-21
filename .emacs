@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-11-14 09:41:40 (zzhelyaz)>
+;; Time-stamp: <2013-11-21 16:10:55 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -87,7 +87,6 @@
         paredit
         ;; cider
         ;; nrepl-ritz
-        ac-slime
         ac-nrepl
         elein
         dash
@@ -167,7 +166,7 @@
 (setq font-lock-maximum-decoration t)
 
 ;; Increase font size (this may vary)
-(set-face-attribute 'default nil :height 110)
+(set-face-attribute 'default nil :height 110) ; <-- insert yours
 
 ;; Add proper word wrapping
 (global-visual-line-mode t)
@@ -895,49 +894,101 @@ plus add font-size: 10pt"
 (set-variable 'max-specpdl-size (* 15 max-specpdl-size))
 
 ;;_______________________________________________________________________________
-;;                                                                   Common Lisp
+;;                                                Slime (Common Lisp, Scheme)
 
 (require 'slime)
-(require 'ac-slime)
+(slime-setup '(slime-fancy slime-scratch
+                           slime-editing-commands
+                           slime-fuzzy
+                           slime-presentations
+                           slime-scheme))
 
-(autoload 'slime-fuzzy-init "slime-fuzzy" "" nil)
-(eval-after-load 'slime-fuzzy
-  '(require 'slime-repl))
+(setq slime-net-coding-system 'utf-8-unix)
 
 (defun my/set-up-slime-repl-auto-complete ()
   "Bind TAB to `indent-for-tab-command', as in regular Slime buffers."
   (local-set-key (kbd "TAB") 'indent-for-tab-command))
 
+;; Stop SLIME's REPL from grabbing DEL
+(defun my/override-slime-repl-bindings-with-paredit ()
+  (define-key slime-repl-mode-map (read-kbd-macro paredit-backward-delete-key) nil))
+
 (eval-after-load 'slime
   '(progn
-     (add-to-list 'slime-lisp-implementations
-                  '(sbcl ("sbcl") :coding-system utf-8-unix))
-
-     (setup-paredit-for-mode-map lisp-mode-map)
-     (setq slime-net-coding-system 'utf-8-unix)
-     (slime-setup '(slime-fancy slime-asdf))
      (setq slime-complete-symbol*-fancy t)
      (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-
-     ;; Stop SLIME's REPL from grabbing DEL
-     (defun override-slime-repl-bindings-with-paredit ()
-       (define-key slime-repl-mode-map (read-kbd-macro paredit-backward-delete-key) nil))
-
-     (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
      (add-hook 'slime-repl-mode-hook (lambda () (setq show-trailing-whitespace nil)))
-     (add-hook 'slime-mode-hook 'set-up-slime-ac)
-     (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
      (add-hook 'slime-repl-mode-hook 'my/set-up-slime-repl-auto-complete)
+     (add-hook 'slime-repl-mode-hook 'my/override-slime-repl-bindings-with-paredit)))
 
-     (eval-after-load 'auto-complete
-       '(add-to-list 'ac-modes 'slime-repl-mode))))
+(setq slime-lisp-implementations
+      '((mit-scheme ("mit-scheme") :init mit-scheme-init)))
+
+(add-to-list 'slime-lisp-implementations '(sbcl ("sbcl")))
+
+;;_______________________________________________________________________________
+;;                                                                    MIT Scheme
+
+(defun mit-scheme-init (file encoding)
+  (setq slime-protocol-version 'ignore)
+  (format "%S\n\n"
+          `(begin
+            (load-option 'format)
+            (load-option 'sos)
+            (eval
+             '(construct-normal-package-from-description
+               (make-package-description '(swank) '(())
+                                         (vector) (vector) (vector) false))
+             (->environment '(package)))
+            (load ,(expand-file-name
+                    "~/.el-packages/mit-scheme-swank/swank.scm" ; <-- insert your path
+                    slime-path)
+                  (->environment '(runtime swank)))
+            (eval '(start-swank ,file) (->environment '(swank))))))
+
+(defun find-mit-scheme-package ()
+  (save-excursion
+    (let ((case-fold-search t))
+      (and (re-search-backward "^[;]+ package: \\((.+)\\).*$" nil t)
+           (match-string-no-properties 1)))))
+
+(setq slime-find-buffer-package-function 'find-mit-scheme-package)
+
+(require 'scheme-complete)
+(autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
+
+(eval-after-load 'scheme
+  '(define-key scheme-mode-map [C-tab] 'scheme-smart-complete))
+
+(add-hook 'scheme-mode-hook
+          (lambda ()
+            (make-local-variable 'eldoc-documentation-function)
+            (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
+            (eldoc-mode)))
+
+;; Run MIT Scheme
+(defun mit-scheme ()
+  (interactive)
+  (slime 'mit-scheme))
+
+;; Highlight macros
+(defun register-scheme-keywords (keywords)
+  (mapc #'(lambda (kword)
+            (font-lock-add-keywords 'scheme-mode
+                                    `((,(concat "\\(" kword "\\)") 1 font-lock-keyword-face))))
+        keywords))
+
+;; Example: (register-scheme-keywords '("defgen" "fluid-let"))
+
+;;_______________________________________________________________________________
+;;                                                                   Common Lisp
 
 ;; Common Lisp HyperSpec location (this may vary)
 (require 'hyperspec)
 (setq common-lisp-hyperspec-root
-      (concat "file://" (expand-file-name "/opt/local/share/doc/lisp/HyperSpec-7-0/HyperSpec/"))
+      (concat "file://" (expand-file-name "/opt/local/share/doc/lisp/HyperSpec-7-0/HyperSpec/")) ; <-- insert your path
       common-lisp-hyperspec-symbol-table
-      (expand-file-name "/opt/local/share/doc/lisp/HyperSpec-7-0/HyperSpec/Data/Map_Sym.txt"))
+      (expand-file-name "/opt/local/share/doc/lisp/HyperSpec-7-0/HyperSpec/Data/Map_Sym.txt"))   ; <-- insert your path
 
 (defadvice common-lisp-hyperspec
   (around hyperspec-lookup-w3m () activate)
@@ -1026,27 +1077,6 @@ plus add font-size: 10pt"
     (midje-jump-to-test)))
 
 (define-key clojure-mode-map (kbd "C-c t") 'midje-jump-between-tests-and-code)
-
-;;_______________________________________________________________________________
-;;                                                                        Scheme
-
-(require 'chicken)
-(require 'flymake-chicken)
-
-(setq scheme-program-name "csi -:c")
-
-(autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
-
-(eval-after-load 'scheme
-                 '(define-key scheme-mode-map [C-tab] 'scheme-smart-complete))
-
-(add-hook 'scheme-mode-hook
-          (lambda ()
-            (make-local-variable 'eldoc-documentation-function)
-            (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
-            (eldoc-mode)))
-
-(setq lisp-indent-function 'scheme-smart-indent-function)
 
 ;;_______________________________________________________________________________
 ;;                                                                        Prolog

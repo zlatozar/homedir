@@ -63,6 +63,10 @@ hyperspec-naggum:
 	@ echo "Eddi Weitz version"
 	curl -O http://weitz.de/files/hyperspec-naggum.el
 
+mit-scheme-swank:
+	@ echo -e "$(OK_COLOR)===> Checkout or update mit-scheme-swank...(there is one in official distribution but this one is better)$(NO_COLOR)"
+	@ if [ ! -d mit-scheme-swank ]; then git clone https://github.com/ecraven/mit-scheme-swank.git; else cd mit-scheme-swank; git pull --rebase; cd ..; fi;
+
 _flymake-easy:
 	@ if [ ! -d flymake-easy ]; then git clone https://github.com/purcell/flymake-easy.git; else cd flymake-easy; git pull --rebase; cd ..; fi;
 
@@ -138,7 +142,7 @@ clojure: _clojure-dirs
 #_______________________________________________________________________________
 #                                                                  SYSTEM RULES
 
-.PHONY: clean flymake-python-pyflakes slime litable
+.PHONY: clean mit-scheme-swank flymake-python-pyflakes slime litable
 
 clean:
 	rm -f $(ELC)
