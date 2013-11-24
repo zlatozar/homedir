@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-11-21 16:10:55 (zzhelyaz)>
+;; Time-stamp: <2013-11-21 18:18:09 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -506,22 +506,16 @@ plus add font-size: 10pt"
                       (name . "^TAGS\\(<[0-9]+>\\)?$")
                       (name . "^\\*Help\\*$")
                       (name . "^\\*info\\*$")
-                      (name . "^\\*WoMan")
-                      (name . "^\\*Occur\\*$")
                       (name . "^\\*CEDET")
                       (name . "^\\*Compile-Log\\*$")
                       (name . "^\\*clang")
                       (name . "^\\*gud\\*$")
                       (name . "^\\*Backtrace\\*$")
-                      (name . "^\\*epc")
                       (name . "^\\*Process List\\*$")
-                      (name . "^\\*Man")
                       (name . "^\\*Completions\\*$")
                       (name . "^\\*slime-events\\*$")
                       (name . "^\\*slime-compilation\\*$")
-                      (name . "^\\*inferior-lisp\\*$")
                       (name . "^\\*tramp")
-                      (name . "^\\*nrepl-")
                       (name . "^\\*compilation\\*$")))
          ("C++" (or (mode . c++-mode)))
          ("includes" (or (name . "\\.h$")
