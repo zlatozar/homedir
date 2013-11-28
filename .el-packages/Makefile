@@ -46,12 +46,12 @@ endef
 default: all
 
 # Do not forget to update .PHONY
-all: valgrind.elc prolog.elc hyperspec-naggum.elc flymake-python-pyflakes slime litable notes
+all: valgrind.elc prolog.elc hyperspec-naggum.elc mit-scheme-swank flymake-python-pyflakes slime litable clojure-ide notes
 
 .el.elc:
-	@echo -e "\n** Bite compiling ===> " $@
+	@ echo "\n** Bite compiling ===> " $@
 	$(EMACS) -batch -f batch-byte-compile $<
-	@echo " **Finished."
+	@ echo " **Finished."
 
 valgrind.el:
 	wget -N http://www.suspectclass.com/sgifford/abandoned/emacs/valgrind.el
@@ -59,12 +59,12 @@ valgrind.el:
 prolog.el:
 	wget -N http://bruda.ca/_media/emacs/prolog.el
 
-hyperspec-naggum:
+hyperspec-naggum.el:
 	@ echo "Eddi Weitz version"
 	curl -O http://weitz.de/files/hyperspec-naggum.el
 
 mit-scheme-swank:
-	@ echo -e "$(OK_COLOR)===> Checkout or update mit-scheme-swank...(there is one in official distribution but this one is better)$(NO_COLOR)"
+	@ echo "$(OK_COLOR)===> Checkout or update mit-scheme-swank...(there is one in official distribution but this one is better)$(NO_COLOR)"
 	@ if [ ! -d mit-scheme-swank ]; then git clone https://github.com/ecraven/mit-scheme-swank.git; else cd mit-scheme-swank; git pull --rebase; cd ..; fi;
 
 _flymake-easy:
@@ -75,23 +75,23 @@ flymake-python-pyflakes: _flymake-easy
 	@ if [ ! -d flymake-python-pyflakes ]; then git clone http://github.com/purcell/flymake-python-pyflakes.git; else cd flymake-python-pyflakes; git pull --rebase; cd ..; fi;
 
 slime:
-	@ echo -e "$(OK_COLOR)===> Checkout or update slime...$(NO_COLOR)"
+	@ echo "$(OK_COLOR)===> Checkout or update slime...$(NO_COLOR)"
 	@ if [ ! -d slime ]; then cvs -d :pserver:anonymous:anonymous@common-lisp.net:/project/slime/cvsroot co slime; else cd slime; cvs up; cd ..; fi;
-	@ echo -e "$(ERROR_COLOR)Do not forget to build it\n$(NO_COLOR)"
+	@ echo "$(ERROR_COLOR)Do not forget to build it\n$(NO_COLOR)"
 
 litable:
-	@ echo -e "$(OK_COLOR)===> Checkout or update litable...$(NO_COLOR)"
+	@ echo "$(OK_COLOR)===> Checkout or update litable...$(NO_COLOR)"
 	@ if [ ! -d litable ]; then git clone http://github.com/Fuco1/litable.git; else cd litable; git pull --rebase; cd ..; fi;
 	@ echo "Requires 'dash' installed. It is installed form el-get"
 
 notes:
 	@ echo
-	@ echo -e "$(ERROR_COLOR)IMPORTANT!\n$(NO_COLOR)"
+	@ echo "$(ERROR_COLOR)IMPORTANT!\n$(NO_COLOR)"
 	@ echo "1. WordNet(wn) installation should be in $(INSTALL_DIR)/wordnet/"
 	@ echo "2. valgrind, cdecl, cmake, clang, w3m and doxygen should be in your PATH"
 	@ echo "3. Install as Python modules rope, ropemacs, ropemode could be installed with 'el-get'. pyflakes and pep8 using linux package or 'pip'."
-	@ echo -e "       Example: sudo pip install pyflakes\n"
-	@ echo "4. Use 'quicklisp' to add libraries in SBCL"
+	@ echo "       Example: sudo pip install pyflakes\n"
+	@ echo "4. Use 'quicklisp' to add Lisp libraries"
 	@ echo
 
 #_______________________________________________________________________________
@@ -99,18 +99,18 @@ notes:
 
 _v8:
 	$(call chdir, $(EMACS_DEFAULT))
-	@ echo -e "$(OK_COLOR)===> Checkout or update Google V8 engine...(it is slow and SCons is required)$(NO_COLOR)"
+	@ echo "$(OK_COLOR)===> Checkout or update Google V8 engine...(it is slow and SCons is required)$(NO_COLOR)"
 	@ if [ ! -d v8 ]; then svn checkout http://v8.googlecode.com/svn/trunk/ v8; else cd v8; svn up; cd ..; fi;
 	@ cd v8; scons sample=shell; cd ..;
-	@ echo -e "$(ERROR_COLOR)Please migrate build to use GYP\n$(NO_COLOR)"
+	@ echo "$(ERROR_COLOR)Please migrate build to use GYP\n$(NO_COLOR)"
 
 jslint-v8: _v8
-	@ echo -e "$(OK_COLOR)===> Checkout or update jslint-v8...$(NO_COLOR)"
+	@ echo "$(OK_COLOR)===> Checkout or update jslint-v8...$(NO_COLOR)"
 	@ if [ ! -d jslint-v8 ]; then git clone http://github.com/valeryz/jslint-v8.git; else cd jslint-v8; git pull --rebase; cd ..; fi;
-	@ echo -e "$(ERROR_COLOR)Some additional settings are required\n$(NO_COLOR)"
+	@ echo "$(ERROR_COLOR)Some additional settings are required\n$(NO_COLOR)"
 
 _c++-dirs:
-	@ echo -e "$(OK_COLOR)===> Prepare directory structure for C++ libraries$(NO_COLOR)"
+	@ echo "$(OK_COLOR)===> Prepare directory structure for C++ libraries$(NO_COLOR)"
 	@ if [ ! -d $(INSTALL_DIR)/include/ ]; then sudo mkdir $(INSTALL_DIR)/include/; sudo chown $(shell echo $$USER):$(shell echo $$USER) $(INSTALL_DIR)/include/; fi;
 	@ if [ ! -d $(INSTALL_DIR)/include/glog/ ]; then mkdir $(INSTALL_DIR)/include/glog/; fi;
 	@ if [ ! -d $(INSTALL_DIR)/include/gtest/ ]; then mkdir $(INSTALL_DIR)/include/gtest/; fi;
@@ -119,7 +119,7 @@ _c++-dirs:
 c++: _c++-dirs
 
 _clojure-dirs:
-	@ echo -e "$(OK_COLOR)===> Prepare directory structure for Clojure$(NO_COLOR)"
+	@ echo "$(OK_COLOR)===> Prepare directory structure for Clojure$(NO_COLOR)"
 	@ if [ ! -d $(INSTALL_DIR)/clojure/ ]; then sudo mkdir $(INSTALL_DIR)/clojure/; sudo chown $(shell echo $$USER):$(shell echo $$USER) $(INSTALL_DIR)/clojure/; fi;
 	@ if [ ! -d $(INSTALL_DIR)/clojure/clojure/ ]; then mkdir $(INSTALL_DIR)/clojure/clojure/; fi;
 	@ if [ ! -d $(INSTALL_DIR)/clojure/clojure-libs/ ]; then mkdir $(INSTALL_DIR)/clojure/clojure-libs/; fi;
@@ -127,17 +127,35 @@ _clojure-dirs:
 
 clojure: _clojure-dirs
 	$(call chdir, $(INSTALL_DIR)/clojure)
-	@ echo -e "$(OK_COLOR)===> Install leiningen script...$(NO_COLOR)"
+	@ echo "$(OK_COLOR)===> Install leiningen script...$(NO_COLOR)"
 	@ if [ ! -d leiningen ]; then mkdir leiningen fi;
 	@ cd leiningen; curl -O http://raw.github.com/technomancy/leiningen/stable/bin/lein; chmod +x lein;
-	@ echo -e "$(ERROR_COLOR)Add symbolic link in ~/bin/lein...\n$(NO_COLOR)"
+	@ echo "$(ERROR_COLOR)Do you have symbolic link in ~/bin/lein?\n$(NO_COLOR)"
 
-	@ echo -e "$(OK_COLOR)===> Checkout or update clojure...$(NO_COLOR)"
+	@ echo "$(OK_COLOR)===> Checkout or update clojure...$(NO_COLOR)"
 	@ if [ ! -d $(INSTALL_DIR)/clojure/clojure/.git ]; then git clone http://github.com/clojure/clojure.git; else cd clojure; git pull --rebase; cd ..; fi;
-	@ echo -e "$(ERROR_COLOR)Choose branch and build it\n$(NO_COLOR)"
+	@ echo "$(ERROR_COLOR)Choose branch and build it\n$(NO_COLOR)"
 
-	@ echo -e "$(OK_COLOR)===> Clojure libraries should be in $(INSTALL_DIR)/clojure/clojure-libs/...$(NO_COLOR)"
-	@ echo -e "$(ERROR_COLOR)Choose branch and build one by one\n$(NO_COLOR)"
+	@ echo "$(OK_COLOR)===> Clojure libraries should be in $(INSTALL_DIR)/clojure/clojure-libs/...$(NO_COLOR)"
+	@ echo "$(ERROR_COLOR)Choose branch and build one by one\n$(NO_COLOR)"
+
+_nrepl:
+	@ echo "$(OK_COLOR)===> Checkout or update nrepl.el...$(NO_COLOR)"
+	@ if [ ! -d nrepl.el ]; then git clone https://github.com/DerGuteMoritz/nrepl.el.git; else cd nrepl.el; git pull --rebase; cd ..; fi;
+
+_nrepl-inspect:
+	@ echo "$(OK_COLOR)===> Checkout or update nrepl-inspect...$(NO_COLOR)"
+	@ if [ ! -d nrepl-inspect ]; then git clone https://github.com/vitalreactor/nrepl-inspect.git; else cd nrepl-inspect; git pull --rebase; cd ..; fi;
+
+_fringe-helper:
+	@ echo "$(OK_COLOR)===> Checkout or update fringe-helper.el...$(NO_COLOR)"
+	@ if [ ! -d fringe-helper.el ]; then git clone https://github.com/nschum/fringe-helper.el.git; else cd fringe-helper.el; git pull --rebase; cd ..; fi;
+
+_ritz:
+	@ echo "$(OK_COLOR)===> Checkout or update ritz...$(NO_COLOR)"
+	@ if [ ! -d ritz ]; then git clone https://github.com/pallet/ritz.git; else cd ritz; git pull --rebase; cd ..; fi;
+
+clojure-ide: _nrepl _nrepl-inspect _fringe-helper _ritz
 
 #_______________________________________________________________________________
 #                                                                  SYSTEM RULES

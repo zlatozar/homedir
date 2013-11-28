@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-11-21 18:18:09 (zzhelyaz)>
+;; Time-stamp: <2013-11-28 10:44:34 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -67,17 +67,17 @@
         mu4e
 
         ;; Programming
+        find-file-in-project
         auto-complete-clang
         auto-complete
         browse-kill-ring
         multiple-cursors
-        find-file-in-project
         undo-tree
         goto-chg
-        iedit
         powerline
         full-ack
         yasnippet
+        iedit
 
         ;; Lisp family
         highlight-parentheses
@@ -85,20 +85,17 @@
         scheme-complete
         clojure-mode
         paredit
-        ;; cider
-        ;; nrepl-ritz
+        dash
+
+        ;; Clojure
         ac-nrepl
         elein
-        dash
 
         ;; C/C++
         google-c-style
         cmake-mode
         doxymacs
         eassist
-
-        ;; JavaScript
-        js-comint
 
         ;; Python
         jedi
@@ -127,6 +124,7 @@
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message t)
 
+(setq default-buffer-file-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 (set-input-method nil)
 
@@ -786,7 +784,7 @@ plus add font-size: 10pt"
           '(lisp-mode-hook
             slime-repl-mode-hook
             clojure-mode-hook
-            cider-mode-hook
+            nrepl-mode-hook
             scheme-mode-hook
             emacs-lisp-mode-hook
             ielm-mode-hook)))
@@ -815,7 +813,7 @@ plus add font-size: 10pt"
 (eval-after-load "slime-repl" '(setup-paredit-for-mode-map slime-repl-mode-map))
 (eval-after-load "scheme-mode" '(setup-paredit-for-mode-map scheme-mode-map))
 (eval-after-load "clojure-mode" '(setup-paredit-for-mode-map clojure-mode-map))
-(eval-after-load "cider-mode" '(setup-paredit-for-mode-map cider-mode-map))
+(eval-after-load "nrepl-mode" '(setup-paredit-for-mode-map nrepl-mode-map))
 
 (lisp-family 'enable-paredit-mode)
 (lisp-family 'highlight-parentheses-mode)
@@ -1003,36 +1001,46 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                                       Clojure
 
-;; TODO: Ritz and Cider are quite unstable for now
-
-(require 'clojure-mode)
 (require 'elein)
+(require 'clojure-mode)
 
-;; (require 'cider)
-;; (setq cider-history-file "~/.emacs.d/cider-history")
+;; Use forked version
+(require 'nrepl)
+(setq nrepl-hide-special-buffers t)
+(setq nrepl-popup-stacktraces-in-repl t)
+(setq nrepl-history-file "~/.emacs.d/nrepl-history")
 
-;; (require 'ac-nrepl)
-;; (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-;; (add-hook 'cider-mode-hook 'ac-nrepl-setup)
-;; (eval-after-load "auto-complete"
-;;   '(add-to-list 'ac-modes 'cider-repl-mode))
+;; Some default eldoc facilities
+(add-hook 'nrepl-connected-hook
+          (lambda ()
+            (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)
+            (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+            (nrepl-enable-on-existing-clojure-buffers)))
 
-;; ;; eldoc facilities when we are connected
-;; (add-hook 'cider-connected-hook
-;;           (lambda ()
-;;             (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)
-;;             (add-hook 'cider-interaction-mode-hook 'cider-turn-on-eldoc-mode)
-;;             (cider-enable-on-existing-clojure-buffers)))
+;; Repl mode hook
+(add-hook 'nrepl-mode-hook 'subword-mode)
 
-;; (add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
-;; (add-hook 'cider-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
+(require 'ac-nrepl)
+(add-hook 'nrepl-repl-mode-hook 'ac-nrepl-setup)
+(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'nrepl-repl-mode))
 
-;; (require 'nrepl-ritz)
+(require 'nrepl-inspect)
+(define-key nrepl-mode-map (kbd "C-c C-i") 'nrepl-inspect)
 
-;; ;; Should be run when you are in project
-;; (defun clojure ()
-;;   (interactive)
-;;   (nrepl-ritz-jack-in))
+(require 'nrepl-ritz)
+
+;; Ritz middleware
+(define-key nrepl-interaction-mode-map (kbd "C-c C-j") 'nrepl-javadoc)
+(define-key nrepl-mode-map (kbd "C-c C-j") 'nrepl-javadoc)
+(define-key nrepl-interaction-mode-map (kbd "C-c C-a") 'nrepl-apropos)
+(define-key nrepl-mode-map (kbd "C-c C-a") 'nrepl-apropos)
+
+;; Should be run when you are in project
+(defun clojure ()
+  (interactive)
+  (nrepl-ritz-jack-in))
 
 ;;----------------------------------------------------------------------------
 ;; Switching between source and test (must be named <source>_test.clj)
@@ -1193,9 +1201,6 @@ plus add font-size: 10pt"
 
 ;;_______________________________________________________________________________
 ;;                                                                    JavaScript
-
-;; JS console (third party)
-(require 'js-comint)
 
 ;; Requires 'v8' to be build
 ;; NOTE: Change GCC_TREAT_WARNINGS_AS_ERRORS in 'build/standalone.gypi' form YES to NO
