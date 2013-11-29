@@ -102,7 +102,7 @@ alias L='less --ignore-case --line-numbers --hilite-unread --hilite-search --LON
 
 alias diff=colordiff
 
-alias e="emacs -Q -D --eval '(setq make-backup-files nil)'"
+alias e="emacs -nw -q -l ~/.emacs-basic"
 alias em="emacsclient -c -n"
 alias git-root='cd $(git rev-parse --show-cdup)'
 
@@ -191,8 +191,8 @@ function fe() { find . -type f -name $1 -exec "${2:-file}" {} \;  ; }
 # Find a file(s)... who is the newest file in a directory
 function newest() { find ${1:-\.} -type f |xargs ls -lrt ; }
 
-function fname() { 
-    find . ! -name '*.svn*' ! -name '*.git*' ! -name '*.hg*' ! -name '*.metadata*' -iname "*$@*"; 
+function fname() {
+    find . ! -name '*.svn*' ! -name '*.git*' ! -name '*.hg*' ! -name '*.metadata*' -iname "*$@*";
 }
 
 function psgrep() { ps axuf | grep -v grep | grep "$@" -i --color=auto; }
@@ -228,7 +228,7 @@ function extract() {
 
 function up() {
     usage='USAGE: up <number>'
-    if [[ $# -ne 1 ]] ; then 
+    if [[ $# -ne 1 ]] ; then
         echo $usage && exit 65
     fi
 
@@ -284,7 +284,7 @@ function search() {
 #------------------------------#
 
 # Which Java thread cause CPU load
-function jthread() { 
+function jthread() {
     PID=$(top -n1 | grep -m1 java | perl -pe 's/\e\[?.*?[\@-~] ?//g' | cut -f1 -d' ')
     NID=$(printf "%x" $(top -n1 -H | grep -m1 java | perl -pe 's/\e\[?.*?[\@-~] ?//g' | cut -f1 -d' '))
     jstack $PID | grep -A500 $NID | grep -m1 "^$" -B 500
