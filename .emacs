@@ -232,6 +232,9 @@
 ;; Set *scratch* buffer mode
 (setq initial-major-mode 'text-mode)
 
+;; nuke whitespaces when writing to a file
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
 ;; Import system PATH variable (for MacOS see  mac/.emacs snippets)
 (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
 
@@ -1198,6 +1201,15 @@ plus add font-size: 10pt"
  "';'.join(module_completion('''%s'''))\n"
  python-shell-completion-string-code
  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+
+(custom-set-variables
+ '(py-split-windows-on-execute-function 'split-window-horizontally)
+ '(py-complete-function (quote py-shell-complete))
+ '(py-switch-buffers-on-execute-p t)
+ '(py-split-windows-on-execute-function (quote split-window-horizontally))
+ '(py-split-windows-on-execute-p t)
+ '(py-switch-buffers-on-execute-p t)
+ '(py-tab-shifts-region-p t))
 
 ;;_______________________________________________________________________________
 ;;                                                                    JavaScript
