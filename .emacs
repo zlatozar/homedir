@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-11-28 10:44:34 (zzhelyaz)>
+;; Time-stamp: <2013-12-03 12:39:21 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -724,7 +724,7 @@ plus add font-size: 10pt"
 
 ;; Skip SCM files when grep
 (setq grep-find-command
-      "find . -regex '.*~$\|.*/\.\(git\|hg\|svn\)\(/\|$\)' -prune -o -type f -print | xargs -e grep -I -nH -e ")
+      "find . -regex '.*~$\|.*/\.\(git\|hg\|svn\)\(/\|$\)' -prune -o -type f -print | xargs -E eof-str grep -I -nH -e ")
 
 ;; GDB
 (setq gdb-many-windows 1)
@@ -921,6 +921,8 @@ plus add font-size: 10pt"
 
 (add-to-list 'slime-lisp-implementations '(sbcl ("sbcl")))
 
+(global-set-key "\C-z" 'slime-selector)
+
 ;;_______________________________________________________________________________
 ;;                                                                    MIT Scheme
 
@@ -953,7 +955,7 @@ plus add font-size: 10pt"
 (autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
 
 (eval-after-load 'scheme
-  '(define-key scheme-mode-map [C-tab] 'scheme-smart-complete))
+  '(define-key scheme-mode-map (kbd "\C-cc") 'scheme-smart-complete))
 
 (add-hook 'scheme-mode-hook
           (lambda ()
@@ -977,6 +979,14 @@ plus add font-size: 10pt"
 
 ;;_______________________________________________________________________________
 ;;                                                                   Common Lisp
+
+(defun slime-max-debug ()
+  "Declaim max debug properties"
+  (interactive)
+  (insert "(declaim (optimize (debug 3) (safety 3) (speed 0) (compilation-speed 0)))"))
+
+(define-key slime-mode-map (kbd "C-<tab>") 'slime-fuzzy-complete-symbol)
+(define-key slime-repl-mode-map (kbd "C-<tab>") 'slime-fuzzy-complete-symbol)
 
 ;; Common Lisp HyperSpec location (this may vary)
 (require 'hyperspec)

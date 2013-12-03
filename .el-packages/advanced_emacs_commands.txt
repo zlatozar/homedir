@@ -1,4 +1,3 @@
-
 1. Common default Emacs key prefixes
 
 Key prefix      Description
@@ -57,6 +56,7 @@ C-x C-l          downcase-region             Converts the region to lowercase le
 C-x C-u          upcase-region               Converts the region to uppercase letters.
 M-m              back-to-indentation         This command, given anywhere on a line, positions point at the first non blank character on the line.
 M-z              zap-to-car                  Deletes everything to given character including
+C-0 C-k                                      Delete from point to beginning of line
 
 C-s C-w                                      This command, add the (rest of the) word at the pointer for isearch
 
@@ -160,7 +160,7 @@ This will open a buffer listing in dired all the files matching the type. Hit Q 
 
 10. Shell
 
-Keys are the same as in Bash prompt only C-c is added as prefix. 
+Keys are the same as in Bash prompt only C-c is added as prefix.
 
 Key prefix          Function                   Description
 ----------          --------                   -----------
