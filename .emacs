@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-12-03 12:39:21 (zzhelyaz)>
+;; Time-stamp: <2013-12-05 18:15:19 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -83,11 +83,12 @@
         highlight-parentheses
         elisp-slime-nav
         scheme-complete
-        clojure-mode
+        ac-slime
         paredit
         dash
 
         ;; Clojure
+        clojure-mode
         ac-nrepl
         elein
 
@@ -730,8 +731,6 @@ plus add font-size: 10pt"
 (setq gdb-many-windows 1)
 (add-hook 'gdb-mode-hook
           (lambda()
-            (local-set-key [f5] 'gud-step)
-            (local-set-key [f6] 'gud-next)
             ;; set a temporary breakpoint at the current line and continue executing
             (local-set-key [f10]
                            (lambda()
@@ -741,6 +740,9 @@ plus add font-size: 10pt"
             ;; make gdb behave more like a normal terminal
             (local-set-key [up] 'comint-previous-input)
             (local-set-key [down] 'comint-next-input)))
+
+(define-key gud-mode-map '[f5] 'gud-step)
+(define-key gud-mode-map '[f6] 'gud-next)
 
 ;; Highlight XXX style code tags in source files
 (dolist (mode '(c-mode
@@ -981,9 +983,12 @@ plus add font-size: 10pt"
 ;;                                                                   Common Lisp
 
 (defun slime-max-debug ()
-  "Declaim max debug properties"
+  "Inserts declaim max debug properties"
   (interactive)
   (insert "(declaim (optimize (debug 3) (safety 3) (speed 0) (compilation-speed 0)))"))
+
+(require 'ac-slime)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
 
 (define-key slime-mode-map (kbd "C-<tab>") 'slime-fuzzy-complete-symbol)
 (define-key slime-repl-mode-map (kbd "C-<tab>") 'slime-fuzzy-complete-symbol)
