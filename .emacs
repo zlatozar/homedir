@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-12-05 18:15:19 (zzhelyaz)>
+;; Time-stamp: <2013-12-05 18:43:31 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -727,6 +727,10 @@ plus add font-size: 10pt"
 (setq grep-find-command
       "find . -regex '.*~$\|.*/\.\(git\|hg\|svn\)\(/\|$\)' -prune -o -type f -print | xargs -E eof-str grep -I -nH -e ")
 
+(require 'gud)
+(define-key gud-mode-map '[f5] 'gud-step)
+(define-key gud-mode-map '[f6] 'gud-next)
+
 ;; GDB
 (setq gdb-many-windows 1)
 (add-hook 'gdb-mode-hook
@@ -740,9 +744,6 @@ plus add font-size: 10pt"
             ;; make gdb behave more like a normal terminal
             (local-set-key [up] 'comint-previous-input)
             (local-set-key [down] 'comint-next-input)))
-
-(define-key gud-mode-map '[f5] 'gud-step)
-(define-key gud-mode-map '[f6] 'gud-next)
 
 ;; Highlight XXX style code tags in source files
 (dolist (mode '(c-mode
