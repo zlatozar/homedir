@@ -298,6 +298,10 @@ export MAVEN_OPTS="-Xms512m -Xmx1024m"
 # Remove:  cat files.txt | xargs rm -rf
 # User installed packages are in ~/Library/Python/2.7/lib/python/site-packages
 
+# Enable virtualenvwrapper ("which python" to find out)
+export VIRTUALENVWRAPPER_PYTHON=/opt/local/bin/python
+source /opt/local/bin/virtualenvwrapper.sh-2.7
+
 # Common Lisp
 # sudo port install sbcl +fancy
 

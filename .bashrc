@@ -343,12 +343,18 @@ export MAVEN_OPTS="-Xms512m -Xmx1024m"
 #
 # Install: python setup.py install --record files.txt
 # Remove:  cat files.txt | xargs rm -rf
-export PYTHONPATH=
+
+#export PYTHONPATH=
+alias ipy='ipython --pylab'
+
+# MIT Scheme
+alias scm='rlwrap scheme'
 
 #
 # LISP settings
 #
-export SBCL_HOME=
+
+#export SBCL_HOME=
 
 # Git
 export GIT_PS1_SHOWDIRTYSTATE=1
