@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-12-05 18:43:31 (zzhelyaz)>
+;; Time-stamp: <2013-12-06 09:56:26 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -106,6 +106,7 @@
         psvn
 
         ;; Misc
+        readline-complete
         emacs-w3m
         htmlize
         smex))
@@ -420,6 +421,12 @@ plus add font-size: 10pt"
 
 ;;_______________________________________________________________________________
 ;;                                                                Manage Buffers
+
+;; shell buffer auto completion
+(require 'readline-complete)
+
+(add-to-list 'ac-modes 'shell-mode)
+(add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
 
 ;; Function to create new functions that look for a specific pattern
 (defun ffip-create-pattern-file-finder (&rest patterns)
@@ -1218,14 +1225,26 @@ plus add font-size: 10pt"
  python-shell-completion-string-code
  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
-(custom-set-variables
- '(py-split-windows-on-execute-function 'split-window-horizontally)
- '(py-complete-function (quote py-shell-complete))
- '(py-switch-buffers-on-execute-p t)
- '(py-split-windows-on-execute-function (quote split-window-horizontally))
- '(py-split-windows-on-execute-p t)
- '(py-switch-buffers-on-execute-p t)
- '(py-tab-shifts-region-p t))
+(require 'python)
+
+(defun python--add-debug-highlight ()
+  "Adds a highlighter for use by `python--pdb-breakpoint-string'"
+  (highlight-lines-matching-regexp "## DEBUG ##\\s-*$" 'hi-red-b))
+
+(add-hook 'python-mode-hook 'python--add-debug-highlight)
+
+;; Conditionals: if i == 5: import pytest; pytest.set_trace() ## DEBUG ##
+(defvar python--pdb-breakpoint-string "import pytest; pytest.set_trace() ## DEBUG ##"
+  "Python breakpoint string used by `python-insert-breakpoint'")
+
+(defun python-insert-breakpoint ()
+  "Inserts a python breakpoint using `pytest'"
+  (interactive)
+  (back-to-indentation)
+  (split-line)
+  (insert python--pdb-breakpoint-string))
+
+(define-key python-mode-map (kbd "<f10>") 'python-insert-breakpoint)
 
 ;;_______________________________________________________________________________
 ;;                                                                    JavaScript
