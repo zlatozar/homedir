@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-12-06 09:56:26 (zzhelyaz)>
+;; Time-stamp: <2013-12-12 10:30:56 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -237,6 +237,9 @@
 ;; nuke whitespaces when writing to a file
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
+;; Better scrolling
+(setq scroll-step 1)
+
 ;; Import system PATH variable (for MacOS see  mac/.emacs snippets)
 (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
 
@@ -422,7 +425,7 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                                Manage Buffers
 
-;; shell buffer auto completion
+;; shell buffer auto completion (third party)
 (require 'readline-complete)
 
 (add-to-list 'ac-modes 'shell-mode)
