@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-12-12 10:30:56 (zzhelyaz)>
+;; Time-stamp: <2013-12-16 09:57:23 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -83,7 +83,6 @@
         highlight-parentheses
         elisp-slime-nav
         scheme-complete
-        ac-slime
         paredit
         dash
 
