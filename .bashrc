@@ -372,3 +372,12 @@ function git-history-clean() {
         echo "ERROR: Current directory is not under Git version control."
     fi;
 }
+
+function irebase() {
+    echo "--== Start interactive Git rebase ==--"
+    if [ "$#" -ne 1 ]; then
+        git rebase -i HEAD~2
+    else
+        git rebase -i HEAD~$1
+    fi
+}
