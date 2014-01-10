@@ -992,6 +992,8 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                                   Common Lisp
 
+;; ~/projects/lisp will be scanned for .asd (see ~/.config/common-lisp)
+
 (defun slime-max-debug ()
   "Inserts declaim max debug properties"
   (interactive)
