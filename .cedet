@@ -1,6 +1,6 @@
 ;; mode:-*-emacs-lisp-*- -*- coding: utf-8; -*-
 
-;; Time-stamp: <2013-06-03 13:42:47 (zzhelyaz)>
+;; Time-stamp: <2014-01-10 09:58:07 (zzhelyaz)>
 
 ;;________________________________________________________________________________
 ;;                                                                  Minimal CEDET
@@ -91,6 +91,20 @@
         include-dirs))
 
 (setq semantic-c-dependency-system-include-path "/usr/include")
+
+;; Function to load all include files in the specified directory
+(defun load-headers-from-dir (dir)
+  "Add all header files in DIR to `semanticdb-implied-include-tags'."
+  (let ((files (directory-files dir t "^.+\\.h[hp]*$" t)))
+    (defvar-mode-local c++-mode semanticdb-implied-include-tags
+      (mapcar (lambda (header)
+                (semantic-tag-new-include
+                 header
+                 nil
+                 :filename header))
+              files))))
+
+(load-headers-from-dir "/path/to/root") ; <-- insert yours
 
 ;;________________________________________________________________________________
 ;;                                                                           Java
