@@ -106,6 +106,7 @@
     fstat = !git --no-pager diff --stat -M -w
     gre = grep -I --cached --color -n -C 3
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    lm = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --merges
     hist = log --graph --pretty=format:'%Cred%h %Cgreen(%ad)%Creset| -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
     track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
 
