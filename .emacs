@@ -1,4 +1,4 @@
-;; Time-stamp: <2013-12-16 09:57:23 (zzhelyaz)>
+;; Time-stamp: <2014-01-28 10:36:10 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -75,7 +75,7 @@
         undo-tree
         goto-chg
         powerline
-        full-ack
+        ag
         yasnippet
         iedit
 
@@ -310,11 +310,10 @@ plus add font-size: 10pt"
       (replace-match pre-tag nil nil))
     (goto-char (point-min))))
 
-;; 'ack' as better 'grep' for programmers (third party)
-(autoload 'ack-same "full-ack" nil t)
-(autoload 'ack "full-ack" nil t)
-(autoload 'ack-find-same-file "full-ack" nil t)
-(autoload 'ack-find-file "full-ack" nil t)
+;; 'ag'(silversearcher-ag) as better 'grep' for programmers (third party)
+(require 'ag)
+(setq-default ag-highlight-search t)
+(global-set-key (kbd "M-?") 'ag-project)
 
 ;; Emacs browser (third party)
 (when (locate-library "w3m")
@@ -1210,7 +1209,8 @@ plus add font-size: 10pt"
 (setq jedi:complete-on-dot t)
 (setq jedi:tooltip-method '(pos-tip))
 
-(add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook 'auto-complete-mode)
+(add-hook 'python-mode-hook 'jedi:ac-setup)
 
 ;; 'pyflakes' should be installed (third party)
 (require 'flymake-python-pyflakes)
