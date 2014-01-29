@@ -16,7 +16,7 @@
 
 (require 'cl)
 
-(defconst my/elisp-path "~/.el-packages/")
+(defconst my/elisp-path "~/.emacs.d/el-packages/")
 
 ;; Reload packages that are not handled by `el-get'
 (defun load-path ()
@@ -362,7 +362,7 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                  CEDET/ECB and projects setup
 
-(load "~/.cedet")
+(load "~/.emacs.d/init-cedet.el")
 
 ;;_______________________________________________________________________________
 ;;                                                                 Auto complete
@@ -461,14 +461,14 @@ plus add font-size: 10pt"
 (global-set-key [(super shift return)] 'toggle-maximize-buffer)
 
 ;; Define bookmarks location
-(setq bookmark-default-file "~/.emacs.d/bookmarks")
+(setq bookmark-default-file "~/.emacs.d/data/bookmarks")
 
 ;; Where my temp dir is
-(setq temporary-file-directory "~/.emacs.d/tmp/")
+(setq temporary-file-directory "~/.emacs.d/data/tmp/")
 
 ;; Backups configuration
 (setq backup-by-copying t
-      backup-directory-alist '(("." . "~/.emacs.d/backups"))
+      backup-directory-alist '(("." . "~/.emacs.d/data/backups"))
       delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
@@ -552,7 +552,7 @@ plus add font-size: 10pt"
 
 (require 'recentf)
 (recentf-mode t)
-(setq recentf-save-file "~/.emacs.d/recentf"
+(setq recentf-save-file "~/.emacs.d/data/recentf"
       recentf-max-saved-items 500
       recentf-max-menu-items 60)
 
@@ -567,7 +567,7 @@ plus add font-size: 10pt"
 
 ;; Smart M-x (third party)
 (require 'smex)
-(setq smex-save-file "~/.emacs.d/smex-items")
+(setq smex-save-file "~/.emacs.d/data/smex-items")
 (smex-initialize)
 
 (global-set-key (kbd "M-x") 'smex)
@@ -582,7 +582,7 @@ plus add font-size: 10pt"
 ;; C-x C-f /machine:file - for remote
 ;; C-x C-f /sudo:user@remote.machine:/var/log - for privileges; for local use M-x sudo-edit
 (setq tramp-default-method "ssh")
-(setq tramp-auto-save-directory "~/.emacs.d/tramp")
+(setq tramp-auto-save-directory "~/.emacs.d/data/tramp")
 
 ;; Swap two buffers
 (defun my/swap-buffer ()
@@ -944,7 +944,7 @@ plus add font-size: 10pt"
                                          (vector) (vector) (vector) false))
              (->environment '(package)))
             (load ,(expand-file-name
-                    "~/.el-packages/mit-scheme-swank/swank.scm" ; <-- insert your path
+                    "~/.emacs.d/el-packages/mit-scheme-swank/swank.scm" ; <-- insert your path
                     slime-path)
                   (->environment '(runtime swank)))
             (eval '(start-swank ,file) (->environment '(swank))))))
@@ -1032,7 +1032,7 @@ plus add font-size: 10pt"
 (require 'nrepl)
 (setq nrepl-hide-special-buffers t)
 (setq nrepl-popup-stacktraces-in-repl t)
-(setq nrepl-history-file "~/.emacs.d/nrepl-history")
+(setq nrepl-history-file "~/.emacs.d/data/nrepl-history")
 
 ;; Some default eldoc facilities
 (add-hook 'nrepl-connected-hook
@@ -1265,7 +1265,7 @@ plus add font-size: 10pt"
                                            'eshell-handle-ansi-color
                                            'eshell-watch-for-password-prompt))
 
-(setq eshell-directory-name "~/.emacs.d/eshell/"
+(setq eshell-directory-name "~/.emacs.d/data/eshell/"
       eshell-hist-ignoredups t
       eshell-ask-to-save-history 'always
       eshell-cmpl-cycle-completions nil
@@ -1343,7 +1343,7 @@ plus add font-size: 10pt"
 (defun reload-dot-emacs ()
   "Save the .emacs buffer if needed, then reload .emacs."
   (interactive)
-  (let ((dot-emacs "~/.emacs"))
+  (let ((dot-emacs "~/.emacs.d/init.el"))
     (and (get-file-buffer dot-emacs)
          (save-buffer (get-file-buffer dot-emacs)))
     (load-file dot-emacs))
@@ -1448,7 +1448,7 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                            Org-mode and Email
 
-(load "~/.org-mode")
+(load "~/.emacs.d/init-org.el")
 
 ;;_______________________________________________________________________________
 ;;                                                             Personal settings
@@ -1476,9 +1476,9 @@ plus add font-size: 10pt"
 
 ;; open files
 (global-set-key (kbd "s-c")
-                (lambda() (interactive)(find-file "~/.cedet")))
+                (lambda() (interactive)(find-file "~/.emacs.d/init-cedet.el")))
 (global-set-key (kbd "s-e")
-                (lambda() (interactive)(find-file "~/.emacs")))
+                (lambda() (interactive)(find-file "~/.emacs.d/init.el")))
 (global-set-key (kbd "s-r")
                 (lambda() (interactive)(switch-to-buffer "*scratch*")))
 
