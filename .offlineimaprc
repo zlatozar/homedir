@@ -27,6 +27,6 @@ keepalive = 60
 # Linux
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
-# Mac
+# For MAC generate dummy: openssl req -new -x509 -extensions v3_ca -keyout /dev/null -out dummycert.pem -days 3650
 # ssl = true
-# cert_fingerprint = <what is returned>
+# sslcacertfile = <path to dummycert.pem>
