@@ -1,4 +1,4 @@
-;; Time-stamp: <2014-01-28 10:36:10 (zzhelyaz)>
+;; Time-stamp: <2014-01-29 12:35:03 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -83,6 +83,7 @@
         highlight-parentheses
         elisp-slime-nav
         scheme-complete
+        redshank
         paredit
         dash
 
@@ -102,7 +103,6 @@
 
         ;; Version control
         magit
-        psvn
 
         ;; Misc
         readline-complete
@@ -239,6 +239,9 @@
 ;; Better scrolling
 (setq scroll-step 1)
 
+;; Hide toolbar
+(tool-bar-mode -1)
+
 ;; Import system PATH variable (for MacOS see  mac/.emacs snippets)
 (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
 
@@ -309,11 +312,6 @@ plus add font-size: 10pt"
     (while (re-search-forward "<pre>" nil t)
       (replace-match pre-tag nil nil))
     (goto-char (point-min))))
-
-;; 'ag'(silversearcher-ag) as better 'grep' for programmers (third party)
-(require 'ag)
-(setq-default ag-highlight-search t)
-(global-set-key (kbd "M-?") 'ag-project)
 
 ;; Emacs browser (third party)
 (when (locate-library "w3m")
@@ -513,7 +511,6 @@ plus add font-size: 10pt"
                                 (name . "^\\*git-")
                                 (name . "^\\*magit")))
          ("EMACS" (or (name . "^\\*Messages\\*$")
-                      (name . "^TAGS\\(<[0-9]+>\\)?$")
                       (name . "^\\*Help\\*$")
                       (name . "^\\*info\\*$")
                       (name . "^\\*CEDET")
@@ -670,25 +667,18 @@ plus add font-size: 10pt"
 
 ;; Go into proper mode according to file extension
 (setq auto-mode-alist
-      (append '(("\\.C$"    . c++-mode)      ("\\.cc$"   . c++-mode)
-                ("\\.cxx$"  . c++-mode)      ("\\.hxx$"  . c++-mode)
-                ("\\.hpp$"  . c++-mode)      ("\\.h$"    . c++-mode)
-                ("\\.hh$"   . c++-mode)      ("\\.idl$"  . c++-mode)
-                ("\\.ipp$"  . c++-mode)      ("\\.i$"    . c++-mode) ; SWIG files
+      (append '(
+                ("\\.idl$"  . c++-mode)
+                ("\\.ipp$"  . c++-mode)
+                ("\\.i$"    . c++-mode) ; SWIG files
 
-                ("\\.cl$"  . common-lisp-mode)
-                ("\\.clj$"  . clojure-mode)  ("\\.cljs$" . clojure-mode)
-                ("\\.asd$"  . lisp-mode)     ("\\.scm$"  . scheme-mode)
-                ("\\.ss$"   . scheme-mode)   ("\\.sch$"  . scheme-mode)
+                ("\\.asd$"  . lisp-mode)
+                ("\\.cljs$" . clojure-mode)
+                ("\\.ss$"   . scheme-mode)
+                ("\\.sch$"  . scheme-mode)
 
-                ;; ("\\.y$" . bison-mode)            ("\\.yy$" . bison-mode)
-                ;; ("\\.l$" . flex-mode)             ("\\.ll$" . flex-mode)
-
-                ("\\.conf$" . conf-mode)     ("README"   . text-mode)
-                ("\\.mak$"  . makefile-mode)
-
-                ("Doxyfile.tmpl$" . makefile-mode)   ("Doxyfile$" . makefile-mode)
-                ("CMakeLists\\.txt\\'" . cmake-mode) ("\\.cmake\\'" . cmake-mode))
+                ("\\.conf$" . conf-mode)
+                ("\\.mak$"  . makefile-mode))
 
               auto-mode-alist))
 
@@ -735,6 +725,11 @@ plus add font-size: 10pt"
 (setq grep-find-command
       "find . -regex '.*~$\|.*/\.\(git\|hg\|svn\)\(/\|$\)' -prune -o -type f -print | xargs -E eof-str grep -I -nH -e ")
 
+;; 'ag'(silversearcher-ag) as better 'grep' for programmers (third party)
+(require 'ag)
+(setq-default ag-highlight-search t)
+(global-set-key (kbd "M-?") 'ag-project)
+
 (require 'gud)
 (define-key gud-mode-map '[f5] 'gud-step)
 (define-key gud-mode-map '[f6] 'gud-next)
@@ -768,10 +763,6 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                                Source Control
 
-;; SVN (third party)
-(require 'psvn)
-(setq svn-status-hide-unmodified t)
-
 ;; Git client (third party)
 (require 'magit)
 (setq magit-commit-signoff t)
@@ -802,6 +793,10 @@ plus add font-size: 10pt"
             scheme-mode-hook
             emacs-lisp-mode-hook
             ielm-mode-hook)))
+
+(eval-after-load "redshank-loader"
+  `(redshank-setup '(lisp-mode-hook
+                     slime-repl-mode-hook) t))
 
 ;; Easy parenthesis manipulation (third party)
 (require 'paredit)
@@ -1261,7 +1256,7 @@ plus add font-size: 10pt"
           (lambda () (flymake-mode t)))
 
 ;;_______________________________________________________________________________
-;;                                                                        EShell
+;;                                                       EShell (Debian dialect)
 
 (setq eshell-banner-message `(format-time-string
                               "Eshell startup: %T, %A %d %B %Y\n\n"))
@@ -1353,6 +1348,11 @@ plus add font-size: 10pt"
          (save-buffer (get-file-buffer dot-emacs)))
     (load-file dot-emacs))
   (message "Re-initialized!"))
+
+(defun insert-date ()
+  "Insert a time-stamp according to locale's date and time format."
+  (interactive)
+  (insert (format-time-string "%c" (current-time))))
 
 (defun sudo-edit (&optional arg)
   "Edit files as super user"
