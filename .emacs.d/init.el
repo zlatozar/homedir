@@ -1,4 +1,4 @@
-;; Time-stamp: <2014-01-29 12:35:03 (zzhelyaz)>
+;; Time-stamp: <2014-01-30 12:02:13 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -74,10 +74,10 @@
         multiple-cursors
         undo-tree
         goto-chg
-        powerline
-        ag
         yasnippet
+        idomenu
         iedit
+        ag
 
         ;; Lisp family
         highlight-parentheses
@@ -106,6 +106,7 @@
 
         ;; Misc
         readline-complete
+        powerline
         emacs-w3m
         htmlize
         smex))
@@ -252,9 +253,9 @@
 
 (message "-= Basic Packages =-")
 
-;; C-/ for undo. C-? (C-S-/) for redo.
+;; 'C-x u' to visualise
 (require 'undo-tree)
-;; (global-undo-tree-mode)
+(global-undo-tree-mode)
 
 ;; Edit multiple lines
 (require 'multiple-cursors)
@@ -477,6 +478,9 @@ plus add font-size: 10pt"
 (ido-mode 1)
 (ido-everywhere 1)
 
+;; Functions in a file, and lets you jump to theme
+(require 'imenu)
+
 ;; Usage: (put 'dired 'ido 'ignore)
 (defadvice ido-read-buffer (around ido-read-buffer-possibly-ignore activate)
   "Check to see if user wanted to avoid using ido"
@@ -546,7 +550,7 @@ plus add font-size: 10pt"
 ;; If open two files with the same name
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
-(setq uniquify-separator ":")
+(setq uniquify-separator " • ")
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-ignore-buffers-re "^\\*")
 
@@ -837,7 +841,9 @@ plus add font-size: 10pt"
 
 ;; indent when yank in lisp modes
 (defadvice yank (after indent-region activate)
-  (if (member major-mode '(clojure-mode emacs-lisp-mode lisp-mode scheme-mode))
+  (if (member major-mode '(clojure-mode
+                           emacs-lisp-mode
+                           lisp-mode scheme-mode))
       (let ((mark-even-if-inactive t))
         (indent-region (region-beginning) (region-end) nil))))
 
