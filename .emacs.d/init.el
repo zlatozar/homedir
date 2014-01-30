@@ -1,4 +1,4 @@
-;; Time-stamp: <2014-01-30 12:02:13 (zzhelyaz)>
+;; Time-stamp: <2014-01-30 14:20:05 (zzhelyaz)>
 
 ;;_______________________________________________________________________________
 ;;                                                                   Emacs build
@@ -73,6 +73,7 @@
         browse-kill-ring
         multiple-cursors
         undo-tree
+        flycheck
         goto-chg
         yasnippet
         idomenu
@@ -686,6 +687,14 @@ plus add font-size: 10pt"
 
               auto-mode-alist))
 
+(when (eval-when-compile (>= emacs-major-version 24))
+  (require 'flycheck)
+  (add-hook 'after-init-hook 'global-flycheck-mode))
+
+;; Override default flycheck triggers
+(setq flycheck-check-syntax-automatically '(save idle-change mode-enabled)
+      flycheck-idle-change-delay 0.8)
+
 ;; Use spaces instead of tabs
 (setq default-tab-width 4)
 (setq-default indent-tabs-mode nil)
@@ -1163,8 +1172,6 @@ plus add font-size: 10pt"
             ;; (setq doxymacs-doxygen-style "C++")
 
             (local-set-key [(control J)] 'doxymacs-insert-function-comment)
-            (local-set-key [f3] 'flymake-display-err-menu-for-current-line)
-            (local-set-key [f4] 'flymake-goto-next-error)
             (local-set-key [(control return)] 'reindent-then-newline-and-indent)))
 
 (add-hook 'c-mode-hook

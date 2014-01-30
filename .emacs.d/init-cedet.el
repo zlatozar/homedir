@@ -1,6 +1,6 @@
 ;; mode:-*-emacs-lisp-*- -*- coding: utf-8; -*-
 
-;; Time-stamp: <2014-01-10 09:58:07 (zzhelyaz)>
+;; Time-stamp: <2014-01-30 14:24:28 (zzhelyaz)>
 
 ;;________________________________________________________________________________
 ;;                                                                  Minimal CEDET
@@ -105,18 +105,6 @@
               files))))
 
 (load-headers-from-dir "/path/to/root") ; <-- insert yours
-
-;;________________________________________________________________________________
-;;                                                                           Java
-
-(require 'cedet-java)
-(require 'semantic/db-javap)
-
-(custom-set-variables
- '(cedet-java-jdk-root '(getenv "JAVA_HOME"))
- '(semanticdb-javap-classpath '((concat (getenv "JAVA_HOME") "/jre/lib/rt.jar"))))
-
-(add-hook 'java-mode-hook 'flymake-mode-on)
 
 ;;________________________________________________________________________________
 ;;                                                       auto-complete with Clang
@@ -246,46 +234,6 @@
     (ecb-activate)))
 (global-set-key [(control f12)] 'ecb-toggle-dir)
 
-;;________________________________________________________________________________
-;;                                                                    C++ Flymake
-
-;; flymake for a project and standalone programs
-(require 'flymake)
-
-(defun flymake-simple-or-generic ()
-  (if (file-exists-p "Makefile")
-      (flymake-simple-make-init)
-    (flymake-simple-generic-init)))
-
-(defun flymake-simple-generic-init ()
-  (let* ((temp-file   (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-         (local-file  (file-relative-name
-                       temp-file
-                       (file-name-directory buffer-file-name))))
-    ;; every include declarations starts from project root
-    (list "g++" (list (concat "-I" (funcall 'project-root))
-                      ;; possible needed includes (project specific)
-                      (concat "-I" (getenv "GLOG_ROOT") "/include")
-                      (concat "-I" (getenv "BOOST_ROOT") "/include")
-                      "-I." "-I.." "-Wall" "-Wextra" "-fsyntax-only" local-file))))
-
-(add-hook 'c++-mode-hook
-          (lambda ()
-            (push '("\\.cpp$" flymake-simple-or-generic) flymake-allowed-file-name-masks)
-            (push '("\\.h$" flymake-simple-or-generic) flymake-allowed-file-name-masks)
-            (if (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
-                (flymake-mode t))))
-
-;;________________________________________________________________________________
-;;                                                                   Java Flymake
-
-(defun my/java-flymake-init ()
-  (list "javac" (list (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-with-folder-structure))))
-
-(add-to-list 'flymake-allowed-file-name-masks
-             '("\\.java$" my/java-flymake-init flymake-simple-cleanup))
 
 ;; If project file is open - project will be compiled with closest Makefile, else
 ;; file will be compiled with general rule if there is no Makefile
@@ -316,8 +264,6 @@
 
 ;;_______________________________________________________________________________
 ;;                                                              PROJECT TEMPLATE
-
-;; NOTE: Probably Flymake configuration should be corrected for every project
 
 ;; project.template as example
 (ede-cpp-root-project "C++ project.template"
