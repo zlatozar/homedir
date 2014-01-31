@@ -36,6 +36,9 @@
 
 (load-path)
 
+;; Load configuration files
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
 ;;_______________________________________________________________________________
 ;;                                                               Manage packages
 
@@ -346,7 +349,7 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                  CEDET/ECB and projects setup
 
-(load "~/.emacs.d/init-cedet.el")
+(require 'init-cedet)
 
 ;;_______________________________________________________________________________
 ;;                                                                 Auto complete
@@ -1447,7 +1450,7 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                            Org-mode and Email
 
-(load "~/.emacs.d/init-org.el")
+(require 'init-org)
 
 ;;_______________________________________________________________________________
 ;;                                                             Personal settings
