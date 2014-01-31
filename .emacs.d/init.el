@@ -1,15 +1,4 @@
-;; Time-stamp: <2014-01-30 14:20:05 (zzhelyaz)>
-
-;;_______________________________________________________________________________
-;;                                                                   Emacs build
-
-;; $ git clone git://git.savannah.gnu.org/emacs.git
-;; $ cd emacs
-
-;; # 'EMACS' tag is for stable, 'EMACS_PRETEST' - unstable
-;; $ git tag | grep "EMACS_24"
-
-;; Tested with Emacs 24.3.1
+;;; This file bootstraps the configuration
 
 ;;_______________________________________________________________________________
 ;;                                                                    Load paths
@@ -116,13 +105,6 @@
 
 ;;_______________________________________________________________________________
 ;;                                                                       General
-
-;; If "Time-stamp: <>" in the first 10 lines of the file
-(setq time-stamp-active t
-      time-stamp-line-limit 10
-      time-stamp-format "%04y-%02m-%02d %02H:%02M:%02S (%u)")
-
-(add-hook 'write-file-hooks 'time-stamp)
 
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message t)
@@ -441,6 +423,9 @@ plus add font-size: 10pt"
 (global-unset-key (kbd "C-x C-o"))
 (global-set-key (kbd "C-x C-o ja")
                 (ffip-create-pattern-file-finder "*.java"))
+(global-set-key (kbd "C-x C-o cj")
+                (ffip-create-pattern-file-finder "*.clj"))
+
 (global-set-key (kbd "C-x C-o cl")
                 (ffip-create-pattern-file-finder "*.cl"))
 (global-set-key (kbd "C-x C-o py")

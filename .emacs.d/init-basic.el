@@ -1,3 +1,5 @@
+;;; This file contains configuration for command line Emacs
+
 ;; Highlight everywhere
 (global-font-lock-mode t)
 (setq font-lock-maximum-decoration t)

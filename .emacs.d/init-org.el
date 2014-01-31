@@ -1,6 +1,4 @@
-;; mode:-*-emacs-lisp-*- -*- coding: utf-8; -*-
-
-;; Time-stamp: <2013-08-02 16:40:35 (zzhelyaz)>
+;;; This file bootstraps the Org/mu4e configuration
 
 ;;________________________________________________________________________________
 ;;                                                                   Email client
@@ -30,7 +28,7 @@
       mu4e-attachment-dir "~/Downloads"
       mu4e-confirm-quit nil
       mu4e-headers-skip-duplicates t
-      mu4e-compose-dont-reply-to-self t 
+      mu4e-compose-dont-reply-to-self t
       mu4e-headers-date-format "%d %b, %Y at %H:%M"
       mu4e-html2text-command "w3m -dump -cols 80 -T text/html"
 

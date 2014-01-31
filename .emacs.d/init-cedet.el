@@ -1,6 +1,4 @@
-;; mode:-*-emacs-lisp-*- -*- coding: utf-8; -*-
-
-;; Time-stamp: <2014-01-30 14:24:28 (zzhelyaz)>
+;;; This file bootstraps the CEDET configuration
 
 ;;________________________________________________________________________________
 ;;                                                                  Minimal CEDET
