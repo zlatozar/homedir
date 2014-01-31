@@ -155,3 +155,8 @@
       calendar-location-name "Sofia, Bulgaria")
 
 (global-set-key [(control f4)] 'diary)
+
+;;________________________________________________________________________________
+;;                                                                            End
+
+(provide 'init-org)

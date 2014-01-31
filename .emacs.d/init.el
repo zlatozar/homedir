@@ -467,6 +467,7 @@ plus add font-size: 10pt"
 ;; Functions in a file, and lets you jump to theme
 (require 'imenu)
 
+;; Exclude ido completion
 ;; Usage: (put 'dired 'ido 'ignore)
 (defadvice ido-read-buffer (around ido-read-buffer-possibly-ignore activate)
   "Check to see if user wanted to avoid using ido"
@@ -1041,7 +1042,7 @@ plus add font-size: 10pt"
             (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
             (nrepl-enable-on-existing-clojure-buffers)))
 
-;; Repl mode hook
+;; REPL mode hook
 (add-hook 'nrepl-mode-hook 'subword-mode)
 
 (require 'ac-nrepl)
@@ -1545,3 +1546,8 @@ plus add font-size: 10pt"
 
 ;; Everything is loaded?
 (message "All done, %s%s" (user-login-name) ". Let's the source be with you!")
+
+;;________________________________________________________________________________
+;;                                                                            End
+
+(provide 'init)
