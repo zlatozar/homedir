@@ -659,7 +659,7 @@ plus add font-size: 10pt"
 ;;_______________________________________________________________________________
 ;;                                                                   Programming
 
-;; Go into proper mode according to file extension
+;; Go into proper mode according to "weird" file extension
 (setq auto-mode-alist
       (append '(
                 ("\\.idl$"  . c++-mode)
@@ -876,7 +876,8 @@ plus add font-size: 10pt"
   (my/remove-elc-on-save)
   (ac-emacs-lisp-mode-setup)
   (setup-paredit-for-mode-map emacs-lisp-mode-map)
-  (turn-on-eldoc-mode))
+  (turn-on-eldoc-mode)
+  (litable-mode))
 
 (add-hook 'emacs-lisp-mode-hook 'my/emacs-lisp-setup)
 

@@ -3,15 +3,6 @@
 ;;________________________________________________________________________________
 ;;                                                                  Minimal CEDET
 
-;; If you install want latest CEDET and build it with Make
-;; bzr checkout bzr://cedet.bzr.sourceforge.net/bzrroot/cedet/code/trunk cedet-bzr
-
-;; Specify CEDET install directory
-;; (setq cedet-root-path (file-name-as-directory "/opt/emacs-tools/cedet"))
-;;
-;; (load-file (concat cedet-root-path "cedet-devel-load.el"))
-;; (add-to-list 'load-path (concat cedet-root-path "contrib"))
-
 ;; select which sub-modes we want to activate
 (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
 (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
