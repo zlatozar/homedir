@@ -63,7 +63,7 @@
         auto-complete-clang
         auto-complete
         browse-kill-ring
-        multiple-cursors
+        expand-region
         undo-tree
         flycheck
         goto-chg
@@ -242,9 +242,6 @@
 ;; 'C-x u' to visualise
 (require 'undo-tree)
 (global-undo-tree-mode)
-
-;; Edit multiple lines
-(require 'multiple-cursors)
 
 ;; Go to last change (third party)
 (require 'goto-chg)
@@ -590,6 +587,11 @@ plus add font-size: 10pt"
            (other-window 1)))))
 
 (global-set-key (kbd "C-x /") 'my/swap-buffer)
+
+;; Clever way to expand region
+(require 'expand-region)
+(global-set-key (kbd "C-+") 'er/expand-region)
+
 
 ;;_______________________________________________________________________________
 ;;                                                                      Spelling

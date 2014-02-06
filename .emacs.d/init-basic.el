@@ -1,4 +1,7 @@
-;;; This file contains configuration for command line Emacs
+;;; This file contains configuration for 'command line' Emacs
+
+;;________________________________________________________________________________
+;;                                                                        Minimal
 
 ;; Highlight everywhere
 (global-font-lock-mode t)
@@ -12,6 +15,7 @@
 (setq default-tab-width 4)
 (setq-default indent-tabs-mode nil)
 
+;; no white spaces
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
 (show-paren-mode t)
