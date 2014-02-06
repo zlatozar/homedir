@@ -112,6 +112,7 @@ alias biggest='BLOCKSIZE=1048576; du -x | sort -nr | head -10'
 alias psu='ps -eo pcpu -o pid -o command -o user|sort -nr|head'
 alias proc='ps -jfx'
 alias ports='netstat -ltn -p tcp'
+alias connections='sudo lsof -n -P -i +c 15'
 
 # ls section
 export LC_COLLATE=C

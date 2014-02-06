@@ -118,6 +118,7 @@ alias memu='ps -e -o rss=,args= | sort -b -k1,1n | pr -TW$COLUMNS'
 alias pst='pstree -hAcpul'
 alias proc='ps jfx'
 alias ports='netstat -ltnp'
+alias connections='sudo lsof -n -P -i +c 15'
 
 # less colors for man pages
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
