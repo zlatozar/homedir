@@ -16,7 +16,7 @@
 (setq-default indent-tabs-mode nil)
 
 ;; no white spaces
-(add-hook 'before-save-hook 'whitespace-cleanup)
+(add-hook 'after-save-hook 'whitespace-cleanup)
 
 (show-paren-mode t)
 
