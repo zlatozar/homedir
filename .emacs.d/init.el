@@ -84,6 +84,7 @@
         clojure-mode
         ac-nrepl
         elein
+        cider
 
         ;; C/C++
         google-c-style
@@ -221,7 +222,8 @@
 (setq initial-major-mode 'text-mode)
 
 ;; nuke whitespaces when writing to a file
-(add-hook 'before-save-hook 'whitespace-cleanup)
+(setq-default indent-tabs-mode nil)
+(add-hook 'after-save-hook 'whitespace-cleanup)
 
 ;; Better scrolling
 (setq scroll-step 1)
@@ -686,9 +688,8 @@ plus add font-size: 10pt"
 (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled)
       flycheck-idle-change-delay 0.8)
 
-;; Use spaces instead of tabs
+;; Tabs width
 (setq default-tab-width 4)
-(setq-default indent-tabs-mode nil)
 
 ;; `yasinppet' code templates (third party)
 (require 'yasnippet)
@@ -1035,43 +1036,84 @@ plus add font-size: 10pt"
 (require 'elein)
 (require 'clojure-mode)
 
-;; Use forked version
-(require 'nrepl)
+(defadvice clojure-test-run-tests (before save-first activate)
+  (save-buffer))
+
+(defadvice nrepl-load-current-buffer (before save-first activate)
+  (save-buffer))
+
+(require 'cider)
+
+(define-key cider-repl-mode-map (kbd "<home>") nil)
+(define-key cider-repl-mode-map (kbd "C-,") 'complete-symbol)
+(define-key cider-mode-map (kbd "C-,") 'complete-symbol)
+(define-key cider-mode-map (kbd "C-c C-q") 'nrepl-close)
+(define-key cider-mode-map (kbd "C-c C-Q") 'cider-quit)
+
+;; Indent and highlight more commands
+(put-clojure-indent 'match 'defun)
+
+;; Hide nrepl buffers when switching buffers (switch to by prefixing with space)
 (setq nrepl-hide-special-buffers t)
-(setq nrepl-popup-stacktraces-in-repl t)
-(setq nrepl-history-file "~/.emacs.d/data/nrepl-history")
 
-;; Some default eldoc facilities
-(add-hook 'nrepl-connected-hook
-          (lambda ()
-            (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)
-            (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
-            (nrepl-enable-on-existing-clojure-buffers)))
+;; Enable error buffer popping also in the REPL:
+(setq cider-repl-popup-stacktraces t)
 
-;; REPL mode hook
-(add-hook 'nrepl-mode-hook 'subword-mode)
+;; Specify history file
+(setq cider-history-file "~/.emacs.d/data/nrepl-history")
+
+;; auto-select the error buffer when it's displayed
+(setq cider-auto-select-error-buffer t)
+
+;; Prevent the auto-display of the REPL buffer in a separate window after connection is established
+(setq cider-repl-pop-to-buffer-on-connect nil)
+
+;; Enable eldoc in Clojure buffers
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
 (require 'ac-nrepl)
-(add-hook 'nrepl-repl-mode-hook 'ac-nrepl-setup)
-(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+
+(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+(add-hook 'cider-mode-hook 'ac-nrepl-setup)
+
 (eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'nrepl-repl-mode))
+  '(add-to-list 'ac-modes 'cider-repl-mode))
 
-(require 'nrepl-inspect)
-(define-key nrepl-mode-map (kbd "C-c C-i") 'nrepl-inspect)
+(eval-after-load "cider"
+  '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 
-(require 'nrepl-ritz)
+;; Cycle between () {} []
 
-;; Ritz middleware
-(define-key nrepl-interaction-mode-map (kbd "C-c C-j") 'nrepl-javadoc)
-(define-key nrepl-mode-map (kbd "C-c C-j") 'nrepl-javadoc)
-(define-key nrepl-interaction-mode-map (kbd "C-c C-a") 'nrepl-apropos)
-(define-key nrepl-mode-map (kbd "C-c C-a") 'nrepl-apropos)
-
-;; Should be run when you are in project
-(defun clojure ()
+(defun live-delete-and-extract-sexp ()
+  "Delete the sexp and return it."
   (interactive)
-  (nrepl-ritz-jack-in))
+  (let* ((begin (point)))
+    (forward-sexp)
+    (let* ((result (buffer-substring-no-properties begin (point))))
+      (delete-region begin (point))
+      result)))
+
+(defun live-cycle-clj-coll ()
+  "convert the coll at (point) from (x) -> {x} -> [x] -> (x) recur"
+  (interactive)
+  (let* ((original-point (point)))
+    (while (and (> (point) 1)
+                (not (equal "(" (buffer-substring-no-properties (point) (+ 1 (point)))))
+                (not (equal "{" (buffer-substring-no-properties (point) (+ 1 (point)))))
+                (not (equal "[" (buffer-substring-no-properties (point) (+ 1 (point))))))
+      (backward-char))
+    (cond
+     ((equal "(" (buffer-substring-no-properties (point) (+ 1 (point))))
+      (insert "{" (substring (live-delete-and-extract-sexp) 1 -1) "}"))
+     ((equal "{" (buffer-substring-no-properties (point) (+ 1 (point))))
+      (insert "[" (substring (live-delete-and-extract-sexp) 1 -1) "]"))
+     ((equal "[" (buffer-substring-no-properties (point) (+ 1 (point))))
+      (insert "(" (substring (live-delete-and-extract-sexp) 1 -1) ")"))
+     ((equal 1 (point))
+      (message "beginning of file reached, this was probably a mistake.")))
+    (goto-char original-point)))
+
+(define-key clojure-mode-map (kbd "C-`") 'live-cycle-clj-coll)
 
 ;;----------------------------------------------------------------------------
 ;; Switching between source and test (must be named <source>_test.clj)

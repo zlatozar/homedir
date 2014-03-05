@@ -46,7 +46,7 @@ endef
 default: all
 
 # Do not forget to update .PHONY
-all: valgrind.elc prolog.elc hyperspec-naggum.elc mit-scheme-swank flymake-python-pyflakes slime ac-slime clojure-ide notes
+all: valgrind.elc prolog.elc hyperspec-naggum.elc mit-scheme-swank flymake-python-pyflakes slime ac-slime ritz-ide notes
 
 .el.elc:
 	@ echo "\n** Bite compiling ===> " $@
@@ -138,8 +138,10 @@ clojure: _clojure-dirs
 	@ echo "$(OK_COLOR)===> Clojure libraries should be in $(INSTALL_DIR)/clojure/clojure-libs/...$(NO_COLOR)"
 	@ echo "$(ERROR_COLOR)Choose branch and build one by one\n$(NO_COLOR)"
 
+# RITZ with all nrepl.el dependency
+
 _nrepl:
-	@ echo "$(OK_COLOR)===> Checkout or update nrepl.el...$(NO_COLOR)"
+	@ echo "$(OK_COLOR)===> Checkout or update nrepl.el(old version of CIDER)...$(NO_COLOR)"
 	@ if [ ! -d nrepl.el ]; then git clone https://github.com/DerGuteMoritz/nrepl.el.git; else cd nrepl.el; git pull --rebase; cd ..; fi;
 
 _nrepl-inspect:
@@ -155,7 +157,7 @@ _ritz:
 	@ if [ ! -d ritz ]; then git clone https://github.com/pallet/ritz.git; else cd ritz; git pull --rebase; cd ..; fi;
 
 # Meta rule
-clojure-ide: _nrepl _nrepl-inspect _fringe-helper _ritz
+ritz-ide: _nrepl _nrepl-inspect _fringe-helper _ritz
 
 #_______________________________________________________________________________
 #                                                                  SYSTEM RULES
