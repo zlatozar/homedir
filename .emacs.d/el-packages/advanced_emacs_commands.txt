@@ -168,6 +168,7 @@ C-c C-c             interrupt-shell-subjob     Terminate the current job in a sh
 C-c C-d             send-shell-eof             Send the EOF character (Ctrl-d)
 C-c C-u             kill-shell-input           Erase the current line.
 C-c C-z             stop-shell-subjob          Suspend the current shell job.
+C-u M-! <command>                              Insert ouput of a shell command to the buffer at the current point
 
 11. Macro Commands
 
