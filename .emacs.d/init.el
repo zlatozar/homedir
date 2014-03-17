@@ -903,7 +903,7 @@ plus add font-size: 10pt"
 (set-variable 'max-specpdl-size (* 15 max-specpdl-size))
 
 ;;_______________________________________________________________________________
-;;                                                Slime (Common Lisp, Scheme)
+;;                                                   Slime (Common Lisp, Scheme)
 
 (require 'slime)
 (slime-setup '(slime-fancy slime-scratch
@@ -1167,7 +1167,7 @@ plus add font-size: 10pt"
                               auto-mode-alist))
 
 ;;_______________________________________________________________________________
-;;                                             Generic C/C++ (see CEDET settings)
+;;                                            Generic C/C++ (see CEDET settings)
 
 ;; http://google-styleguide.googlecode.com (third party)
 (require 'google-c-style)
@@ -1327,34 +1327,6 @@ plus add font-size: 10pt"
 (require 'ls-lisp)
 (setq dired-listing-switches "-lh")
 
-(defun eshell/deb (&rest args)
-  (eshell-eval-using-options
-   "deb" args
-   '((?f "find" t find "list available packages matching a pattern")
-     (?i "installed" t installed "list installed debs matching a pattern")
-     (?l "list-files" t list-files "list files of a package")
-     (?s "show" t show "show an available package")
-     (?v "version" t version "show the version of an installed package")
-     (?w "where" t where "find the package containing the given file")
-     (nil "help" nil nil "show this usage information")
-     :show-usage)
-   (eshell-do-eval
-    (eshell-parse-command
-     (cond
-      (find
-       (format "apt-cache search %s" find))
-      (installed
-       (format "dlocate -l %s | grep '^.i'" installed))
-      (list-files
-       (format "dlocate -L %s | sort" list-files))
-      (show
-       (format "apt-cache show %s" show))
-      (version
-       (format "dlocate -s %s | egrep '^(Package|Status|Version):'" version))
-      (where
-       (format "dlocate %s" where))))
-    t)))
-
 (defun eshell/e (file)
   (find-file file))
 
@@ -1383,6 +1355,11 @@ plus add font-size: 10pt"
       (window-configuration-to-register :eshell-fullscreen)
       (eshell)
       (delete-other-windows))))
+
+;;_______________________________________________________________________________
+;;                                                                        Debian
+
+(require 'init-debian)
 
 ;;_______________________________________________________________________________
 ;;                                                              USEFUL FUNCTIONS
