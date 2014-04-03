@@ -201,7 +201,7 @@
 ;; Filter unwanted source file
 (setq ecb-source-file-regexps
       (quote
-       ((".*" (".*_flymake.cpp\\|\\(^\\(\\.\\|#\\)\\|\\(~$\\|\\.\\(pyc\\|elc\\|fasl\\|o\\|class\\|a\\|so\\|dep\\)$\\)\\)")))))
+       ((".*" (".*_flymake.[cpp|py]\\|\\(^\\(\\.\\|#\\)\\|\\(~$\\|\\.\\(pyc\\|elc\\|fasl\\|o\\|class\\|a\\|so\\|dep\\)$\\)\\)")))))
 
 ;; Left-click mouse button to work
 (setq ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
