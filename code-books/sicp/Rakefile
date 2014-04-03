@@ -1,0 +1,188 @@
+require 'pathname'
+
+ROOT = Pathname(File.dirname(__FILE__))
+
+def run_racket(file)
+  executable = ENV['RACKET'] || 'racket'
+  system executable, '-r', file.to_s
+end
+
+class Exercise
+  attr_reader :chapter, :number
+
+  def initialize(chapter, number)
+    @chapter = chapter.to_i
+    @number  = number.to_i
+  end
+
+  def valid?
+    chapter.nonzero? and number.nonzero?
+  end
+
+  def test_file
+    ROOT.join '%02d/tests/%02d-tests.scm' % [chapter, number]
+  end
+
+  def file
+    ROOT.join '%02d/%02d.scm' % [chapter, number]
+  end
+
+  def name
+    "%1d.%02d" % [chapter, number]
+  end
+
+  def having_a_test?
+    test_file.exist?
+  end
+
+  def run
+    run_racket file
+  end
+
+  def run_test
+    Dir.chdir File.dirname(test_file) do
+      run_racket test_file
+    end
+  end
+
+  def generate_scaffold
+    FileUtils.mkdir_p File.dirname(test_file)
+
+    open(file, 'w') { |f| f.write(<<-END) }
+; SICP exercise #{name}
+  END
+
+    open(test_file, 'w') { |f| f.write(<<-END) }
+(require rackunit rackunit/text-ui)
+(load "../#{sprintf('%02d', number)}.scm")
+
+(define sicp-#{name}-tests
+  (test-suite
+    "Tests for SICP exercise #{name}"
+
+))
+
+(run-tests sicp-#{name}-tests)
+    END
+  end
+
+  class << self
+    def each_with_a_test
+      Dir.chdir ROOT do
+        Dir.glob('0*').sort.each do |chapter|
+          Dir.glob("#{chapter}/tests/*.scm").sort.each do |test_file|
+            test_file =~ %r{(\d)/tests/(\d+)-tests.scm}
+            yield Exercise.new $1, $2
+          end
+        end
+      end
+    end
+
+    def next
+      Dir.chdir ROOT do
+        chapter = Dir.glob('0*').max
+        number  = '%02d' % Dir.glob("#{chapter}/*.scm").grep(/(\d+)\.scm/) { $1.to_i }.max.succ
+
+        Exercise.new chapter, number
+      end
+    end
+  end
+end
+
+class Showcase
+  attr_reader :name, :chapter
+
+  def initialize(name, chapter)
+    @name    = name.to_sym
+    @chapter = chapter.to_i
+  end
+
+  def directory
+    ROOT.join "%02d/showcase/%s" % [chapter, name]
+  end
+
+  def run
+    Dir.chdir directory do
+      run_racket 'main.scm'
+    end
+  end
+
+  class << self
+    def all
+      Dir.chdir ROOT do
+        Dir['0*/showcase/*/main.scm'].map do |path|
+          path =~ %r[(\d+)/showcase/(.+)/]
+          new $2, $1
+        end.compact
+      end
+    end
+  end
+end
+
+
+
+desc 'Scaffolds an exercise solution and its unit test'
+task :exercise, :chapter, :exercise do |task, args|
+  exercise = Exercise.new args[:chapter], args[:exercise]
+
+  raise ArgumentError, <<-END unless exercise.valid?
+You need to supply chapter and exercise numbers. If you want to generate exercise 2.23:
+
+  rake exericse[2,23]
+END
+
+  exercise.generate_scaffold
+end
+
+desc 'Generates the next exercise'
+task :next do
+  exercise = Exercise.next
+
+  puts "Generating files for exercise #{exercise.name}"
+  exercise.generate_scaffold
+end
+
+namespace :run do
+  desc "Runs a specific exercise"
+  task :exercise, :chapter, :exercise do |task, args|
+    exercise = Exercise.new args[:chapter], args[:exercise]
+
+    exercise.run
+  end
+
+  desc 'Runs the test of a specific exercise'
+  task :test, :chapter, :exercise do |task, args|
+    exercise = Exercise.new args[:chapter], args[:exercise]
+
+    raise ArgumentError, <<-END unless exercise.valid?
+You need to supply chapter and exercise numbers. If you want to run exercise 2.23:
+
+  rake run:exericse[2,23]
+END
+
+    raise "Test for #{exercise.name} does not exist" unless exercise.having_a_test?
+    exercise.run_test
+  end
+
+  desc 'Runs the tests of all exercises'
+  task :all do
+    Exercise.each_with_a_test do |exercise|
+      print "#{exercise.name}: "
+      exercise.run_test
+    end
+  end
+
+  namespace :showcase do
+    Showcase.all.each do |showcase|
+      desc "Run the #{showcase.name} showcase"
+      task showcase.name do
+        showcase.run
+      end
+    end
+  end
+end
+
+desc 'Runs watchr on the tests'
+task :watch do
+  exec 'watchr tests.watchr'
+end
