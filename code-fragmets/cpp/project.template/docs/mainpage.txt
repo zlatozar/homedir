@@ -1,0 +1,44 @@
+/**
+ * @mainpage  Project.Template
+ *
+ * Doxygen allows you to specify overview documentation for your entire API using the "mainpage"
+ * comment. This lets you provide a high-level description of the API, as well as provide a breakdown
+ * of the major classes. This description will appear on the front page of the documentation that Doxygen
+ * produces. It is common to store these comments in a separate file
+ *
+ * @author username@host.com
+ *
+ * @section ProjectTemplateIntro Introduction
+ * This project will make you breakfast, clean your flat and do your laundry.
+ *
+ * @section ProjectTemplateOverview Project Overview
+ * 
+ * The text in this overview documentation may be long enough to justify breaking into separate
+ * sections. In which case, you can use the "section" and "subsection" commands to introduce this
+ * structure. You can even create separate pages to contain more detailed descriptions for certain parts
+ * of your API. This can be done with the "page" command.
+ *
+ * Also, you may find it useful to define groups of behavior for your API so that you can break up
+ * the various classes in your API into different categories. For example, you could create groups for
+ * classes or files pertaining to file handling, container classes, logging, versioning, and so on. This
+ * is done by declaring a group with "defgroup" and then using the "ingroup" to add any specific element
+ * to that group.
+ * 
+ * The project template contains of following packages:
+ * @ref helper_package
+ *
+ * <hr>
+ * @section notes Release Notes
+ * Release notes will be placed here
+ * <hr>
+ * @section requirements Requirements
+ * Place project requirements here
+ * <hr> 
+ *
+ * Project generic C++ classes
+ * -# src/base/ObjectPool.h
+ *
+ * Project macros definitions
+ * -# src/base/macros.h
+ *
+ */

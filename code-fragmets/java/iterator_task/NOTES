@@ -1,0 +1,23 @@
+
+The task
+___________________________________________________
+
+A file contains a sequence of integer numbers stored one per line.
+There might be lines that do not entirely represent integers, e.g. 2u1, 23.9, #12, etc.
+Such lines are considered as comments, i.e they do not carry numbers.
+
+A) Define a java.util.Iterator<Integer> with 'remove()' operation not supported
+that iterates over the integers persisted in a file compliant with the above format;
+
+B) Let 'A' be an integer, A > 0, provided as an input parameter to the system.
+
+Find those file line numbers 'i' and 'j' for which:
+
+- j = i + A, and
+- lines i and j are not comments, and
+- sum of the integers at lines 'i' and 'j' is maximum, and
+- i is the least one, if multiple found
+
+Respond with a specific error on any condition that prevent the system to find a solution.
+
+Write a Java program and test code enough to demonstrate that your solution addresses the problem.

@@ -1,0 +1,28 @@
+#_______________________________________________________________________________
+#
+#   Change Log
+#_______________________________________________________________________________
+#
+
+Date of release
+Release name or/and number
+
+     1. An overview of the release, including a description of what’s new or what the focus was for
+	the release, for example, bug fixes
+
+     2. A link to where the release can be found or revision control system tag
+
+     3. Identification of any source or binary incompatibilities from the previous release.
+
+     4. A list of bugs fixed in the release.
+
+     5. A list of features that were deprecated or removed.
+
+     6. Migration tips for any changes in the API, such as how to use any upgrade scripts provided
+	with the release.
+
+     7. Any known issues, either introduced in this release or remaining from previous versions.
+
+     8. Troubleshooting tips to work around known issues.
+
+     9. Information on how users can send feedback and bug reports.

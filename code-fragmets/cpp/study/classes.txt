@@ -1,0 +1,1024 @@
+
+#_______________________________________________________________________________
+#
+#   C++ classes
+#_______________________________________________________________________________
+#
+
+1. Basics
+    
+    * Do not write using declarations in header files.
+    * Use delete for simple variables and delete[] for arrays.
+    * Global variables are implicitly initialized to zero; the programmer must initialize all other variables.
+      Compiler does not detect uninitialized local variables.
+
+    * Use reference as auxiliary variables:
+
+      for(int i = 0; i < SIZE; ++i) {
+        int& p = a[i];            // very efficient when 'p' has to be referred many times 
+        if(p == 0) {
+           p = 1;
+        }
+      }
+
+    * function declaration = function signature
+      function definition = function implementation
+
+    * A function can return a reference type, and if it does, it can be called on either side of an assignment
+      or in an I/O statement.
+
+    * Enumerations do not have to be named if the name of the enumerator is sufficient
+
+    * An array of objects requires a no-argument constructor because there is no way to specify the actual parameter of 
+      constructor, which is called for all of the array elements when the array is created.
+
+    * Static objects are destroyed (their destructors are executed) when the entire program terminates.
+
+    * static keyword
+
+Each name in a C++ source file, including functions and global variables, has a linkage that is either internal or external.
+External linkage means that the name is available from other source files. Internal linkage (also called static linkage)
+means that it is not. By default, functions and global variables have external linkage.
+
+Initialization order of nonlocal variables in different source files is undefined.
+
+    * namespaces
+
+Think of scopes more like directories and "using" statements more like path variables - kind of like
+"I won't remember the exact name of xxxxx.cpp but I will remember it's in my 'project_subdir' directory for example".
+There's nothing wrong, per-se, with deeply nested namespaces in C++, except that they're not normally necessary as there's
+no module system behind them, and the extra layers just add noise so avoid them.
+
+Watch out for ADL(argument-dependent-lookup) when using namespaces!
+
+The basic idea is what when the compiler finds a non-fully-qualified identifier it will try to match it
+starting in the current namespace, and if not found it will try the enclosing namespace... all
+the way to the root.
+
+    * Anything which can appear on the left of = (that is, anything that can represent an address) is called an Lvalue.
+      Anything which can appear on the right of = (that is, anything that can yield a value) is called an Rvalue.
+
+    * What is a handle?
+
+Sometimes libraries require client code to keep information returned from one interface in order to pass
+it to another. This information is sometimes called a handle and is often used to keep track of specific
+instances that require state to be remembered between calls. The term "handle" is sometimes used to describe
+a pointer to a pointer to some memory(a pointer to some other C++ object). In some applications,handles are
+used because they allow the underlying software to move memory around as necessary. Summarizing: accessing
+something via a level of indirection. If the abstract model specifies that one object "contains" another,
+your implementation does not have to make the contained object a data member of the containing object. Instead,
+the containing object ca have a handle to the representation of the contained object. It is a good idea
+to use smart pointers for all handles!
+
+     * Libraries
+
+Static:
+A static library contains object code that is linked with an end-user application and then becomes
+part of that executable. A static library is sometimes called an archive because it is essentially just a package
+of compiled object files. These libraries normally have a file extension of .a on UNIX and Mac OS X machines
+or .lib on Windows, for example, libjpeg.a or jpeg.lib.
+
+   g++ -c file1.cpp
+   g++ -c file2.cpp
+   g++ -c file3.cpp
+   ar -crs libmyapi.a file1.o file2.o file3.o
+
+The -c option to g++ tells the compiler to produce a .o file from the input .cpp file. The options to
+ar are -c creates an archive, -r inserts the supplied .o files into that archive, and -s creates an index
+for the archive.
+
+Your users can then link against your library using the -l option to ld or g++. This specifies the
+name of the library to link against. The -L linker option can also be used to specify the directory
+where your library can be found. For example,
+
+      g++ usercode.cpp -o userapp -L. -lmyapi
+
+In this example, the end-user application userapp is created by compiling usercode.cpp and linking
+against the libmyapi.a static library in the same directory.
+
+The order of archives on this command line is significant. For each archive that the linker finds
+on the command line, it looks to see if that archive defines any symbols that were referenced from
+any object files specified earlier on the command line. If it does define any needed symbols, the
+object files with those symbols are copied into the executable. It is therefore best practice to specify
+libraries at the end of the command line.
+
+While I am discussing the creation of static libraries, it is worth noting proper usage of
+the -static compiler option. This flag is used for the creation of executables, not libraries. It is
+therefore applicable to users of your API, but not to the building of your API itself. This flag
+instructs the compiler to prefer linking the static versions of all dependent libraries into the executable
+so that it depends on no dynamic libraries at run time.
+
+Dynamic:
+Dynamic libraries are files linked against at compile time to resolve undefined references and then
+distributed with the end-user application so that the application can load the library code at run time
+This normally requires use of a dynamic linker on the end user’s machine to determine and load all dynamic
+library dependencies at run time, perform the necessary symbol relocations, and then pass control to the application.
+For example, the Linux dynamic linker is called ld.so and on the Mac it is called dyld.
+Often, the dynamic linker supports a number of environment variables to modify or debug its behavior.
+Dynamic libraries are sometimes called shared libraries because they can be shared by multiple programs.
+On UNIX machines they can be called Dynamic Shared Objects, and on Windows they are referred to as Dynamic Link Libraries.
+They have a .so file extension on UNIX platforms, .dll on Windows, and .dylib on Mac OS X, for example, libjpeg.so or jpeg.dll.
+
+Creating a dynamic library on Linux is a very similar process to creating a static library. Using the
+GNU C++ compiler, you can simply use the -shared linker option to generate a .so file instead of
+an executable.
+On platforms where it is not the default behavior, you should also specify either the -fpic or the
+-fPIC command line option to instruct the compiler to emit position-independent code (PIC). This is
+needed because the code in a shared library may be loaded into a different memory location for different
+executables. It’s therefore important to generate PIC code for shared libraries so that user code
+does not depend on the absolute memory address of symbols. The following example illustrates how
+to compile three source files into a dynamic library.
+   g++ -c -fPIC file1.c
+   g++ -c -fPIC file2.c
+   g++ -c -fPIC file3.c
+   g++ -shared -o libmyapi.so -fPIC file1.o file2.o file3.o
+
+Users can then link your dynamic library into their code using the same compile line shown earlier
+for the static library case, that is,
+    g++ usercode.cpp -o userapp -L. -lmyapi
+
+NOTE: If you have both a static library and a dynamic library with the same base name in the same directory,
+that is, libmyapi.a and libmyapi.so, the compiler will use the dynamic library (unless you use
+the -static library option to require only static libraries to be used). To favor use of a static library
+over a dynamic library with the same base name, you could place the static library in a different
+directory and ensure that this directory appears earlier in the library search path (using the -L linker
+option).
+
+Note also that in a dynamic library, all code is essentially flattened into a single object file. This is in
+contrast to static libraries that are represented as a collection of object files that can be copied individually
+into an executable as needed (i.e., object files in a static archive that are not needed are not
+copied into the executable image). As a result, loading a dynamic library will involve loading all the
+code defined in that .so file.
+
+On Linux platforms, you can use the dlopen() function call to load a .so file into the current process.
+Then you can use the dlsym() function to access symbols within that library. This lets you create
+plugin interfaces, as described earlier. For example, consider the following very simple plugin
+interface:
+
+        #ifndef PLUGIN_H
+        #define PLUGIN_H
+        #include <string>
+            extern "C"
+            void DoSomething(const std::string &name);
+        #endif
+  
+You can build a dynamic library for this API, such as libplugin.so. Then the following code
+demonstrates how to load this library and call the DoSomething() function within that .so file:
+
+        typedef void(*FuncPtrT)(const std::string &);
+        const char *error;
+
+        // open the dynamic library
+        void *handle = dlopen("libplugin.so", RTLD_LOCAL | RTLD_LAZY);
+        if (! handle) {
+          std::cout << "Cannot load plugin!" << std::endl;
+          exit(1);
+        }
+
+        dlerror();
+
+        // get the DoSomething() function from the plugin
+        FuncPtrT fptr = (FuncPtrT) dlsym(handle, "DoSomething");
+
+        if ((error = dlerror())) {
+           std::cout << "Cannot find function in plugin: " << error;
+           std::cout << std::endl;
+           
+           dlclose(handle);
+           exit(1);
+        }
+        
+        // call the DoSomething() function
+        (*fptr)("Hello There!");
+        
+        // close the shared library
+        dlclose(handle);
+
+     * Assertions
+
+The behavior of assert depends on the NDEBUG preprocessor symbol: if the symbol is not defined, the
+assertion takes place, otherwise it is ignored. Compilers often define this symbol when compiling "debug"
+builds. If you want to leave asserts in run time code, you must specify your compiler settings, or write
+your own version of assert that isn't affected by the value of NDEBUG.
+
+     * Use 0 for integers, 0.0 for reals, NULL for pointers, and '\0' for chars. 
+
+     * Make crash course:
+     
+       target : depends
+           rule
+  
+        target  - the parameter given to make. I.e. what to build
+        depends - file or other targets target depends on
+        rule    - how to create target (note that rule is preceeded by a TAB char)
+
+        $(VAR)  - environment variable or variable defined above
+        $@      - current target
+        $*      - current target without extension 
+                  (the bit which matches the % wildcard in the rule definition)
+        $<      - current dependency
+        $^      - the names of all the dependencies space separated
+
+     * Doxygen crash course
+
+       - \file [<filename>]
+       - \class <class name> [<header-file>] [<header-name>]
+       - \brief <short summary>
+       - \author <list of authors>
+       - \date <date description>
+       - \param <parameter name> <description>
+       - \param[in] <input parameter name> <description>
+       - \param[out] <output parameter name> <description>
+       - \param[in,out] <input/output parameter name> <description>
+       - \return <description of the return result>
+       - \code <block of code> \endcode
+       - \verbatim <verbatim text block> \endverbatim
+       - \exception <exception-object> <description>
+       - \deprecated <explanation and alternatives>
+       - \attention <message that needs attention>
+       - \warning <warning message>
+       - \since <API version or date when the entity was added>
+       - \version <version string>
+       - \bug <description of bug>
+       - \see <cross-references to other methods or classes>
+
+       - \a <word>   Mark next word as a reference to a parameter.
+       - \e <word>   Use italic font for the next word.
+       - \b <word>   Use bold font for the next word.
+       - \c <word>   Use typewriter font for the next word.
+       - \sa <references>   Adds a section with cross references.
+       - \bug <text>   Describe a known bug.
+       - \todo <text>   Add a todo list.
+       - \attention <text>   Add a section for something that needs attention.
+       - \warning <text>   Add a section for a warning.
+       - \anchor <refname>   Set an invisible anchor which can be used to create a link with \ref.
+       - \ref <refname> [<text>]   Add a link to <refname>.
+
+In addition to these commands, Doxygen supports various formatting
+
+2. Object-oriented programming
+
+    * Typical class structure:
+
+// Foo.h
+#ifndef _FOO_H_
+#define _FOO_H_
+
+// _____________________________________________________________________________
+//                                                                     Includes
+
+// Headers
+#include "Bar.h"
+
+// Forward declarations
+class Joe;
+
+// DO NOT USE: using namespace std;
+/**
+ * @ingroup 
+ * @class Foo
+ * @brief 
+ *
+ * @author
+ * @version 1.0.0
+ */
+class Foo
+{
+
+// Public Types
+public:
+    typedef int FooValType;
+    enum FooItemType  {
+        FOO_ITEM_0,
+        // ...
+    };
+
+// Private Members
+private:
+    FooValType _val;
+
+// Public Methods
+public:
+    // Constructors
+    Foo();
+    virtual ~Foo();
+
+    // Other methods
+    void process(const Joe& aJoe);
+
+    // getters/setters
+    FooValType getVal() const;
+
+    // toString
+    friend std::ostream& operator<<(std::ostream& ostr, const Foo& inFoo);
+
+// Private Methods
+private:
+    DISALLOW_COPY_AND_ASSIGN(Foo);
+    void _process() const;
+};
+
+// _____________________________________________________________________________
+//                                                               Inline methods
+
+// Small and fast methods that change the object state
+
+// _____________________________________________________________________________
+//                                                               Static methods
+
+// Static method from class interface
+
+#endif /* _FOO_H_ */
+
+    * The relative order of initialization of non-local static objects in different translation units is
+      undefined
+    * In the C++ object model, protection is applied at the class level and
+      not at the object level. An object "beta" of class X can access everything inside another 
+      object - "alpha", of class X without any restrictions. For example in copy constructors
+      you can use private data of source object.
+    * Every class presents two interfaces: one to the users, another to the derived classes
+    * Implicitly declared constructors are publicinlinemembers of their class
+    * Initialization order is declared in the class itself, not in the constructor!    
+    * Don’t attempt to call one constructor of a class from another.
+    * The assignment operator should check for self-assignment and return a reference to "this".
+    * When creating an object on the stack, omit parenthesis for the default constructor.
+    * Pass objects by const reference instead of by value.
+    * Returning a reference to a data member is risky because the reference is valid only as long as the object is "alive"
+    * = does not always mean assignment! It can also be shorthand for copy construction
+      when used on the same line as the variable declaration:
+
+      SpreadsheetCell aThirdCell = myCell;   // aThirdCell is constructed with the copy constructor
+      anotherCell = myCell;                  // Calls operator= for anotherCell.
+ 
+    * Don't use "extern" declarations
+    * The virtual keyword has a few subtleties and is often cited as a poorly designed part of the language.
+      There is a lot of problems associated with omission of the virtual keyword. So to avoid problems:
+
+As a rule of thumb, make all your methods virtual (including the destructor, but not
+constructors) to avoid problems associated with omission of the virtual keyword.
+
+Attempting to override a non-virtual method will "hide" the superclass definition
+and will only be used in the context of the subclass.
+
+Constructors cannot and need not be virtual because you always specify the exact class 
+being constructed when creating an object.
+
+    * When upcasting, use a pointer or reference to the superclass to avoid slicing.
+    * Use downcasting only when necessary and be sure to use a dynamic cast.
+    * Uses multiple inheritance only for the implementation of mix-in classes
+
+A mix-in class adds new capabilities to other classes. They represent static relationship and usually they
+are pure virtual classes so no one creates an instance of a mix-in class. It does not make any sense
+to create an instance of mix-in class because the mix-in class adds flavor to some other class - it is to be
+mixed in with another class. A mix-in class answers the question "What else is this class able to do?" and the
+answer often ends with "-able." Naming convention is mix-in class to end with "-able" e.g. Callable.
+
+    * When you override a method, you are implicitly hiding any other versions of the method!
+      It makes sense if you think about it — why would you want to change some versions of a method and not others?
+
+To avoid obscure bugs, you should override all versions of an overloaded method,
+either explicitly or with the "using" keyword.
+
+      class Foo {
+        public:
+          virtual void overload() { cout << "Foo's overload()" << endl; }
+          virtual void overload(int i) { cout << "Foo's overload(int i)" << endl; }
+      };
+      class Bar : public Foo {
+       public:
+         using Foo::overload;
+         virtual void overload() { cout << "Bar’s overload()" << endl; }
+      }
+
+If your API does not call a particular method internally, then that method probably should not be virtual.
+You should also only allow subclassing in situations where it makes sense: where the potential subclasses form an "is-a"
+relationship with the base class.
+
+   * Overloading works only within the scope of a single class!
+
+   * Don't change the default parameters of the inherited functions you override.
+     When overriding a method that has a default argument, you should provide a default argument as well,
+     and it should probably be the same value.
+   
+   * The only truly useful way to change a method’s access level is by providing a less
+     restrictive accessor to a protected method.
+
+   * If your subclass does not specify its own copy constructor or operator=, the parent
+     functionality continues to work. If the subclass does provide its own copy constructor
+     or operator=, it needs to explicitly reference the parent versions.
+
+   * Note that the runtime-type information is stored in the vtable of the object. Therefore, in order to use
+     dynamic_cast, your classes must have at least one virtual function. Use dynamic_cast<> to restore
+     lost type information
+
+   * Do not mix and match malloc() and free() with new and delete. Use only new and delete.
+     As a rule of thumb, every line of code that allocates memory with new should correspond
+     to another line of code that releases the same memory with delete.
+
+   * Calling "delete" twice is incorrect and leads to undefined behavior
+   * Do not throw exceptions from destructor
+
+   * Member initialization list: variables of primitive data types are initialized through assignments,
+     while variables of class types are initialized by calling copy constructor.
+
+   * Always List any Superclass Constructors in the Initializer List of a Subclass Constructor
+
+   * When object that contains nested classes goes out of scope, the destructors for nested objects are called
+     (in revert order of construction)
+
+   * The definitions of static members occur outside the class in the implementation file
+
+   * Constant static attributes can be initialized within the class definition if they are of an integral type, and
+     the initialization expression must be constant.
+
+   * An operation in a class "C" that returns a new object should have a return type "C" and should allocate this
+     object on the stack
+
+     Integer Integer::clone() const {
+       Interger res(_value);
+       return res;
+     }
+
+   * Use "new" when you don't know exact type until runtime. In other words when you expect to use polymorphism (late binding)
+     Operations with a late binding mus be invoked through a pointer or a reference.
+
+   * Covariant return types! If a virtual operation in the base class returns a class type, a reference to a class type,
+     or a pointer to class type, the same virtual operation in a derived class can return a class(or a reference or a pointer) 
+     that is publicly derived from the base class. That is, the return types in the base class and in the derived class do not
+     have to be strictly identical.
+
+   * To provide a default implementation that must be redefined in a derived class, use pure virtual operations and provide
+     there implementation
+
+   * Avoid calling virtual functions in constructors and destructors
+
+   * When we have a pure virtual function in any class then it prevent us to create any instance of that class.
+     That is we cannot make the object of that class. Now if you want to prevent a class from being instantiated
+     but at the same time you don't want to declare any pure virtual method inside it, then there is no way except that
+     you make your destructor as pure virtual. You cannot make your constructor as pure virtual and you don't have any other
+     method to make pure virtual then in that case you are left with only one alternative of making your innocent destructor
+     as pure virtual to avoid your class to be instantiated.
+
+   * A fiend function is not implemented inside the class granting friendship (unless it is an inline declaration and 
+     definition for the friend function which is rare). A friend function lives in another class or it could be a
+     free function not attached to any class. A function(or class) can not proclaim itself to be a friend of another class.
+   
+   * Friend mechanism is can not be transitive - friend of a friend is NOT friend
+   
+   * Friendship is not inherited
+
+
+3. References
+
+You can think of references as just another name for the original variable!
+Taking the address of a reference gives the same result as taking the address of the variable to
+which the reference refers. References are const by default, in that you can’t change to what they refer.
+
+So, C++ does not allow you to mark a reference variable explicitly const!
+
+      int x = 3;
+      int& xRef = x;
+      int* xPtr = &xRef; // Address of a reference is pointer to value
+      *xPtr = 100;       // x will be changed
+      
+You must always initialize a reference when it is allocated. Usually, references are
+allocated when they are declared, but reference data members can be initialized in
+the initializer list for the containing class.
+
+You cannot change the variable to which a reference refers after it is initialized; you
+can only change the value of that variable.
+
+You cannot declare a reference to a reference or a pointer to a reference. 
+You must initialize reference data members in the constructor initialization
+list, not in the body of the constructor
+
+A common quandary arises when you have a pointer to something that you need to pass to a function or
+method that takes a reference. You can "convert" a pointer to a reference in this case simply by
+dereferencing the pointer.
+
+      void swap(int& first, int& second);
+      ........
+      int x = 5, y = 6;
+      int *xp = &x, *yp = &y;
+      swap(*xp, *yp);
+
+You can't pass constants as arguments to functions that employ pass-by-reference:
+      swap(3, 4); // DOES NOT COMPILE
+
+You can also return a reference from a function or method. The main reason to do so is efficiency.
+But be careful - never return a reference to a variable, such as an automatically allocated variable on
+the stack, that will be destroyed when the function ends. A second reason to return a reference is if you
+want to be able to assign to the return value directly as an lvalue. For example, several overloaded operators
+commonly return references.
+
+Almost everything you can do with references, you can accomplish with pointers.
+If the code receiving the variable is responsible for releasing the memory associated with an object,
+it must receive a pointer to the object. If the code receiving the variable should not free the memory,
+it should receive a reference! The only case in which you need to use a pointer instead of reference
+is when you need to change the location to which it points.
+
+Because return references do not invoke copy constructors, they may be more efficient than functions
+that return objects.
+
+When you have class methods that change object state (e.g set/add) it is good practice to return 
+reference type not void and terminate with a statement of the form:
+
+      .........
+      return &this;
+
+In this way you can chain e.g. if we have "add" method then
+      
+      i.add(5).add(7);
+
+But do not return a reference to attributes of a class(common error).
+     
+    * A function should not return a reference to a heap-based object that was allocated in the function.
+
+Reference and pointer attributes have the values referenced by them changed instead of their own values,
+and so the do not have to be specified as mutable.
+     
+4. Be const correct
+
+General rule for const pointers: const applies to the level of indirection directly to its left!
+There is alternative syntax but I use this one.
+
+const int my_constant = 10
+    An int which can't change value. Similar to #define in C but better.
+
+int const* my_constant
+    Variable pointer to a constant integer.
+const int* my_constant
+    Alternative syntax, the same as above.
+
+int* const my_constant
+    Constant pointer to a variable integer.
+
+int const* const my_constant
+    Constant pointer to a constant integer.
+const int* const my_constant
+    Alternative syntax, the same as above.
+
+void my_method(QString const& my_paramater)
+    my_paramater will not be altered by the method.
+    '&' means it can be altered but here we just want it to be used because it saves taking a copy.
+
+class MyClass {
+      void my_method() const;
+      int my_variable;
+ }
+
+my_method() will not alter any member variable (my_variable), this means you can call the method from a const variable.
+
+int const* const my_method(const int* const&) const
+    It will return a pointer which is constant and points to a constant integer,
+    the method doesn't alter either the variable pointed to by the parameter
+    or the pointer itself and it doesn't alter any of the member variables of the object the method is it. 
+
+The const-ness of parameter can be used to define an overloaded function but only if this parameter is passed
+by reference.
+
+How to read const?
+
+Rule a: If a const and/or volatile is next to a type specifier (int, long, etc.) it applies to that specifier.
+Rule b: if a const and/or volatile is not next to a type then it applies to the pointer asterisk on its immediate left.
+    
+5. Arrays
+
+    * The advantage of putting an array on the heap is that you can use dynamic memory to define its size at run time.
+
+       int numDocs = askUserForNumberOfDocuments();
+       Document* docArray = new Document[numDocs];    // dynamic size
+
+    * If you have an array of pointers, you will still need to delete each element individually just as you
+      allocated each element individually and after that to delete array itself.
+
+    * If you need to determine the dimensions of a multidimensional array at run time, you can use a heapbased array but:
+     
+       char** board = new char[i][j]; // DOES NOT COMPILE!
+
+ You can allocate the first dimension array just like a single-dimensional heap-based array, but the individual subarrays
+ must be explicitly allocated.
+
+6. Pointers
+
+ Pointers are something like that: A pointer is simply a level of indirection that says to the program "Hey! Look
+ over there.". When you take the address of a variable, using the & operator, you are adding a level of indirection in
+ memory. In the address-based view, the program is simply noting the numerical address of the variable,
+ which can be stored in a pointer variable. In the graphical view, the & operator creates a new arrow whose point ends
+ at the variable.
+
+    * You can assign a string to a char* without const, and the program will work fine unless you attempt to change the string.
+      A much safer way to code is to use a pointer to const characters when referring to string literals.
+
+       const char* ptr = "hello"; // Assign the string literal to a variable.
+       ptr[1] = 'a';              // BUG! Compiler will catch it.
+     
+    * For compatibility, you can convert a C++ string into a C-style string by using the
+      c_str() method. You should call the method just before using the result so that it
+      accurately reflects the current contents of the string.
+
+    * Each function actually lives at a particular address. In C++, you can use functions as data.
+Function pointers are typed according to the parameter types and return type of compatible functions!
+The easiest way to work with function pointers is to use the typedef mechanism to assign a type name
+to the family of functions that have the given characteristics.
+  
+        // type called YesNoFunc that pointer to any function that has two int parameters and returns a bool.
+        typedef bool(*YesNoFunc)(int, int); 
+
+Any function that return bool and accepts parameters two integer could be represented by this type.
+
+    * Nested objects and shared pointers
+
+      class Example {
+        public: 
+        // ...
+        private:
+          boost::scoped_ptr<Owned> data;
+       };
+
+scoped_ptr is very good for this purpose. But one has to understand its semantics. You can group smart pointers using two major properties:
+     - Copyable: A smart pointer can be copied: The copy and the original share ownership.
+     - Movable: A smart pointer can be moved: The move-result will have ownership, the original won't own anymore.
+
+That's rather common terminology. For smart pointers, there is a specific terminology which better marks those properties:
+     - Transfer of Ownership: A smart pointer is Movable
+     - Share of Ownership: A smart pointer is copyable. If a smart pointer is already copyable, it's easy to support
+       transfer-of-ownership semantic. That then is just an atomic copy & reset-of-original operation, restricting that to smart
+       pointers of certain kinds(e.g only temporary smart pointers).
+
+Let's group the available smart pointers, using (C)opyable, and (M)ovable, (N)either:
+     1. boost::scoped_ptr: N
+     2. std::auto_ptr: M
+     3. boost::shared_ptr: C
+
+auto_ptr has one big problem, in that it realizes the Movable concept using a copy constructor.
+       auto_ptr<int> a(new int), b;
+       // oops, after this, a is reset. But a copy was desired!
+       // it does the copy&reset-of-original, but it's not restricted to only temporary
+       // auto_ptrs (so, not to ones that are returned from functions, for example).
+       b = a;
+
+NOTE: See also boost::weak_ptr
+
+TIP: Always prefer passing a non-mutable object as a const reference rather than passing it by value. This will avoid
+     the memory and performance costs to create and destroy a temporary copy of the object and all of its member and
+     inherited objects.
+
+    * Ownership
+
+Be careful with code like this
+
+    void doSomething(Simple*& outSimplePtr) {
+      outSimplePtr = new Simple(); // BUG! Doesn't delete the original.
+    }
+
+ Valgrind catch the problem. Learn how to read Valgrind messages.
+
+7. I/O
+   
+    goodbit   The stream is in a "good" state — nothing’s wrong
+    eofbit    The stream is positioned at end-of-file — no more data can be read
+    failbit   An operation failed but recovery is possible
+    badbit    The stream has “lost integrity” and cannot be used any more
+
+    * Every input stream has an associated source. Every output stream has an associated
+      destination.
+    * Not all output streams are buffered. The cerr stream, for example, does not buffer
+      its output.
+    * By default, the input stream will tokenize values according to white space.
+    * The methods that read in data from a stream(take iostream as a parameter) will change the actual
+      stream (most notably, its position), so they are not const methods. Thus, you can’t call them  on a const reference.
+    * String streams provide a way to use stream semantics with strings. In this way, you can have an inmemory
+      stream that represents textual data. There are useful for parsing text, because streams have built-in
+      tokenizing functionality. The main advantage of a string stream over a standard C++ string is that, in addition to data,
+      the object knows about its current position.
+    * Stream linking is accomplished with the tie() method. To tie an output stream to an input stream, call
+      tie() on the input stream, and pass the address of the output stream. To break the link, pass NULL.
+    * The fstream class provides a bidirectional file stream. fstream is ideal for applications that need to
+      replace data within a file because you can read until you find the correct position, then immediately
+      switch to writing. But be careful:
+   
+Bidirectional streams have separate pointers for the read position and the write position.
+When switching between reading and writing, you will need to seek to the
+appropriate position.
+
+    * A locale is a collection of settings about a particular location. An individual
+      setting is called a facet (e.g format used to display a date). Most operating systems have a mechanism to determine
+      the locale as defined by the user.
+      In C++, you can pass an empty string to the locale object constructor to create a locale from the user’s environment.
+    
+8. Exceptions
+
+    * The dark side of C++ exceptions:
+
+      void g() {
+        throw std::exception();
+      }
+      void f() {
+        int *i = new int(2);
+        *i = 3;
+        g();
+        // Oops, if an exception is thrown, i is never deleted
+        // and we have a memory leak
+        delete i;
+      }
+      int main() {
+        try {
+          f();
+        }
+        catch(...) { }
+        return (0);
+      }    
+
+    * In C++ a function that does not specify a list of exceptions can throw any exception it wants! A function without
+      a throw list can throw exceptions of any type. A function with an empty throw list shouldn’t throw any exception.
+      Unfortunately, the throw list is not enforced at compile time in C++.
+
+    * Your programs can catch exceptions by value, reference, const reference, or pointer.
+          
+          } catch (const char* e) {       // when you throw error message  
+          } catch (const exception& e) {
+      
+But generally catch exceptions with const to document that you are not modifying them.
+
+    * The keyword throw by itself simply rethrows whatever exception was caught most recently.
+
+          } catch (...) {
+            delete str;
+            throw;         // Rethrow the exception.
+          }
+    * Use auto_ptr to write exception save code:
+
+    void myFunction() {
+	auto_ptr ptr( new T ); 
+	/*... code that throws exception...*/ 
+
+	// ptr’s destructor gets called as the function’s stack unwinds here & the object 
+	// gets deleted automatically
+    }
+
+    * It’s important to know about set_terminate(), it’s not a very effective exception-handling
+      approach. We recommend trying to catch and handle each exception individually in order to provide
+      more precise error handling.
+    * Unlike const, the exception specification is not part of the function or method signature. You cannot
+      overload a function based solely on different exceptions in the throw list.
+    * Throw lists don’t prevent functions from throwing unlisted exception types, but
+      they prevent the exception from leaving the function.    
+    * The unexpected() function applies program-wide, not just to this function, so you should reset the handler 
+      when you are done with the code that needed your special handler.
+    * If you change throw lists when you override methods, remember that any code that
+      called the superclass version of the method must be able to call the subclass version.
+      Thus, you can’t add exceptions.
+    * When you catch exceptions polymorphically, make sure to catch them by reference.
+      If you catch exceptions by value, you can encounter slicing, in which case you lose
+      information from the object.
+    * Objects thrown as exceptions are always copied by value at least once. Thus,
+      if you write a class whose objects will be thrown as exceptions, you must make those objects copyable.
+      This means that if you have dynamically allocated memory, you must write a destructor, copy constructor,
+      and assignment operator. Catch exception objects by reference to avoid unnecessary copying.
+
+When a piece of code throws an exception, control jumps immediately to the exception handler that
+catches the exception. This exception handler could lie one or more function calls up the stack of execution.
+As the control jumps up in the stack in a process called stack unwinding, all code remaining in each
+function past the current point of execution is skipped. However, local objects and variables in each
+function that is unwound are destroyed as if the code finished the function normally. However, in stack unwinding,
+pointer variables are not freed, and other cleanup is not performed.
+
+    * Smart pointers allow you to write code that automatically prevents memory leaks with exception handling
+    * C++ guarantees that it will run the destructor for any fully constructed "subobjects"
+    * RAII programming idiom
+
+The idea is to wrap the resource release operation in a destructor of an object in the scope. Language guarantees
+that the destructor will always be invoked (of a successfully constructed object) when control flow leaves the scope
+because of a return statement or an exception.
+
+NOTE: Prefer to think of it as Stack-Based Resource Management because it tells a little more about what is going
+on and what the goal is.
+
+The thing that gives destructors more expressiveness for dealing with cleanup is that they only execute
+for the objects that have been initialized. This means that if control exits a block after only half of the stack-local
+objects have been constructed, only those half of the objects have their destructors invoked.
+With finally, all that bookkeeping is the responsibility of the programmer.
+
+9. Overloading C++ Operators
+
+The general guiding principle is to make your classes behave like built-in types. The second reason to overload operators
+is to gain greater control over behavior in your program. It’s important to emphasize that operator overloading doesn't
+necessarily make things easier for you as the class developer; its main purpose is to make things easier for clients of the class.
+When the operator is a method of a class, the left-hand-side of the operator expression must
+always be an object of that class. If you write a global function, the left-hand-side can be an object of a different
+type.
+
+    * Operators that must be methods: When the operator is a method of a class, the left-hand-side of the operator expression must
+      always be an object of that class.
+    * Operators that must be global functions: Whenever you need to allow the left-hand side of the
+      operator to be a variable of a different type from your class, you must make the operator a global
+      function.
+    * Operators that can be either methods or global functions: Make every operator a method unless you
+      must make it a global function as described previously. One major advantage to this rule is that
+      methods can be virtual, but friend functions cannot. Therefore, when you plan to write overloaded
+      operators in an inheritance tree, you should make them methods if possible.
+    * Choosing Argument Types: The choice of value vs. reference is easy: you should take every parameter by reference.
+    * The const decision is also trivial: Mark every parameter const unless you actually modify it.
+      A return value that can be modified as an lvalue (the left-hand-side of an assignment expression) must be
+      non-const. Otherwise, it should be const.
+    * C++ doesn’t determine overload resolution based on return type. Thus, you can specify any return type you want
+      when you write overloaded operators. However, you should write your overloaded operators such that they return
+      the same types as the operators do for the built-in types. The general rule for value or reference is to return
+      a reference if you can; otherwise, return a value.
+
+An l-value operator(operators that are invoked on existing objects) can return a reference to the object on the LHS,
+the target of the operator call. This is safe, efficient and the correct way to implement an l-value operator.
+
+Commutative operators (+, -, etc.) that compute the result from their operands, cannot return a reference or a
+pointer. Naturally such operators return the result by value.
+
+    * Operators You Shouldn’t Overload: operator&& operator|| operator, and operator&
+    * (C++ hack)The prefix versions of operator++ and operator-- take no arguments,
+      while the postfix versions take one unused argument of type int
+    * postfix operation e.g. operation++(int) returns old value for the use in the rest of expression
+      prefix operation e.g. operation++ returns new value
+    * The C++ standard specifies that the prefix versions of increment and decrement return an lvalue, so
+      they can’t return a const value.
+    * The operator[] can replace both setElementAt() and getElementAt() because it returns a reference to the element at location x.
+    * You cannot overload the subscripting operator(operator[]) to take more than one parameter. If
+      you want to provide subscripting on more than one index, you can use the function
+      call operator.
+    * C++ allows you to overload the function call operator, written as operator(). If you write an operator()
+      for your class, you can use objects of that class as if they were function pointers. You can only overload this
+      operator as a non-static method in a class.
+    * An object of a class with a function call operator (operator()) is called a function object, or functor for short.
+      The advantage of function objects over standard methods of objects is simple: these objects can sometimes
+      masquerade as function pointers. You can pass function objects as callback functions to routines that expect function pointers,
+      as long as the function pointer types are templatized. This is a function with state - closure.
+    * You can overload the dereferencing operators for your classes in order to make objects of the classes
+      behave like pointers. In this way you can implement smart pointers.
+
+    * There are two differences between the prefix and postfix increments: their return type and their arguments.
+      The prefix version returns the modified object. It may seem odd that the postfix version of ++ returns a new object,
+      rather than a modified object.
+
+    * It is quite common to implement operator== as a virtual member function. However, it's counterpart, operator!= need
+      not to be a virtual function because it is implemented in terms of operator==
+
+class X {
+  public:
+    virtual bool operator==(const X& rhs) const { /* code is here */}
+    bool operator!=(const X& rhs) const { return !(*this == rhs); }
+} 
+
+    * Any operation that does NOT REQUIRE an l-value and is commutative is better implemented as a non-member function(+, - etc.).
+      This allows the compiler to applay a conversion in case of argument mismatch for the first argument.
+
+    * Any operation that REQUIRE an l-value is better implemented as a member function. This clearly shows that it can be invoked
+      on existing, modifiable objects.
+
+Implementing operator-> is tricky!
+
+The result of applying the arrow operator should be a member or method of an object.
+However, in order to implement it like that, you would have to be able to implement the equivalent of operator* 
+followed by operator.. C++ doesn’t allow you to overload operator. for good reason: it’s impossible to write a 
+single prototype that allows you to capture any possible member or method selection. Similarly, you couldn't write
+an operator-> with such semantics. Therefore, C++ treats operator-> as a special case.
+
+Consider this line:
+        smartCell->set(5);
+
+C++ translates the preceding to:
+        (smartCell.operator->())->set(5);
+
+As you can see, C++ applies another operator-> to whatever you return from your overloaded operator->
+
+Conversions for Boolean Expressions
+
+It is handy to use pointers in conditional statements like this:
+        if (classPtr != NULL) {
+           // Perform some dereferencing action.
+        }
+
+To do that you have to overload operator void*() (see type conversion operator T())
+
+    * You can predefine only operator<, then
+
+      x > y can be expressed as y < x
+      x >= y can be expressed as !(x < y)
+      x <= y can be expressed as !(y < x) 
+      
+10. Tests
+  
+     1. What are the things that this piece of code was written to do?
+     2. What are the typical ways each method would be called?
+     3. What preconditions of the methods could be violated by the caller?
+     4. How could each method be misused?
+     5. What kinds of data are you expecting as input?
+     6. What kinds of data are you not expecting as input?
+     7. What are the edge cases or exceptional conditions?
+
+Once you have generated ideas for some of the tests you would like to use, consider how you might
+organize them into categories and the breakdown of tests will fall into place.
+
+     1. Basic tests
+     2. Error tests
+     3. Internationalization tests
+     4. Bad input tests
+     5. Complicated tests
+
+Important: Decide on the correct output for your test before you ever run the test.
+
+Write the Tests Guideline:
+
+     1. Make sure that you’re only testing one thing in each test. That way, if a test fails, it will point to
+        a specific piece of functionality.
+     2. Be specific inside the test. Did the test fail because an exception was thrown or because the
+        wrong value was returned?
+     3. Use logging extensively inside of test code. If the test fails some day, you will have some insight
+        into what happened.
+     4. Avoid tests that depend on earlier tests or are otherwise interrelated. Tests should be as atomic
+        and isolated as possible.
+     5. If the test requires the use of other subsystems, consider writing stub versions of those subsystems
+        that simulate the modules’ behavior so that changes in loosely related code don’t cause the
+        test to fail.
+     6. Ask your code reviewers to look at your unit tests as well. When you do a code review, tell the
+        other engineer where you think additional tests could be added.
+
+NOTE: A fixture is simply a logical group of tests
+
+An integration test covers areas where components meet. Unlike a unit test, which generally acts on the
+level of a single class, an integration test usually involves two or more classes. Integration tests excel at
+testing interactions between two components, often written by two different programmers. In fact, the
+process of writing an integration test often reveals important incongruities in designs.
+
+System tests operate at an even higher level than integration tests. These tests examine the program as a
+whole. System tests often make use of a virtual user that simulates a human being working with the program.
+Of course, the virtual user must be programmed with a script of actions to perform. Other system
+tests rely on scripts or a fixed set of inputs and expected outputs.
+
+Regression testing is more of a testing concept than a specific type of test. The idea is that once a feature
+works, developers tend to put it aside and assume that it will continue to work. Unfortunately, new features
+and other code changes often conspire to break previously working functionality. Regression tests
+are often put in place as a sanity check for features that are, more or less, complete and working. If the
+regression test is well written, it will cease to pass when a change is introduced that breaks the feature.
+
+What to Test?
+- Condition testing. When writing unit tests, you should use your knowledge of the code under
+test to exercise all combinations of any if/else, for, while, and switch expressions within the
+unit.
+
+- Equivalence classes. An equivalence class is a set of test inputs that all have the same expected
+behavior. The technique of equivalence class partitioning therefore attempts to find test inputs
+that exercise difference classes of behavior.
+
+- Boundary conditions. Most errors occur around the boundary of expected values. How many
+times have you inadvertently written code with an "off-by-one" error?
+
+- Parameter testing. A test for a given API call should vary all parameters to the function to verify
+the full range of functionality.
+
+- Return value assertion. This form of testing ensures that a function returns correct results for
+different combinations of its input parameters.
+
+- Operation order. Varying the sequence of operations to perform the same test (where this is possible)
+can help uncover any order of execution assumptions and non-orthogonal behavior.
+
+- Negative testing. This testing technique constructs or forces error conditions to see how the code
+reacts to unexpected situations.
+
+- Buffer overruns. A buffer overrun, or overflow, is when memory is written past the end of an
+allocated buffer.
+
+- Memory ownership. Memory errors are a common cause of crashes in C++ programs. Any API
+calls that return dynamically allocated memory should document whether the API owns the memory
+or if the client is responsible for freeing it. These specifications should be tested to ensure that
+they are correct. For example, if the client is responsible for freeing the memory, a test could
+request the dynamic object twice and assert that the two pointers are different. A further test
+could free the memory and then rerequest the object from the API multiple times to ensure that
+no memory corruption or crashes occur.
+
+- NULL input. Another common source of crashes in C++ is passing a NULL pointer to a function
+that then immediately attempts to dereference the pointer without checking for NULL. You
+should therefore test all functions that accept a pointer parameter to ensure that they behave
+gracefully when passed a NULL pointer.
+
+#_______________________________________________________________________________
+#                                                            Articles and links
+
+http://www.gotw.ca/gotw/index.htm
+
+http://strlen.com/rants/javaclassesincpp.html     
+
+http://make.paulandlesley.org/autodep.html
+
+http://www.newty.de/fpt/
+
+http://www.mactech.com/articles/mactech/Vol.16/16.07/UsingFlexandBison/
+
+http://gnuu.org/2009/09/18/writing-your-own-toy-compiler/
+
+#_______________________________________________________________________________
+#                                                                         Books
+
+C/C++ listmania:
+   http://www.amazon.com/Destination-C-C/lm/1RXP5YEYOG4HX/ref=cm_lm_byauthor_title_full
+
+It is not a book but it is very useful resource:
+   http://www.parashift.com/c++-faq-lite/

@@ -1,0 +1,13 @@
+Hello maintainer! Please do not change the structure of this file or unit test will fail.
+1
+test empty line
+
+test negative
+-2
+
+2u1
+23.9
+#12
+
+All lines number is lucky - 13. Solution for A=11 should be 14
+13
