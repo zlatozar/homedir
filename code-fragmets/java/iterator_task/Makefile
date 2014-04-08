@@ -35,7 +35,7 @@ compile:
 check:
 	@ $(MAVEN) test
 
-style-check:
+check-style:
 	@ $(MAVEN) clean install checkstyle:check
 
 findbugs:
