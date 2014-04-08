@@ -99,6 +99,7 @@
         magit
 
         ;; Misc
+        ace-jump-mode
         readline-complete
         powerline
         emacs-w3m
@@ -221,7 +222,7 @@
 ;; Set *scratch* buffer mode
 (setq initial-major-mode 'text-mode)
 
-;; nuke whitespaces when writing to a file
+;; nuke white spaces when writing to a file
 (setq-default indent-tabs-mode nil)
 (add-hook 'after-save-hook 'whitespace-cleanup)
 
@@ -466,8 +467,11 @@ plus add font-size: 10pt"
 (ido-mode 1)
 (ido-everywhere 1)
 
-;; Functions in a file, and lets you jump to theme
-(require 'imenu)
+;; Ace Jump
+(autoload 'ace-jump-mode "ace-jump-mode"
+  "Emacs quick move minor mode" t)
+
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
 ;; Exclude ido completion
 ;; Usage: (put 'dired 'ido 'ignore)
@@ -879,8 +883,7 @@ plus add font-size: 10pt"
   (my/remove-elc-on-save)
   (ac-emacs-lisp-mode-setup)
   (setup-paredit-for-mode-map emacs-lisp-mode-map)
-  (turn-on-eldoc-mode)
-  (litable-mode))
+  (turn-on-eldoc-mode))
 
 (add-hook 'emacs-lisp-mode-hook 'my/emacs-lisp-setup)
 
