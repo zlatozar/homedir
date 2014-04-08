@@ -224,7 +224,7 @@
 
 ;; nuke white spaces when writing to a file
 (setq-default indent-tabs-mode nil)
-(add-hook 'after-save-hook 'whitespace-cleanup)
+(add-hook 'before-save-hook 'whitespace-cleanup)
 
 ;; Better scrolling
 (setq scroll-step 1)
