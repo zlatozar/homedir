@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <prerequisites>
+        <maven>3.0.5</maven>
+    </prerequisites>
+
+    <!-- ====================== -->
+    <!-- Project description    -->
+    <!-- ====================== -->
+
+    <inceptionYear>2014</inceptionYear>
+
+    <groupId>com.smook</groupId>
+    <artifactId>smook</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>SMOOK project</name>
+
+    <url>http://smook.com</url>
+
+    <description>
+        Unite many Java modules and script them using Jython
+    </description>
+
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Keep in mind that we use BETA version -->
+        <jython.version>2.7-b1</jython.version>
+
+        <junit.version>4.11</junit.version>
+        <jsr305.version>1.3.9</jsr305.version>
+    </properties>
+
+    <!-- ====================== -->
+    <!-- Project settings       -->
+    <!-- ====================== -->
+
+    <scm>
+        <connection>scm:git:https://xxxxxxxx/</connection>
+        <developerConnection>scm:git:https://xxxxxxx/</developerConnection>
+        <url>http://xxxxxxxx/source/browse/</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>zlatozar</id>
+            <name>Zlatozar Zhelyazkov</name>
+            <email>zlatozar@gmail.com</email>
+            <organization>iHome</organization>
+            <timezone>2</timezone>
+        </developer>
+    </developers>
+
+    <!-- ================================= -->
+    <!-- PLUGINS                           -->
+    <!-- ================================= -->
+
+    <build>
+        <!-- This is the parent, so only define pluginManagement, not plugins -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- Compilation -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+
+            <!-- Static analysers -->
+            <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <consoleOutput>true</consoleOutput>
+                    <suppressionsLocation>${basedir}/checkstyle-suppressions.xml</suppressionsLocation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <configuration>
+                    <excludeFilterFile>${basedir}/findbugs-exclude.xml</excludeFilterFile>
+
+                    <!-- It will be quick if you set it to Low -->
+                    <effort>Max</effort>
+
+                    <!-- Reports all bugs (other values are medium and max) -->
+                    <threshold>Low</threshold>
+
+                    <!-- Produces XML report -->
+                    <xmlOutput>true</xmlOutput>
+                </configuration>
+            </plugin>
+
+            <!-- Distribution -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+
+            <plugin>
+                <groupId>net.sf.mavenjython</groupId>
+                <artifactId>jython-compile-maven-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jython</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <libraries>
+                        <!-- Needed Python Libraries -->
+                        <param>pytest</param>
+
+                    </libraries>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <finalName>${project.artifactId}</finalName>
+                    <outputDirectory>build</outputDirectory>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.smook.InitJython</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- MacOS users have problems with this -->
+
+            <!--plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin-->
+
+        </plugins>
+    </build>
+    <dependencies>
+        <!-- 3rd party Java libraries -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>${jsr305.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.python</groupId>
+            <artifactId>jython-standalone</artifactId>
+            <version>${jython.version}</version>
+        </dependency>
+    </dependencies>
+</project>

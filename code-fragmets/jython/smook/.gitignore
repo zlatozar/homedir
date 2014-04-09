@@ -1,0 +1,22 @@
+# Maven
+target/
+*.class
+*.py[cod]
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# InteliJ
+.idea/
+*.iml
+
+# VM crash logs
+hs_err_pid*
+
+# Sphinx documentation
+src/main/resources/Lib/docs/_build/
+
+# Jython
+smook-env/

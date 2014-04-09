@@ -1,0 +1,13 @@
+#______________________________________________________________________________
+#
+#          Project Compilation
+#______________________________________________________________________________
+#
+
+# To be build from console you need to install Maven
+
+    mvn compile
+or
+    make (optional if you have Make installed in you system)
+
+

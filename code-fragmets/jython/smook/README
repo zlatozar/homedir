@@ -1,0 +1,86 @@
+            // SMOOK //
+
+    PPBOT development, one drop at a time
+
+
+    ~ What is SMOOK?
+
+
+    ~ Is it ready?
+
+
+    ~ What do I need?
+
+
+    ~ Where are the docs?
+
+    ~ How to build it?
+
+      $ make
+
+    ~ How to install Jython?
+
+      Install latest version:
+
+      1. Download from jython.org
+
+      $ sudo mkdir /opt/jython
+      $ sudo chown user:group /opt/jython
+      $ java -jar jython-installer-2.7-b1.jar -s -d /opt/jython/ -t all
+
+      If you set up a symlink to the 'jython' command, you may be seeing the
+      'error expr: syntax error' whenever you run a script. The solution is to open the file jythonin a text editor, locate the line
+
+      if expr "$link" : '/' > /dev/null; then
+
+      and replace it with the line
+
+      if expr "$link" : '[/]' > /dev/null; then
+
+    ~ How to start coding?
+
+      Needs pip, jython and python to be installed
+
+      Easy start:
+      $ cd <path to SMOOK>
+      $ sudo -E pip install -r requirements-env.txt
+
+      Using virtualenv (not working!!)
+
+      Create virtual environment
+
+      $ virtualenv -p jython smook-env
+
+      $ source smook-env/bin/activate
+      $ pip install -r requirements-dev.txt
+
+      Version 2.5.2 (working)
+
+      $ cd <path to SMOOK>
+      $ sudo jython scripts/ez_setup.py
+      $ sudo jython <path to jython>/bin/easy_install pytest
+
+    ~ How to install it?
+
+
+    ~ Project structure and tools
+
+    ~ Do we have Python codding style?
+
+      Read STYLE
+
+    ~ Where are the tests?
+
+      Good that you're asking.
+
+        $ make test
+
+      If you just want one particular testcase to run you can
+      provide it on the command line:
+
+        $ py.test -v <your test>
+
+    ~ Where can I get help?
+
+      1. Read Documentation
+      2. Write to zltozar@gmail.com

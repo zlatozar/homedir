@@ -1,0 +1,34 @@
+        // SMOK Python Style //
+
+      We stick to Google Python Style
+      http://google-styleguide.googlecode.com/svn/trunk/pyguide.html
+
+1. Naming
+
+      * "Internal" means internal to a module or protected or private within a class.
+
+      * Pre-pending a single underscore (_) has some support for protecting module variables
+        and functions (not included with import * from).
+
+      * Pre-pending a double underscore (__) to an instance variable or method effectively serves
+        to make the variable or method private to its class (using name mangling).
+
+      * Place related classes and top-level functions together in a module. Unlike Java, there is no
+        need to limit yourself to one class per module. However, make sure the classes and top-level functions
+        in the same module have high cohesion.
+
+      * Use CapWords for class names, but lower_with_under.py for module names.
+
+       Type                        Public                   Internal
+      +--------------------------+------------------------+------------------------+
+       Packages                    lower_with_under
+       Modules                     lower_with_under         _lower_with_under
+       Classes                     CapWords                 _CapWords
+       Exceptions                  CapWords
+       Functions                   firstLowerCapWords()     _firstLowerCapWords()
+       Global/Class Constants      CAPS_WITH_UNDER          _CAPS_WITH_UNDER
+       Global/Class Variables      lower_with_under         _lower_with_under
+       Instance Variables          lower_with_under         _lower_with_under (protected) or __lower_with_under (private)
+       Method Names                firstLowerCapWords()     _firstLowerCapWords() (protected) or __firstLowerCapWords() (private)
+       Function/Method Parameters  lower_with_under
+       Local Variables             lower_with_under
