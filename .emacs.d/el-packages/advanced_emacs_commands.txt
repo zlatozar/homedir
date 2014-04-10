@@ -18,14 +18,14 @@ Key prefix        Function                        Description
 ----------        --------                        -----------
 C-x 4 f           find-file-other-window          Open a new file in a new buffer, drawing it in a new vertical window.
 undefined         scroll-all-mode                 Toggle the scroll-all minor mode. When it's on, all windows displaying
-                                                  the buffer in the current window are scrolled simultaneously and in equal, relative amounts.
+												  the buffer in the current window are scrolled simultaneously and in equal, relative amounts.
 
 C-x 3        split-window-horizontally            Split the current window in half down the middle, stacking the new buffers horizontally.
 undefined         follow-mode                     Toggle follow, a minor mode. When it's on in a buffer, all windows displaying the buffer
-                                                  are connected into a large virtual window.
+												  are connected into a large virtual window.
 
 C-x ^             enlarge-window                  Make the current window taller by a line;
-                                                  preceded by a negative, this makes the current window shorter by a line.
+												  preceded by a negative, this makes the current window shorter by a line.
 
 C-x }        shrink-window-horizontally           Make the current active window thinner by a single column.
 C-x {        enlarge-window-horizontally          Make the current active window wider by a single column.
@@ -33,7 +33,7 @@ C-x -        shrink-window-if-larger-than-buffer  Reduce the current active wind
 C-x +            balance-windows                  Balance the size of all windows, making them approximately equal.
 
 undefined        compare-windows                  Compare the current window with the next window, beginning with point in both windows and
-                                                  moving point in both buffers to the first character that differs until reaching the end of the buffer.
+												  moving point in both buffers to the first character that differs until reaching the end of the buffer.
 
 3. Emacs text manipulation commands
 
@@ -48,7 +48,7 @@ C-t              transpose-chars             Transposes the single characters to
 M-t              transpose-words             Transposes the single words to the right and left of point.
 C-x C-t          transpose-lines             Transposes the line at point with the line before it.
 M-^              delete-indentation          Joins the line at point with the previous line.
-                                             Preface with C-1 to join the line at point with the next line (C-1 M-^)
+											 Preface with C-1 to join the line at point with the next line (C-1 M-^)
 
 M-u              uppercase-word              Converts the text at point to the end of the word to uppercase letters.
 M-l              downcase-word               Converts the text at point to the end of the word to lowercase letters.
@@ -68,6 +68,9 @@ C-w               kill-region                Delete a marked region.
 undefined         backward-kill-paragraph    Delete the previous paragraph.
 undefined         kill-paragraph             Delete from the cursor to the end of the paragraph.
 M-h               mark-paragraph             Mark select paragraph.
+
+C-x n n           narrow-to-region           Narrow buffer to the current region:
+C-x n w                                      Restore (“widen”) buffer
 
 5. Emacs commands for using registers
 
@@ -113,14 +116,14 @@ C-x r d           delete-rectangle           Deletes the current rectangle and d
 C-x r c           clear-rectangle            Clears the current rectangle, replacing the entire area with whitespace.
 C-x r y           yank-rectangle             Yanks the contents of the last-killed rectangle at point, moving all existing text to the right.
 C-x r o           open-rectangle             Opens the current rectangle, filling the entire area with whitespace
-                                             and moving all text from the rectangle to the right.
+											 and moving all text from the rectangle to the right.
 
 8. Transient Mark Mode
 
 Key prefix        Function                   Description
 ----------        --------                   -----------
 C-SPC                                        Make mark in some place and then disable it with C-g.
-                                             Go somewhere else and do it again and again etc.
+											 Go somewhere else and do it again and again etc.
 
 C-SPC C-SPC                                  Make mark and you can return with C-u C-SPC
 C-u C-SPC                                    Back to previous mark, and back and back etc.
@@ -138,8 +141,8 @@ Key prefix           Function                  Description
 M-x                  check-parens              Checking for unmatched parentheses
 C-x w h REGEXP FACE                            Highlight matches of pattern REGEXP in current buffer with FACE.
 C-x w p PHRASE FACE                            Highlight matches of phrase PHRASE in current buffer with FACE.
-                                               (PHRASE can be any REGEXP, but spaces will be replaced by matches
-                                               to whitespace and initial lower-case letters will become case insensitive.)
+											   (PHRASE can be any REGEXP, but spaces will be replaced by matches
+											   to whitespace and initial lower-case letters will become case insensitive.)
 
 C-x w l REGEXP FACE                            Highlight lines containing matches of REGEXP in current buffer with FACE.
 C-x w r REGEX                                  Remove highlighting on matches of REGEXP in current buffer
@@ -176,8 +179,8 @@ Key prefix          Function                   Description
 ----------          --------                   -----------
 C-x (               start-kbd-macro            Start a new macro definition.
 C-x )               end-kbd-macro              End the current macro definition.
-                    name-last-kbd-macro        Name the last macro before saving it then you can execute it using M-x <your-macro-name>
-                 apply-macro-to-region-lines   Apply macro to selected region
+					name-last-kbd-macro        Name the last macro before saving it then you can execute it using M-x <your-macro-name>
+				 apply-macro-to-region-lines   Apply macro to selected region
 
 11. Useful reference
 
