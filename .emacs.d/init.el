@@ -798,7 +798,6 @@ plus add font-size: 10pt"
           '(lisp-mode-hook
             slime-repl-mode-hook
             clojure-mode-hook
-            nrepl-mode-hook
             scheme-mode-hook
             emacs-lisp-mode-hook
             ielm-mode-hook)))
@@ -831,7 +830,6 @@ plus add font-size: 10pt"
 (eval-after-load "slime-repl" '(setup-paredit-for-mode-map slime-repl-mode-map))
 (eval-after-load "scheme-mode" '(setup-paredit-for-mode-map scheme-mode-map))
 (eval-after-load "clojure-mode" '(setup-paredit-for-mode-map clojure-mode-map))
-(eval-after-load "nrepl-mode" '(setup-paredit-for-mode-map nrepl-mode-map))
 
 (lisp-family 'enable-paredit-mode)
 (lisp-family 'highlight-parentheses-mode)
@@ -843,6 +841,9 @@ plus add font-size: 10pt"
 (put 'paredit-open-square 'delete-selection t)
 (put 'paredit-doublequote 'delete-selection t)
 (put 'paredit-newline 'delete-selection t)
+
+;; don't hijack \ please
+(define-key paredit-mode-map (kbd "\\") nil)
 
 ;; indent when yank in lisp modes
 (defadvice yank (after indent-region activate)
@@ -1071,7 +1072,7 @@ plus add font-size: 10pt"
 ;; Hide nrepl buffers when switching buffers (switch to by prefixing with space)
 (setq nrepl-hide-special-buffers t)
 
-;; Enable error buffer popping also in the REPL:
+;; Enable error buffer popping also in the nREPL:
 (setq cider-repl-popup-stacktraces t)
 
 ;; Specify history file
@@ -1085,6 +1086,9 @@ plus add font-size: 10pt"
 
 ;; Enable eldoc in Clojure buffers
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
+;; Enable paredit for nREPL
+(add-hook 'cider-repl-mode-hook (lambda () (paredit-mode 1)))
 
 (require 'ac-nrepl)
 
