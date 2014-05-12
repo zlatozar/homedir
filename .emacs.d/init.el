@@ -1484,6 +1484,18 @@ plus add font-size: 10pt"
   "Kill up to, but not including ARGth occurrence of CHAR.")
 (global-set-key (kbd "M-Z") 'zap-up-to-char)
 
+(defun my/isearch-yank-current-word ()
+  "Pull current word from buffer into search string."
+  (interactive)
+  (save-excursion
+    (skip-syntax-backward "w_")
+    (isearch-yank-internal
+     (lambda ()
+       (skip-syntax-forward "w_")
+       (point)))))
+
+(define-key isearch-mode-map (kbd "C-x") 'my/isearch-yank-current-word)
+
 ;;_______________________________________________________________________________
 ;;                                                            Org-mode and Email
 
