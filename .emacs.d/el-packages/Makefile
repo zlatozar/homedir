@@ -46,7 +46,7 @@ endef
 default: all
 
 # Do not forget to update .PHONY
-all: valgrind.elc prolog.elc hyperspec-naggum.elc mit-scheme-swank flymake-python-pyflakes slime ac-slime ritz-ide notes
+all: valgrind.elc prolog.elc hyperspec-naggum.elc mit-scheme-swank flymake-python-pyflakes slime ac-slime ac-cider-compliment notes
 
 .el.elc:
 	@ echo "\n** Bite compiling ===> " $@
@@ -82,6 +82,10 @@ slime:
 ac-slime:
 	@ echo "$(OK_COLOR)===> Checkout or update ac-slime...$(NO_COLOR)"
 	@ if [ ! -d ac-slime ]; then git clone https://github.com/purcell/ac-slime.git; else cd ac-slime; git pull --rebase; cd ..; fi;
+
+ac-cider-compliment:
+	@ echo "$(OK_COLOR)===> Checkout or update ac-cider-compliment...$(NO_COLOR)"
+	@ if [ ! -d ac-cider-compliment ]; then git clone http://github.com/alexander-yakushev/ac-cider-compliment.git; else cd ac-cider-compliment; git pull --rebase; cd ..; fi;
 
 notes:
 	@ echo
@@ -162,7 +166,7 @@ ritz-ide: _nrepl _nrepl-inspect _fringe-helper _ritz
 #_______________________________________________________________________________
 #                                                                  SYSTEM RULES
 
-.PHONY: clean mit-scheme-swank flymake-python-pyflakes slime ac-slime
+.PHONY: clean mit-scheme-swank flymake-python-pyflakes slime ac-slime ac-cider-compliment
 
 clean:
 	rm -f $(ELC)

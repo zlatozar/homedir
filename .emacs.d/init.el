@@ -82,7 +82,6 @@
 
         ;; Clojure
         clojure-mode
-        ac-nrepl
         elein
         cider
 
@@ -221,6 +220,9 @@
 
 ;; Set *scratch* buffer mode
 (setq initial-major-mode 'text-mode)
+
+;; Tabs width
+(setq default-tab-width 4)
 
 ;; nuke white spaces when writing to a file
 (setq-default indent-tabs-mode nil)
@@ -692,9 +694,6 @@ plus add font-size: 10pt"
 (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled)
       flycheck-idle-change-delay 0.8)
 
-;; Tabs width
-(setq default-tab-width 4)
-
 ;; `yasinppet' code templates (third party)
 (require 'yasnippet)
 (define-key yas-minor-mode-map [(tab)] nil)
@@ -1090,16 +1089,14 @@ plus add font-size: 10pt"
 ;; Enable paredit for nREPL
 (add-hook 'cider-repl-mode-hook (lambda () (paredit-mode 1)))
 
-(require 'ac-nrepl)
+(require 'ac-cider-compliment)
 
-(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-(add-hook 'cider-mode-hook 'ac-nrepl-setup)
+(add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+(add-hook 'cider-mode-hook 'ac-cider-compliment-setup)
+(add-hook 'cider-repl-mode-hook 'ac-cider-compliment-repl-setup)
 
 (eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'cider-repl-mode))
-
-(eval-after-load "cider"
-  '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
+  '(add-to-list 'ac-modes cider-mode))
 
 ;; Cycle between () {} []
 
