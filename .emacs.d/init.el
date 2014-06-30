@@ -1578,6 +1578,7 @@ plus add font-size: 10pt"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values (quote ((eval setq flycheck-flake8rc (expand-file-name ".flake8rc" "~")))))
  '(dictionary-use-single-buffer t)
  '(diff-switches "-u")
  '(ls-lisp-dirs-first t)
