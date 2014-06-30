@@ -10,7 +10,7 @@
 ;;
 ;; With that file in place, you can add new projects to that directory tree, and after an
 ;;      (asdf:initialize-source-registry)
-;; 
+;;
 ;; the project's systems will be loadable with asdf:load-system.  You can unpack tarballs, check
 ;; things out from source control systems, or create new projects and they'll all be easily available for loading.
 
@@ -20,3 +20,39 @@
                                        (user-homedir-pathname))))
   (when (probe-file quicklisp-init)
     (load quicklisp-init)))
+
+;;________________________________________________________________________________
+;;                                                             SBCL Configuration
+
+(handler-bind
+    ((sb-ext:implicit-generic-function-warning #'muffle-warning)
+     (sb-kernel:type-proclamation-mismatch-warning #'muffle-warning)
+     (style-warning #'muffle-warning)
+     (warning #'muffle-warning)))
+
+;;   ;; Functional programming default packages
+;;   ;;========================================
+
+;;   ;; Pattern Matching
+;;   (asdf:load-system 'optima)
+
+;;   ;; Functional Reactive Programming Framework
+;;   (asdf:load-system 'cells)
+
+;;   ;; Functional Data Structures
+;;   (asdf:load-system 'fset)
+
+;;   ;; Static Code Analysis
+;;   (asdf:load-system 'lisp-critic)
+
+;;   ;; Appease Paren Critics
+;;   (asdf:load-system 'readable)
+
+;;   ;; Default Namespaces
+;;   ;;===================
+;;   (use-package :cells)
+;;   (use-package :optima)
+
+;;   ;; Unit testing
+;;   ;;=============
+;;   (asdf:load-system 'fiveam)
