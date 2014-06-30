@@ -1,4 +1,7 @@
-;;; This file bootstraps the configuration
+;;; init --- My Emacs initialization file
+;;; Commentary:
+;;; Nothing too out of the ordinary here.
+;;; Code:
 
 ;;_______________________________________________________________________________
 ;;                                                                    Load paths
@@ -172,6 +175,9 @@
       (list (format "%s %%S: %%j " (system-name))
             '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
+;; Made listings human readable
+(setq dired-listing-switches "-lh")
+
 ;; unNOVICEd commands...
 (put 'downcase-region  'disabled nil)
 (put 'upcase-region    'disabled nil)
@@ -225,7 +231,9 @@
 (setq default-tab-width 4)
 
 ;; nuke white spaces when writing to a file
+;; Exceptions: Makefile
 (setq-default indent-tabs-mode nil)
+(add-hook 'makefile-mode-hook 'indent-tabs-mode)
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
 ;; Better scrolling
@@ -345,7 +353,8 @@ plus add font-size: 10pt"
 
               ("key-bindings" . "http://www.emacswiki.org/emacs/Reference_Sheet_by_Aaron_Hawley")
               ("elisp" . "http://www.gnu.org/software/emacs/manual/html_mono/elisp.html")
-              ("scheme" . "http://api.call-cc.org/doc/"))
+              ("scheme" . "http://api.call-cc.org/doc/")
+              ("clojure" . "http://clojuredocs.org/clojure_core"))
             webjump-sample-sites))))
 
 ;;_______________________________________________________________________________
@@ -1086,6 +1095,8 @@ plus add font-size: 10pt"
 ;; Enable eldoc in Clojure buffers
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
+;; Search docs e.g. (find-doc "vec"), (apropos "vec"), (doc vec)
+
 ;; Enable paredit for nREPL
 (add-hook 'cider-repl-mode-hook (lambda () (paredit-mode 1)))
 
@@ -1339,9 +1350,6 @@ plus add font-size: 10pt"
       (lambda nil
         (concat (getenv "USER") "@" (eshell/pwd)
                 (if (= (user-uid) 0) " # " " $ "))))
-
-(require 'ls-lisp)
-(setq dired-listing-switches "-lh")
 
 (defun eshell/e (file)
   (find-file file))
@@ -1604,3 +1612,4 @@ plus add font-size: 10pt"
 ;;                                                                            End
 
 (provide 'init)
+;;; init.el ends here
