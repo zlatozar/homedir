@@ -774,7 +774,7 @@ plus add font-size: 10pt"
                 scheme-mode
                 emacs-lisp-mode
                 python-mode))
-  (font-lock-add-keywords mode '(("\\(HACK\\|FIXME\\|TODO\\)"
+  (font-lock-add-keywords mode '(("\\<\\(IMPROVEME\\|FIXME\\|TODO\\|BUG\\|NOTE\\|HACK\\)[:\(]"
                                   1 font-lock-warning-face prepend))))
 
 ;;_______________________________________________________________________________
