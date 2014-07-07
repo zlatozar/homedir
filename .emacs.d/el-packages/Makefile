@@ -76,7 +76,7 @@ flymake-python-pyflakes: _flymake-easy
 
 slime:
 	@ echo "$(OK_COLOR)===> Checkout or update slime...$(NO_COLOR)"
-	@ if [ ! -d slime ]; then cvs -d :pserver:anonymous:anonymous@common-lisp.net:/project/slime/cvsroot co slime; else cd slime; cvs up; cd ..; fi;
+	@ if [ ! -d slime ]; then git clone http://github.com/slime/slime.git; else cd slime; git pull --rebase; cd ..; fi;
 	@ echo "$(ERROR_COLOR)Do not forget to build it\n$(NO_COLOR)"
 
 ac-slime:
