@@ -1142,6 +1142,20 @@ plus add font-size: 10pt"
 
 (define-key clojure-mode-map (kbd "C-`") 'live-cycle-clj-coll)
 
+;; Append result of evaluating previous expression
+(defun cider-eval-last-sexp-and-append ()
+  "Evaluate the expression preceding point and append result."
+  (interactive)
+  (let ((last-sexp (cider-last-sexp)))
+       ;; we have to be sure the evaluation won't result in an error
+       (cider-eval-and-get-value last-sexp)
+       (with-current-buffer (current-buffer)
+         (insert ";;=>"))
+       (cider-interactive-eval-print last-sexp)))
+
+;; Also you can use: C-c C-p
+(define-key cider-mode-map (kbd "C-o y") 'cider-eval-last-sexp-and-append)
+
 ;;----------------------------------------------------------------------------
 ;; Switching between source and test (must be named <source>_test.clj)
 ;;----------------------------------------------------------------------------
