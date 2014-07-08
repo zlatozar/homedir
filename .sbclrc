@@ -30,39 +30,9 @@
      (style-warning #'muffle-warning)
      (warning #'muffle-warning)))
 
-(ql:quickload '(:asdf-driver :swank :quickproject
-                :inferior-shell :osicat :alexandria))
+(ql:quickload '(:quickproject :alexandria :fiveam :lisp-critic))
 
 (setf quickproject:*author* "Zlatozar Zhelyazkov <zlatozar@gmail.com>")
 
-(setf quickproject:*after-make-project-hooks*
-      (list
-       (lambda (pathname &rest args)
-         (declare (ignore args))
-         (nix:chdir (fad:pathname-as-directory pathname))
-         (inferior-shell:run (list "git" "init" "."))
-         (inferior-shell:run  (list "git" "add" "."))
-         (inferior-shell:run (list "git" "commit" "-m" "Initial commit")))))
-
-;;   ;; Functional programming default packages
-;;   ;;========================================
-
-;;   ;; Pattern Matching
-;;   (asdf:load-system 'optima)
-
-;;   ;; Functional Data Structures
-;;   (asdf:load-system 'fset)
-
-;;   ;; Static Code Analysis
-;;   (asdf:load-system 'lisp-critic)
-
-;;   ;; Appease Paren Critics
-;;   (asdf:load-system 'readable)
-
-;;   ;; Default Namespaces
-;;   ;;===================
-;;   (use-package :optima)
-
-;;   ;; Unit testing
-;;   ;;=============
-;;   (asdf:load-system 'fiveam)
+;; Static Code Analysis
+(use-package :lisp-critic)
