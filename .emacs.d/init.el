@@ -227,9 +227,6 @@
 ;; Set *scratch* buffer mode
 (setq initial-major-mode 'text-mode)
 
-;; Tabs width
-(setq default-tab-width 4)
-
 ;; nuke white spaces when writing to a file
 ;; Exceptions: Makefile
 (setq-default indent-tabs-mode nil)
@@ -263,7 +260,7 @@
 (require 'iedit)
 
 (defun iedit-dwim (arg)
-  "Starts iedit but uses \\[narrow-to-defun] to limit its scope."
+  "Start iedit but use \\[narrow-to-defun] to limit its scope."
   (interactive "P")
   (if arg
       (iedit-mode)
