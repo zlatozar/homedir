@@ -357,6 +357,9 @@ alias scm='rlwrap scheme'
 
 #export SBCL_HOME=
 
+# Go lang
+export GOPATH=~/projects/go
+
 # Git
 export GIT_PS1_SHOWDIRTYSTATE=1
 
