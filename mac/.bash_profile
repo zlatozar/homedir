@@ -66,8 +66,8 @@ export PAGER="less --quit-if-one-screen -Mg"
 # some very specific programs that are not in distribution
 PATH=$PATH:~/bin
 
-if [ -f /opt/local/share/git-core/git-prompt.sh ]; then
-    . /opt/local/share/git-core/git-prompt.sh
+if [ -f /opt/local/share/git/contrib/completion/git-prompt.sh ]; then
+. /opt/local/share/git/contrib/completion/git-prompt.sh
 fi
 
 if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
