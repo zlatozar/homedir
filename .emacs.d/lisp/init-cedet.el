@@ -186,44 +186,6 @@
 (add-hook 'c++-mode-hook (lambda ()
                            (local-set-key "\r" 'my-javadoc-return)))
 
-;;________________________________________________________________________________
-;;                                                                            ECB
-
-;; Loaded by el-get now
-;; (add-to-list 'load-path "/opt/emacs-tools/ecb")
-
-(ignore-errors (require 'ecb))
-(setq stack-trace-on-error t)
-
-(setq ecb-tip-of-the-day nil)
-(setq ecb-windows-width 0.20)
-
-;; Filter unwanted source file
-(setq ecb-source-file-regexps
-      (quote
-       ((".*" (".*_flymake.[cpp|py]\\|\\(^\\(\\.\\|#\\)\\|\\(~$\\|\\.\\(pyc\\|elc\\|fasl\\|o\\|class\\|a\\|so\\|dep\\)$\\)\\)")))))
-
-;; Left-click mouse button to work
-(setq ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
-
-;; Switch on and off ECB
-(defun ecb-toggle-methods ()
-  (interactive)
-  (setq ecb-layout-name "left9")
-  (if ecb-minor-mode
-      (ecb-deactivate)
-    (ecb-activate)))
-(global-set-key [(control f11)] 'ecb-toggle-methods)
-
-(defun ecb-toggle-dir ()
-  (interactive)
-  (setq ecb-layout-name "left5")
-  (if ecb-minor-mode
-      (ecb-deactivate)
-    (ecb-activate)))
-(global-set-key [(control f12)] 'ecb-toggle-dir)
-
-
 ;; If project file is open - project will be compiled with closest Makefile, else
 ;; file will be compiled with general rule if there is no Makefile
 ;;________________________________________________________________________________

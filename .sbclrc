@@ -30,7 +30,7 @@
      (style-warning #'muffle-warning)
      (warning #'muffle-warning)))
 
-(ql:quickload '(:quickproject :alexandria :fiveam :lisp-critic))
+(ql:quickload '(:quickproject :alexandria :iterate :fiveam :lisp-critic))
 
 (setf quickproject:*author* "Zlatozar Zhelyazkov <zlatozar@gmail.com>")
 

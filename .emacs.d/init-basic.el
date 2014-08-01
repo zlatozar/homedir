@@ -18,6 +18,9 @@
 ;; no white spaces
 (add-hook 'after-save-hook 'whitespace-cleanup)
 
+;; Do not ask for safe variables
+(setq enable-local-variables nil)
+
 (show-paren-mode t)
 
 (ido-mode 1)

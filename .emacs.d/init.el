@@ -62,6 +62,8 @@
         mu4e
 
         ;; Programming
+        markdown-mode
+        hungry-delete
         find-file-in-project
         auto-complete-clang
         auto-complete
@@ -239,6 +241,12 @@
 ;; Hide toolbar
 (tool-bar-mode -1)
 
+;; Do not ask for safe variables
+(setq enable-local-variables nil)
+
+;; This one fits to Github
+(set-fill-column 90)
+
 ;; Import system PATH variable (for MacOS see  mac/.emacs snippets)
 (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
 
@@ -415,6 +423,10 @@ plus add font-size: 10pt"
 
 ;;_______________________________________________________________________________
 ;;                                                                Manage Buffers
+
+;; Better 'Backspace' and 'C-d' (third party
+(require 'hungry-delete)
+(global-hungry-delete-mode)
 
 ;; shell buffer auto completion (third party)
 (require 'readline-complete)
@@ -691,6 +703,42 @@ With prefix P, create local abbrev. Otherwise it will be global."
     (set-buffer buf)
     (kill-region (point-min) (point-max))))
 
+;;________________________________________________________________________________
+;;                                                       Emacs Code Browser (ECB)
+
+(ignore-errors (require 'ecb))
+(setq stack-trace-on-error t)
+
+(setq ecb-tip-of-the-day nil)
+(setq ecb-windows-width 0.20)
+
+;; Filter unwanted source file
+(setq ecb-source-file-regexps
+      (quote
+       ((".*" (".*_flymake.[cpp|py]\\|\\(^\\(\\.\\|#\\)\\|\\(~$\\|\\.\\(pyc\\|elc\\|fasl\\|o\\|class\\|a\\|so\\|dep\\)$\\)\\)")))))
+
+;; Left-click mouse button to work
+(setq ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
+
+;; Switch on and off ECB
+(defun ecb-toggle-methods ()
+  "Display code methods."
+  (interactive)
+  (setq ecb-layout-name "left9")
+  (if ecb-minor-mode
+      (ecb-deactivate)
+    (ecb-activate)))
+(global-set-key [(control f11)] 'ecb-toggle-methods)
+
+(defun ecb-toggle-dir ()
+  "Display code directories."
+  (interactive)
+  (setq ecb-layout-name "left5")
+  (if ecb-minor-mode
+      (ecb-deactivate)
+    (ecb-activate)))
+(global-set-key [(control f12)] 'ecb-toggle-dir)
+
 ;;_______________________________________________________________________________
 ;;                                                                   Programming
 
@@ -707,7 +755,8 @@ With prefix P, create local abbrev. Otherwise it will be global."
                 ("\\.sch$"  . scheme-mode)
 
                 ("\\.conf$" . conf-mode)
-                ("\\.mak$"  . makefile-mode))
+                ("\\.mak$"  . makefile-mode)
+                ("\\.md\\'" . markdown-mode))
 
               auto-mode-alist))
 

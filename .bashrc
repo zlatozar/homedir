@@ -356,6 +356,7 @@ alias scm='rlwrap scheme'
 #
 
 #export SBCL_HOME=
+alias lisp='rlwrap sbcl'
 
 # Go lang
 export GOPATH=~/projects/go
