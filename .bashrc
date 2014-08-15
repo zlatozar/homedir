@@ -103,6 +103,7 @@ alias L='less --ignore-case --line-numbers --hilite-unread --hilite-search --LON
 alias diff=colordiff
 
 alias e="emacs -nw -q -l ~/.emacs.d/init-basic.el"
+alias ec="emacsclient -c"
 alias em="emacsclient -c -n"
 alias git-root='cd $(git rev-parse --show-cdup)'
 
