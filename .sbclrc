@@ -1,11 +1,7 @@
-;; Allegro CL-style REPL, with integrated inspector
-(require :sb-aclrepl)
+;;; SBCL resource file
 
-;; Add maximum debug information
-(sb-ext:restrict-compiler-policy 'debug 3)
-
-;;________________________________________________________________________________
-;;                                                                      Quicklisp
+;;; ____________________________________________________________________________
+;;;                         Quicklisp (~/quicklisp/local-projects for projects)
 
 #-quicklisp
 (let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
@@ -13,16 +9,36 @@
   (when (probe-file quicklisp-init)
     (load quicklisp-init)))
 
-;; NOTE: Use ~/quicklisp/local-projects for projects
+;;; ____________________________________________________________________________
+;;;                                                          SBCL Configuration
 
-;;________________________________________________________________________________
-;;                                                             SBCL Configuration
+;; AllegroCL style REPL, with integrated inspector
+(require :sb-aclrepl)
 
+;; Add maximum debug information
+(declaim (optimize debug))
+(sb-ext:restrict-compiler-policy 'debug 3)
+
+;; M-. to find system definitions
+(sb-ext:set-sbcl-source-location "/opt/common-lisp/sbcl/")
+
+;; Mute some warnings
 (handler-bind
     ((sb-ext:implicit-generic-function-warning #'muffle-warning)
      (sb-kernel:type-proclamation-mismatch-warning #'muffle-warning)
      (style-warning #'muffle-warning)
      (warning #'muffle-warning)))
+
+;; If a fasl was stale, try to recompile and load (once).
+(defmethod asdf:perform :around ((o asdf:load-op)
+                                 (c asdf:cl-source-file))
+  (handler-case (call-next-method o c)
+    (sb-ext:invalid-fasl ()
+      (asdf:perform (make-instance 'asdf:compile-op) c)
+      (call-next-method))))
+
+;;; ____________________________________________________________________________
+;;;                                                                   Libraries
 
 (ql:quickload '(:quickproject :alexandria :iterate :lisp-critic))
 
@@ -34,8 +50,5 @@
 ;; LOOP replacement
 (use-package :iterate)
 
-;; Set default opimzation levels for compiling:
-(declaim (optimize (safety 3) (debug 3) (speed 0) (space 0)))
-
 (format *debug-io* "To take latest type:
-    (ql:update-dist \"quicklisp\")~%")
+(ql:update-dist \"quicklisp\")~%")
