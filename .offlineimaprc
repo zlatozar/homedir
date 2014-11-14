@@ -1,32 +1,30 @@
 [general]
-maxage = 5
-autorefresh = 15
-accounts = Gmail
-maxsyncaccounts = 1
-pythonfile = ~/.offlineimap.py
+# Use comma for separator
+accounts        = Gmail
+# Give it corrct permissions: chmod 755 ~/.offlineimap.py
+pythonfile      = ~/.offlineimap.py
+socktimeout     = 60
+maxsyncaccounts = 3
 
 [Account Gmail]
-localrepository = Local
-remoterepository = Remote
+localrepository  = Gmail-Local
+remoterepository = Gmail-Remote
+status_backend   = sqlite
+autorefresh      = 5
+quick            = 10
 
-[Repository Local]
-type = Maildir
-localfolders = ~/Maildir
+[Repository Gmail-Local]
+type            = Maildir
+localfolders    = ~/Mail/Gmail
 
-[Repository Remote]
-type = Gmail
-remoteuser = zlatozar@gmail.com
-remotepasseval = get_password_emacs("imap.gmail.com", "zlatozar@gmail.com", "993")
-realdelete = no
-
-folderfilter = lambda foldername: foldername not in ['[Gmail]/Spam', '[Gmail]/All Mail', '[Gmail]/Starred', '[Gmail]/Important']
-
-holdconnectionopen = true
-keepalive = 60
-
-# Linux
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-
-# For MAC generate dummy: openssl req -new -x509 -extensions v3_ca -keyout /dev/null -out dummycert.pem -days 3650
-# ssl = true
-# sslcacertfile = <path to dummycert.pem>
+[Repository Gmail-Remote]
+type            = Gmail
+remoteport      = 993
+remoteuser      = zlatozar@gmail.com
+remotepasseval  = get_password_emacs("imap.gmail.com", "993")
+ssl                = yes
+sslcacertfile      = /etc/ssl/certs/ca-certificates.crt
+holdconnectionopen = yes
+maxconnections     = 3
+folderfilter       = lambda foldername: foldername not in ['[Gmail]/Spam', '[Gmail]/All Mail', '[Gmail]/Starred', '[Gmail]/Important']
+realdelete         = no

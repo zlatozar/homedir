@@ -1,14 +1,13 @@
 #!/usr/bin/python
 
-import re, os
+import subprocess
 
-# ~/.authinfo is encrypted using emacs: M-x epa-encrypt-file
-# Do not froget to remove ~/.authinfo after that
-def get_password_emacs(machine, login, port):
-    s = "machine %s login %s port %s password ([^ ]*)\n" % (machine, login, port)
-    p = re.compile(s)
-    # Linux
-    authinfo = os.popen("gpg -q --no-tty -d ~/.authinfo.gpg").read()
-    # No encryption
-    # authinfo = os.popen("cat ~/.authinfo").read()
-    return p.search(authinfo).group(1)
+def get_output(cmd):
+    pipe = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    (output, errout) = pipe.communicate()
+    assert pipe.returncode == 0 and not errout
+    return output
+
+def get_password_emacs(host, port):
+    cmd = "emacsclient --eval '(offlineimap-get-password \"%s\" \"%s\")'" % (host, port)
+    return get_output(cmd).strip().lstrip('"').rstrip('"')
