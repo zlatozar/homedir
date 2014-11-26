@@ -67,12 +67,12 @@ ulimit -S -c 0
 # runs emacs as server if not
 export ALTERNATE_EDITOR=""
 
-# stop it when exit
-# emacsclient --eval "(progn (setq kill-emacs-hook 'nil) (kill-emacs))"
-
 export EDITOR="emacs -Q -D"
 export VISUAL="emacs -Q -D"
 export PAGER="less --quit-if-one-screen -Mg"
+
+# 'C-c C-c' when you are ready
+export GIT_EDITOR=emacsclient
 
 # some very specific programs that are not in distribution
 PATH=$PATH:~/bin
