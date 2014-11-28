@@ -29,9 +29,10 @@ fi
 # Additional system settings   #
 #------------------------------#
 
-HISTSIZE=1000
+HISTSIZE=10000
 HISTFILESIZE=20000
-HISTCONTROL=ignoreboth
+# Erase duplicates in history
+export HISTCONTROL=erasedups
 
 # no new mail notifications
 shopt -u mailwarn
