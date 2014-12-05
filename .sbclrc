@@ -12,6 +12,8 @@
 ;;; ____________________________________________________________________________
 ;;;                                                          SBCL Configuration
 
+(require :asdf)
+
 ;; AllegroCL style REPL, with integrated inspector
 (require :sb-aclrepl)
 
@@ -40,6 +42,7 @@
 ;;; ____________________________________________________________________________
 ;;;                                                                   Libraries
 
+;; 'lisp-critic' is in my project/lisp directory
 (ql:quickload '(:quickproject :alexandria :iterate :lisp-critic))
 
 (setf quickproject:*author* "Zlatozar Zhelyazkov <zlatozar@gmail.com>")
