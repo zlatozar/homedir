@@ -37,6 +37,7 @@
 
 [merge]
     stat = true
+    tool = kdiff3
 
 [rebase]
     stat = true
@@ -88,7 +89,7 @@
     st = status -sb
     ci = commit -s -v
     cho = checkout
-    cl = clean -dfx --exclude=**/.metadata --exclude=**/.project --exclude=**/.settings --exclude=**/target --exclude=**/.classpath
+    cl = clean -dfx --exclude=**/.* --exclude=**/target
     df = diff
     br = branch
     fa = fetch --all
@@ -106,8 +107,7 @@
     fstat = !git --no-pager diff --stat -M -w
     gre = grep -I --cached --color -n -C 3
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-    lm = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --merges
-    ls = log --pretty=format:"%C(yellow)%h %C(blue)%ad%C(red)%d %C(reset)%s%C(green) [%cn]" --decorate --date=short --numstat
+
     hist = log --graph --pretty=format:'%Cred%h %Cgreen(%ad)%Creset| -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
     track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
     masterit = !git fetch && (git rebase -v origin/master || (git stash && (git rebase -v origin/master || echo "WARNING: Run 'git stash pop' manually!") && git stash pop))
@@ -137,3 +137,6 @@
 
     # Show defined aliases
     alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | sort
+
+[mergetool]
+    keepBackup = false
