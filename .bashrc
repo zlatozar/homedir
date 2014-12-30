@@ -277,6 +277,10 @@ function urlcap() {
     sudo tcpflow -p -c -i eth0 | grep -oE '(GET|POST|HEAD) .* HTTP/1.[01]|Host: .*'
 }
 
+function pid2command() {
+    ps $1 | tail -1 | awk '{i=5; while (i<NF) {printf "%s ", $i; i++}; print $NF}'
+}
+
 function search() {
     find -regex '.*~$\|.*/\.\(git\|hg\|svn\|bin\|metadata\project\|classpath\)\(/\|$\)' \
          -prune -o -type f -print0 | xargs -r0 grep -HnI "$1"
