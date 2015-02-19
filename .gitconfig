@@ -17,10 +17,11 @@
 
 [core]
     excludesfile = ~/.gitignore
-    whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
     quotepath = false
-    autocrlf = input
-    safecrlf = warn
+    # Do NOT auto-convert CRLF line endings into LF
+    autocrlf = false
+    # Do NOT check if converting CRLF is reversible
+    safecrlf = false
     pager = less --quit-if-one-screen --quit-on-intr --hilite-unread -Mg
 
 [diff]

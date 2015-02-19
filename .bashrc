@@ -355,7 +355,7 @@ export MAVEN_OPTS="-Xms512m -Xmx1024m"
 alias ipy='ipython --pylab'
 
 # MIT Scheme
-alias scm='rlwrap scheme'
+alias scm='rlwrap guile'
 
 #
 # LISP settings
