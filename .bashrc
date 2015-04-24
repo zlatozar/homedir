@@ -65,6 +65,9 @@ ulimit -S -c 0
 # Additional personal settings #
 #------------------------------#
 
+# Enable all alias as SUDO user
+alias sudo='sudo '
+
 # runs emacs as server if not
 export ALTERNATE_EDITOR=""
 
