@@ -357,6 +357,9 @@ export MAVEN_OPTS="-Xms512m -Xmx1024m"
 #export PYTHONPATH=
 alias ipy='ipython --pylab'
 
+export WORKON_HOME=~/.virtualenvs/
+source /usr/local/bin/virtualenvwrapper.sh
+
 # MIT Scheme
 alias scm='rlwrap guile'
 
