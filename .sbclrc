@@ -22,7 +22,7 @@
 (sb-ext:restrict-compiler-policy 'debug 3)
 
 ;; M-. to find system definitions
-(sb-ext:set-sbcl-source-location "/opt/common-lisp/sbcl/") ; <-- Place right location
+(sb-ext:set-sbcl-source-location "/opt/common-lisp/sbcl-source/") ; <-- Place right location
 
 ;; Mute some warnings
 (handler-bind
