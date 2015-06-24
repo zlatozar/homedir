@@ -8,6 +8,13 @@
 # Good to be installed: "gitk" and "git-gui"
 #
 
+# Commint convention:
+#
+#  "+ " (for added)
+#  "- " (for removed)
+#  ": " (for changed)
+#  "! " (for fixed).
+
 #_______________________________________________________________________________
 #                                                                        System
 
