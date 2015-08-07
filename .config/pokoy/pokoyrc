@@ -1,0 +1,18 @@
+# https://github.com/ttygde/pokoy.git configuration file
+
+# Keys: 'p' - postpone, 's' - skip
+
+show_bar			true
+show_timer			true
+enable_skip		    true
+enable_postpone	    true
+idle_time			10:00
+sleep_time			30:00
+
+break				50:00	3:00	2:00
+#break				5:00	0:10	0:00
+
+# Example settings. They are not default.
+
+#font				-*-terminus-*-*-*-*-32-*-*-*-*-*-*-*
+#block				MPlayer

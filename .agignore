@@ -1,4 +1,4 @@
 CVS
-.svn
-.git
 target
+*.iml
+*.*~
