@@ -78,9 +78,6 @@ export PAGER="less --quit-if-one-screen -Mg"
 # 'C-c C-c' when you are ready
 export GIT_EDITOR=emacsclient
 
-# some very specific programs that are not in distribution
-PATH=$PATH:~/bin
-
 # If id command returns zero, you’ve root access.
 if [ $(id -u) -eq 0 ];
 then # you are root, set red colour prompt
@@ -348,6 +345,8 @@ export MAVEN_OPTS="-Xms512m -Xmx1024m"
 # Maven bash-completion
 # See: https://github.com/juven/maven-bash-completion
 
+# Groovy (use GVM)
+
 #
 # PYTHON
 #
@@ -366,12 +365,7 @@ alias scm='rlwrap guile'
 #
 # LISP settings
 #
-
-#export SBCL_HOME=
 alias lisp='rlwrap sbcl'
-
-# Go lang
-export GOPATH=~/projects/go
 
 # Git
 export GIT_PS1_SHOWDIRTYSTATE=1
