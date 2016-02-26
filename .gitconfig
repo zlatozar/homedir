@@ -119,6 +119,8 @@
     hist = log --graph --pretty=format:'%Cred%h %Cgreen(%ad)%Creset| -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
     track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
     masterit = !git fetch && (git rebase -v origin/master || (git stash && (git rebase -v origin/master || echo "WARNING: Run 'git stash pop' manually!") && git stash pop))
+    # (to master) git migrate new-branch-name; git migrate new-branch other-branch or (only last commit) git migrate new-branch master HEAD~1
+    migrate = "!f(){ CURRENT=$(git symbolic-ref --short HEAD); git checkout -b $1 && git branch --force $CURRENT ${3-'$CURRENT@{u}'} && git rebase --onto ${2-master} $CURRENT; }; f"
 
     # See what you are going to push
     out = "!f() { if `git push -n &>/dev/null`; then git push -n 2>&1 |tail -1 |awk {'print $1;'} |xargs git log; else echo "Not in sync or uncommitted changes exist"; fi; } ; f"
