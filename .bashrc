@@ -345,7 +345,7 @@ export MAVEN_OPTS="-Xms512m -Xmx1024m"
 # Maven bash-completion
 # See: https://github.com/juven/maven-bash-completion
 
-# Groovy (use GVM)
+# Groovy (use SDKMan to install)
 
 #
 # PYTHON
@@ -366,6 +366,11 @@ alias scm='rlwrap guile'
 # LISP settings
 #
 alias lisp='rlwrap sbcl'
+
+#
+# OCaml
+#
+alias ocaml='rlwrap ocaml'
 
 # Git
 export GIT_PS1_SHOWDIRTYSTATE=1
