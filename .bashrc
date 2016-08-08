@@ -370,7 +370,12 @@ alias lisp='rlwrap sbcl'
 #
 # OCaml
 #
+
+which opam >/dev/null && . .opam/opam-init/init.sh &>/dev/null
+export OCAML_TOPLEVEL_PATH="$HOME/.opam/system/lib/toplevel"
+
 alias ocaml='rlwrap ocaml'
+alias utop='utop -safe-string'
 
 # Git
 export GIT_PS1_SHOWDIRTYSTATE=1
