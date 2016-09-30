@@ -114,9 +114,9 @@
 
     fstat = !git --no-pager diff --stat -M -w
     gre = grep -I --cached --color -n -C 3
-    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    lg = log --graph --abbrev-commit --decorate --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 
-    hist = log --graph --pretty=format:'%Cred%h %Cgreen(%ad)%Creset| -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
+    hist = log --graph --abbrev-commit --date=short --decorate --all --pretty=format:'%Cred%h %Cgreen(%ad)%Creset| -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset'
     track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
     masterit = !git fetch && (git rebase -v origin/master || (git stash && (git rebase -v origin/master || echo "WARNING: Run 'git stash pop' manually!") && git stash pop))
     # (to master) git migrate new-branch-name; git migrate new-branch other-branch or (only last commit) git migrate new-branch master HEAD~1
