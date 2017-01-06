@@ -94,7 +94,6 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
-export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='1;31'
 
 alias g='grep -inIEr'
@@ -350,8 +349,8 @@ export MAVEN_OPTS="-Xms512m -Xmx1024m"
 #
 # PYTHON
 #
-# Install: python setup.py install --record files.txt
-# Remove:  cat files.txt | xargs rm -rf
+# When install: python setup.py install --record files.txt
+# Then remove:  cat files.txt | xargs rm -rf
 
 #export PYTHONPATH=
 alias ipy='ipython --pylab'
@@ -371,13 +370,14 @@ alias lisp='rlwrap sbcl'
 # OCaml
 #
 
-which opam >/dev/null && . .opam/opam-init/init.sh &>/dev/null
 export OCAML_TOPLEVEL_PATH="$HOME/.opam/system/lib/toplevel"
 
 alias ocaml='rlwrap ocaml'
 alias utop='utop -safe-string'
 
+#
 # Git
+#
 export GIT_PS1_SHOWDIRTYSTATE=1
 
 function git-history-clean() {
@@ -402,3 +402,11 @@ function irebase() {
         git rebase -i HEAD~$1
     fi
 }
+
+#
+# Docker
+#
+alias dl='docker ps -l -q'
+alias dgc='docker rm $(docker ps -a -q)'
+alias dlog='docker logs -f $(docker ps -lq)'
+alias dport='docker port $(docker ps -lq) | cut -d " " -f3'
