@@ -312,6 +312,10 @@ function findInJar() {
 }
 
 #
+# HTTP
+# https://httpie.org/
+
+#
 # C/C++ settings
 #
 alias objdump='objdump -d -S -hrt'
@@ -406,7 +410,9 @@ function irebase() {
 #
 # Docker
 #
-alias dl='docker ps -l -q'
-alias dgc='docker rm $(docker ps -a -q)'
+# Docker containers
+alias dls='docker ps -a -l'
+alias drm='docker ps -a -q | xargs --no-run-if-empty docker rm -f'
+alias dstop='docker stop $(docker ps -a -q)'
 alias dlog='docker logs -f $(docker ps -lq)'
 alias dport='docker port $(docker ps -lq) | cut -d " " -f3'
