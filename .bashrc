@@ -87,6 +87,11 @@ else # normal
     PS1="(\[\033[0;36m\]\t\[\e[0m\]) [\[\033[1;31m\]\w\[\033[0;31m\]\[\e[1;30m\]\$(__git_ps1)\[\e[0m\]]$ "
 fi
 
+# https://gnunn1.github.io/tilix-web/manual/vteconfig/
+if [ $TERMINIX_ID ] || [ $VTE_VERSION ]; then
+    source /etc/profile.d/vte.sh
+fi
+
 # for scripts debug
 export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
 

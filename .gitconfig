@@ -106,7 +106,7 @@
     up = "!f() { git remote update; git pull --rebase ; } ; f"
 
     # Patching and picking
-    pick = cherry-pick
+    pick = cherry-pick -x
     patch-create = format-patch -w -s
     patch-dry = apply --stat --check
     patch = apply --ignore-whitespace --reject
