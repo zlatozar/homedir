@@ -421,3 +421,9 @@ alias drm='docker ps -a -q | xargs --no-run-if-empty docker rm -f'
 alias dstop='docker stop $(docker ps -a -q)'
 alias dlog='docker logs -f $(docker ps -lq)'
 alias dport='docker port $(docker ps -lq) | cut -d " " -f3'
+
+#
+# F# and .Net
+#
+alias fsi="cd /opt/dotnet/paket && fsharpi; cd -"
+alias paket="cd /opt/dotnet/paket && mono paket.exe $@; cd -"
