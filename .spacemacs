@@ -50,10 +50,11 @@ values."
             shell-default-position 'bottom)
 
      ;;; Tooling
-     neotree
+     treemacs
      helm
      auto-completion
      better-defaults
+     themes-megapack
 
      spell-checking
      syntax-checking
@@ -148,7 +149,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
+   dotspacemacs-themes '(zenburn
+                         spacemacs-dark
                          spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
@@ -250,7 +252,7 @@ values."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -282,7 +284,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers t
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -313,7 +315,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup 'all
    ))
 
 (defun dotspacemacs/user-init ()
@@ -370,7 +372,6 @@ you should place your code here."
     (setq company-transformers nil
           company-lsp-async t
           company-lsp-cache-candidates nil))
-
   (message "%s" "Finished configuring company.")
 
   ;;; F#
@@ -395,40 +396,49 @@ you should place your code here."
     :bind
     (:map lsp-mode-map
           ("C-c C-r" . lsp-ui-peek-find-references)
-          ("C-c C-j" . lsp-ui-peek-find-definitions)
+          ("C-c C-d" . lsp-ui-peek-find-definitions)
           ("C-c i"   . lsp-ui-peek-find-implementation)
           ("C-c m"   . lsp-ui-imenu)
+          ("C-c r"   . lsp-rename)
           ("C-c s"   . lsp-ui-sideline-mode)
           ("C-c d"   . my/toggle-lsp-ui-doc))
 
-  :hook ((lsp-after-open . lsp-ui-mode))
-  :custom
-  (lsp-ui-doc-enable nil)
-  (lsp-ui-doc-header t)
-  (lsp-ui-doc-include-signature nil)
-  (lsp-ui-doc-position 'at-point) ;; top, bottom, or at-point
-  (lsp-ui-doc-max-width 120)
-  (lsp-ui-doc-max-height 30)
-  (lsp-ui-doc-use-childframe t)
-  (lsp-ui-doc-use-webkit t)
-  ;; lsp-ui-flycheck
-  (lsp-ui-flycheck-enable nil)
-  ;; lsp-ui-sideline
-  (lsp-ui-sideline-enable nil)
-  (lsp-ui-sideline-ignore-duplicate t)
-  (lsp-ui-sideline-show-symbol t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-sideline-show-diagnostics nil)
-  (lsp-ui-sideline-show-code-actions t)
-  ;; lsp-ui-imenu
-  (lsp-ui-imenu-enable t)
-  (lsp-ui-imenu-kind-position 'top)
-  ;; lsp-ui-peek
-  (lsp-ui-peek-enable t)
-  (lsp-ui-peek-peek-height 20)
-  (lsp-ui-peek-list-width 50)
-  (lsp-ui-peek-fontify 'on-demand)) ;; never, on-demand, or always
+    :hook ((lsp-after-open . lsp-ui-mode))
+    :custom-face
+    (lsp-ui-doc-background ((t (:background nil))))
+    (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
+    :custom
+    (lsp-ui-doc-enable nil)
+    (lsp-ui-doc-header t)
+    (lsp-ui-doc-include-signature nil)
+    (lsp-ui-doc-position 'at-point) ;; top, bottom, or at-point
+    (lsp-ui-doc-max-width 120)
+    (lsp-ui-doc-max-height 30)
+    (lsp-ui-doc-use-childframe t)
+    (lsp-ui-doc-use-webkit t)
+    (lsp-ui-doc-border (face-foreground 'default))
+    ;; lsp-ui-flycheck
+    (lsp-ui-flycheck-enable nil)
+    ;; lsp-ui-sideline
+    (lsp-ui-sideline-enable nil)
+    (lsp-ui-sideline-ignore-duplicate t)
+    (lsp-ui-sideline-show-symbol t)
+    (lsp-ui-sideline-show-hover t)
+    (lsp-ui-sideline-show-diagnostics nil)
+    (lsp-ui-sideline-show-code-actions t)
+    ;; lsp-ui-imenu
+    (lsp-ui-imenu-enable t)
+    (lsp-ui-imenu-kind-position 'top)
+    ;; lsp-ui-peek
+    (lsp-ui-peek-enable t)
+    (lsp-ui-peek-peek-height 20)
+    (lsp-ui-peek-list-width 50)
+    (lsp-ui-peek-fontify 'on-demand)) ;; never, on-demand, or always
   (message "%s" "Finished configuring LSP messages.")
+
+  (use-package lsp-treemacs
+    :bind (:map lsp-mode-map
+                ("C-c e" . lsp-treemacs-errors-list)))
 
   )
 
