@@ -38,11 +38,51 @@ values."
      ;; ----------------------------------------------------------------
 
      ;;; Programming
-     lsp
+     (lsp :variables
+          lsp-ui-doc-enable nil
+          lsp-ui-doc-header t
+          lsp-ui-doc-include-signature nil
+          lsp-ui-doc-position 'at-point
+          lsp-ui-doc-max-width 120
+          lsp-ui-doc-max-height 30
+          lsp-ui-doc-use-childframe t
+          lsp-ui-doc-use-webkit t
+          lsp-ui-doc-border (face-foreground 'default)
+          ;; lsp-ui-flycheck
+          lsp-ui-flycheck-enable nil
+          ;; lsp-ui-sideline
+          lsp-ui-sideline-enable nil
+          lsp-ui-sideline-ignore-duplicate t
+          lsp-ui-sideline-show-symbol t
+          lsp-ui-sideline-show-hover t
+          lsp-ui-sideline-show-diagnostics nil
+          lsp-ui-sideline-show-code-actions t
+          ;; lsp-ui-imenu
+          lsp-ui-imenu-enable t
+          lsp-ui-imenu-kind-position 'top
+          ;; lsp-ui-peek
+          lsp-ui-peek-fontify 'on-demand
+          lsp-ui-peek-enable t
+          lsp-ui-peek-peek-height 20
+          lsp-ui-peek-list-width 50)
+
      git
+     (version-control :variables
+                      version-control-diff-tool 'diff-hl
+                      version-control-diff-side 'left
+                      version-control-global-margin t)
+     (treemacs :variables
+               treemacs-use-filewatch-mode t
+               treemacs-use-git-mode 'deferred)
      markdown
 
+     ;;; Programming Languages
+     dotnet
      fsharp2
+     (forth :variables
+            forth-executable "gforth")
+
+     ;;; Scripting
      emacs-lisp
      shell-scripts
      (shell :variables
@@ -50,16 +90,14 @@ values."
             shell-default-position 'bottom)
 
      ;;; Tooling
-     treemacs
-     helm
      auto-completion
      better-defaults
-     themes-megapack
-
      spell-checking
      syntax-checking
-     version-control
 
+     helm
+     unicode-fonts
+     themes-megapack
      )
 
    ;; List of additional packages that will be installed without being
@@ -67,16 +105,7 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
-   '(
-     all-the-icons
-     xclip
-
-     use-package
-     lsp-mode
-     dap-mode
-     company-lsp
-     helm-lsp
-     )
+   '(xclip use-package helm-lsp company-lsp)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -335,8 +364,7 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-  ;;; Copy/Past
-  (require 'xclip)
+  ;;; Copy/Paste
   (xclip-mode 1)
 
   ;;; Lines
@@ -347,7 +375,7 @@ you should place your code here."
   ;; Week starts on Monday
   (setq calendar-week-start-day 1)
   (setq european-calendar-style 'european)
-  ;; Date format
+
   (setq calendar-date-display-form
         '((if dayname
               (concat dayname ", "))
@@ -364,9 +392,7 @@ you should place your code here."
     (global-company-mode 1))
 
   (use-package company-lsp
-    :requires company
-    :config
-    (push 'company-lsp company-backends)
+    :config (push 'company-lsp company-backends)
 
     ;; Disable client-side cache because the LSP server does a better job.
     (setq company-transformers nil
@@ -374,16 +400,10 @@ you should place your code here."
           company-lsp-cache-candidates nil))
   (message "%s" "Finished configuring company.")
 
-  ;;; F#
-  (message "%s" "Configuring F#.")
+  ;;; Programming
 
-  (setq fsharp2-lsp-executable "/opt/install/fsharp-language-server/src/FSharpLanguageServer/bin/Release/netcoreapp2.0/linux-x64/publish")
-  (global-set-key (kbd "s-<return>") 'inferior-fsharp-eval-region)
-  (message "%s" "Finished configuring F#.")
-
-  (message "%s" "Configuring LSP messages.")
+  (message "%s" "Configuring LSP.")
   (use-package lsp-ui
-    :commands lsp-ui-mode
     :preface
     (defun my/toggle-lsp-ui-doc ()
       (interactive)
@@ -393,52 +413,28 @@ you should place your code here."
             (lsp-ui-doc--hide-frame))
         (lsp-ui-doc-mode 1)))
 
-    :bind
-    (:map lsp-mode-map
-          ("C-c C-r" . lsp-ui-peek-find-references)
-          ("C-c C-d" . lsp-ui-peek-find-definitions)
-          ("C-c i"   . lsp-ui-peek-find-implementation)
-          ("C-c m"   . lsp-ui-imenu)
-          ("C-c r"   . lsp-rename)
-          ("C-c s"   . lsp-ui-sideline-mode)
-          ("C-c d"   . my/toggle-lsp-ui-doc))
+    :bind (:map lsp-mode-map
+                ("C-c C-r" . lsp-ui-peek-find-references)
+                ("C-c C-d" . lsp-ui-peek-find-definitions)
+                ("C-c i"   . lsp-ui-peek-find-implementation)
+                ("C-c m"   . lsp-ui-imenu)
+                ("C-c r"   . lsp-rename)
+                ("C-c s"   . lsp-ui-sideline-mode)
+                ("C-c d"   . my/toggle-lsp-ui-doc))
 
     :hook ((lsp-after-open . lsp-ui-mode))
     :custom-face
     (lsp-ui-doc-background ((t (:background nil))))
-    (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
-    :custom
-    (lsp-ui-doc-enable nil)
-    (lsp-ui-doc-header t)
-    (lsp-ui-doc-include-signature nil)
-    (lsp-ui-doc-position 'at-point) ;; top, bottom, or at-point
-    (lsp-ui-doc-max-width 120)
-    (lsp-ui-doc-max-height 30)
-    (lsp-ui-doc-use-childframe t)
-    (lsp-ui-doc-use-webkit t)
-    (lsp-ui-doc-border (face-foreground 'default))
-    ;; lsp-ui-flycheck
-    (lsp-ui-flycheck-enable nil)
-    ;; lsp-ui-sideline
-    (lsp-ui-sideline-enable nil)
-    (lsp-ui-sideline-ignore-duplicate t)
-    (lsp-ui-sideline-show-symbol t)
-    (lsp-ui-sideline-show-hover t)
-    (lsp-ui-sideline-show-diagnostics nil)
-    (lsp-ui-sideline-show-code-actions t)
-    ;; lsp-ui-imenu
-    (lsp-ui-imenu-enable t)
-    (lsp-ui-imenu-kind-position 'top)
-    ;; lsp-ui-peek
-    (lsp-ui-peek-enable t)
-    (lsp-ui-peek-peek-height 20)
-    (lsp-ui-peek-list-width 50)
-    (lsp-ui-peek-fontify 'on-demand)) ;; never, on-demand, or always
-  (message "%s" "Finished configuring LSP messages.")
+    (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic))))))
+  (message "%s" "Finished configuring LSP.")
 
-  (use-package lsp-treemacs
-    :bind (:map lsp-mode-map
-                ("C-c e" . lsp-treemacs-errors-list)))
+  ;;; Programming Languages
+
+  ;; F#
+  (message "%s" "Configuring F#.")
+  (setq fsharp2-lsp-executable "/opt/install/fsharp-language-server/src/FSharpLanguageServer/bin/Release/netcoreapp2.0/linux-x64/publish")
+  (global-set-key (kbd "s-<return>") 'inferior-fsharp-eval-region)
+  (message "%s" "Finished configuring F#.")
 
   )
 
