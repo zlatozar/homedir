@@ -8,7 +8,7 @@
 # Good to be installed: "gitk" and "git-gui"
 #
 
-# Commint convention:
+# Commit convention:
 #
 #  "+ " (for added)
 #  "- " (for removed)
@@ -19,134 +19,125 @@
 #                                                                        System
 
 [user]
-    name =
-    email =
+	name =
+	email =
 
 [core]
-    excludesfile = ~/.gitignore
-    quotepath = false
-    # Do NOT auto-convert CRLF line endings into LF
-    autocrlf = false
-    # Do NOT check if converting CRLF is reversible
-    safecrlf = false
-    pager = less --quit-if-one-screen --quit-on-intr --hilite-unread -Mg
+	excludesfile = ~/.gitignore
+	quotepath = false
+	# Do NOT auto-convert CRLF line endings into LF
+	autocrlf = input
+	# Do NOT check if converting CRLF is reversible
+	safecrlf = false
+	pager = less --quit-if-one-screen --quit-on-intr --hilite-unread -Mg
 
 [diff]
-    renames = copies
+	renames = copies
 
 [branch]
-    # Always setup 'git pull' to rebase instead of merge
-    autosetuprebase = always
-    autosetupmerge = true
+	# Always setup 'git pull' to rebase instead of merge
+	autosetuprebase = always
+	autosetupmerge = true
 
 [push]
-    # Pushes will go the same place that pulls come from
-    default = tracking
+	# Pushes will go the same place that pulls come from
+	default = tracking
 
 [merge]
-    stat = true
-    tool = kdiff3
+	stat = true
+	tool = kdiff3
 
 [rebase]
-    stat = true
+	stat = true
 
 [apply]
-    whitespace = nowarn
+	whitespace = nowarn
 
 [rerere]
-    # To remove "wrong" merges delete .git/rr-cache/
-    enabled = true
-    autoupdate = true
+	# To remove "wrong" merges delete .git/rr-cache/
+	enabled = true
+	autoupdate = true
 
 [advice]
-    pushNonFastForward = false
-    statusHints = false
+	pushNonFastForward = false
+	statusHints = false
 
 [gc]
-    auto = 1
+	auto = 1
 
 [color]
-    ui = auto
+	ui = auto
 
 #_______________________________________________________________________________
 #                                                                       Aliases
 
 [alias]
-    # Serve local repository. Check with 'git ls-remote git://127.0.0.1/'
-    serve = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
+	# Serve local repository. Check with 'git ls-remote git://127.0.0.1/'
+	serve = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
 
-    # Select hunks one by one
-    record = !sh -c '(git add -p -- $@ && git commit -s) || git reset' --
+	# Select hunks one by one
+	record = !sh -c '(git add -p -- $@ && git commit -s) || git reset' --
 
-    # Rollbacks
-    uncommit = reset --soft HEAD^
-    unstage = reset HEAD --
-    mfix = commit --amend
+	# Rollbacks
+	uncommit = reset --soft HEAD^
+	unstage = reset HEAD --
+	amend = commit --amend --no-edit
 
-    detach = checkout HEAD^0
+	# When you need more information
+	info = "!f() { git remote -v; git branch -rv; }; f"
+	rank = shortlog -sn --no-merges
+	ready = diff --staged --stat -p
+	stashed = "!f() { for stash in $(git stash list | awk '{print $1}' | sed -e 's/://'); do (echo $stash && git stash show -p $stash); done }; f";
+	ignored = !git ls-files --others --exclude-standard
+	find = !git ls-tree -r --name-only HEAD |egrep --color $2
 
-    # When you need more information
-    info = "!f() { git remote -v; git branch -rv; }; f"
-    rank = shortlog -sn --no-merges
-    yesterday = whatchanged --stat --pretty=fuller --since='yesterday' --graph
-    ready = diff --staged --stat -p
-    stashed = "!f() { for stash in $(git stash list | awk '{print $1}' | sed -e 's/://'); do (echo $stash && git stash show -p $stash); done }; f";
-    ignored = !git ls-files --others --exclude-standard
-    find = !git ls-tree -r --name-only HEAD |egrep --color $2
+	st = status -sb
+	ci = commit -s -v
+	cl = clean -dfx --exclude=**/.* --exclude=**/target
+	br = branch -a
+	track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
+	rb = pull --rebase --verbose
+	up = "!f() { git remote update; git pull --rebase ; } ; f"
+	update = "!f() { git fetch "@{u}" --prune; git merge --ff-only "@{u}" || git rebase --preserve-merges "@{u}"; }; f"
 
-    st = status -sb
-    ci = commit -s -v
-    cho = checkout
-    cl = clean -dfx --exclude=**/.* --exclude=**/target
-    df = diff
-    br = branch
-    fa = fetch --all
-    rb = pull --rebase --verbose
-    lt = describe --tags --abbrev=0
-    up = "!f() { git remote update; git pull --rebase ; } ; f"
+	# Patching and picking
+	pick = cherry-pick
+	patch-create = format-patch -w -s
+	patch-dry = apply --stat --check
+	patch = apply --ignore-whitespace --reject
+	patch-apply = am -s
 
-    # Patching and picking
-    pick = cherry-pick -x
-    patch-create = format-patch -w -s
-    patch-dry = apply --stat --check
-    patch = apply --ignore-whitespace --reject
-    patch-apply = am -s
+	# "Dry-run" merge towards origin/master by default. Can pass another branch as 1st param
+	mergetest = "!f(){ git fetch; git merge --no-commit --no-ff \"${1-origin/master}\" | grep CONFLICT; if [ $? == 0 ]; then echo -e \"\\033[1;31m --- Merge will conflict :( --- \\033[0m\"; else echo -e \"\\033[1;32m --- No conflict in merge :) --- \\033[0m\"; fi; git merge --abort; }; f"
 
-    fstat = !git --no-pager diff --stat -M -w
-    gre = grep -I --cached --color -n -C 3
-    lg = log --graph --abbrev-commit --decorate --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+	lg = log --graph --abbrev-commit --decorate --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%C(magenta)\\ [%cn]" --decorate --numstat
+	hist = log --graph --abbrev-commit --date=short --decorate --all --pretty=format:'%Cred%h %Cgreen(%ad)%Creset| -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset'
 
-    hist = log --graph --abbrev-commit --date=short --decorate --all --pretty=format:'%Cred%h %Cgreen(%ad)%Creset| -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset'
-    track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
-    masterit = !git fetch && (git rebase -v origin/master || (git stash && (git rebase -v origin/master || echo "WARNING: Run 'git stash pop' manually!") && git stash pop))
-    # (to master) git migrate new-branch-name; git migrate new-branch other-branch or (only last commit) git migrate new-branch master HEAD~1
-    migrate = "!f(){ CURRENT=$(git symbolic-ref --short HEAD); git checkout -b $1 && git branch --force $CURRENT ${3-'$CURRENT@{u}'} && git rebase --onto ${2-master} $CURRENT; }; f"
+	# See what you are going to push
+	out = "!f() { if `git push -n &>/dev/null`; then git push -n 2>&1 |tail -1 |awk {'print $1;'} |xargs git log; else echo "Not in sync or uncommitted changes exist"; fi; } ; f"
 
-    # See what you are going to push
-    out = "!f() { if `git push -n &>/dev/null`; then git push -n 2>&1 |tail -1 |awk {'print $1;'} |xargs git log; else echo "Not in sync or uncommitted changes exist"; fi; } ; f"
+	# See what you are going to pull
+	in = pull --dry-run --verbose
 
-    # See what you are going to pull
-    in = pull --dry-run --verbose
+	# Use Gerrit for code review
+	publish = "!f() { git push -u ${1:-origin} HEAD:`git config branch.$(git name-rev --name-only HEAD).merge | sed -e 's@refs/heads/@refs/for/@'`; }; f"
 
-    # Use Gerrit for code review
-    publish = "!f() { git push -u ${1:-origin} HEAD:`git config branch.$(git name-rev --name-only HEAD).merge | sed -e 's@refs/heads/@refs/for/@'`; }; f"
+	wdiff = diff --word-diff
+	wshow = show --color-words
 
-    wdiff = diff --word-diff
-    wshow = show --color-words
+	# Have merge conflicts and want to quickly solve them using an editor and then add them
+	edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; $EDITOR `f`"
 
-    # Have merge conflicts and want to quickly solve them using an editor and then add them
-    edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; $EDITOR `f`"
-    add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
+	# Quickly take file versions
+	ours = "!f() { git checkout --ours $@ && git add $@; }; f"
+	theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
 
-    # Quickly take file versions
-    ours = "!f() { git checkout --ours $@ && git add $@; }; f"
-    theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
+	# Prune all tracking local branches that have been removed from remote
+	prune-all = !git remote | xargs -n 1 git remote prune
 
-    # Prune all tracking local branches that have been removed from remote
-    prune-all = !git remote | xargs -n 1 git remote prune
-
-    # Show defined aliases
-    alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | sort
+	# Show defined aliases
+	alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | sort
 
 [mergetool]
-    keepBackup = false
+	keepBackup = false
