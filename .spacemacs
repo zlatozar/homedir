@@ -48,8 +48,10 @@ values."
           lsp-ui-doc-use-childframe t
           lsp-ui-doc-use-webkit t
           lsp-ui-doc-border (face-foreground 'default)
+
           ;; lsp-ui-flycheck
           lsp-ui-flycheck-enable nil
+
           ;; lsp-ui-sideline
           lsp-ui-sideline-enable nil
           lsp-ui-sideline-ignore-duplicate t
@@ -57,9 +59,11 @@ values."
           lsp-ui-sideline-show-hover t
           lsp-ui-sideline-show-diagnostics nil
           lsp-ui-sideline-show-code-actions t
+
           ;; lsp-ui-imenu
           lsp-ui-imenu-enable t
           lsp-ui-imenu-kind-position 'top
+
           ;; lsp-ui-peek
           lsp-ui-peek-fontify 'on-demand
           lsp-ui-peek-enable t
@@ -94,6 +98,7 @@ values."
      better-defaults
      spell-checking
      syntax-checking
+     helpful
 
      helm
      unicode-fonts
