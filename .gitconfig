@@ -96,9 +96,7 @@
 	cl = clean -dfx --exclude=**/.* --exclude=**/target
 	br = branch -a
 	track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
-	rb = pull --rebase --verbose
 	up = "!f() { git remote update; git pull --rebase ; } ; f"
-	update = "!f() { git fetch "@{u}" --prune; git merge --ff-only "@{u}" || git rebase --preserve-merges "@{u}"; }; f"
 
 	# Patching and picking
 	pick = cherry-pick
