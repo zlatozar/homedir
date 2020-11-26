@@ -38,6 +38,7 @@ values."
      ;; ----------------------------------------------------------------
 
      ;;; Programming
+     lsp
      (lsp :variables
           lsp-ui-doc-enable nil
           lsp-ui-doc-header t
@@ -48,10 +49,8 @@ values."
           lsp-ui-doc-use-childframe t
           lsp-ui-doc-use-webkit t
           lsp-ui-doc-border (face-foreground 'default)
-
           ;; lsp-ui-flycheck
           lsp-ui-flycheck-enable nil
-
           ;; lsp-ui-sideline
           lsp-ui-sideline-enable nil
           lsp-ui-sideline-ignore-duplicate t
@@ -59,11 +58,9 @@ values."
           lsp-ui-sideline-show-hover t
           lsp-ui-sideline-show-diagnostics nil
           lsp-ui-sideline-show-code-actions t
-
           ;; lsp-ui-imenu
           lsp-ui-imenu-enable t
           lsp-ui-imenu-kind-position 'top
-
           ;; lsp-ui-peek
           lsp-ui-peek-fontify 'on-demand
           lsp-ui-peek-enable t
@@ -78,13 +75,19 @@ values."
      (treemacs :variables
                treemacs-use-filewatch-mode t
                treemacs-use-git-mode 'deferred)
-     markdown
+     ;; markdown
+     yaml
+
+     (ibuffer :variables
+              ibuffer-group-buffers-by 'projects)
 
      ;;; Programming Languages
      dotnet
      fsharp2
      (forth :variables
             forth-executable "gforth")
+     c-c++
+     (c-c++ :variables c-c++-enable-google-style t)
 
      ;;; Scripting
      emacs-lisp
@@ -94,8 +97,10 @@ values."
             shell-default-position 'bottom)
 
      ;;; Tooling
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-snippets-in-popup t)
      better-defaults
+
      spell-checking
      syntax-checking
      helpful
@@ -416,6 +421,7 @@ you should place your code here."
           (progn
             (lsp-ui-doc-mode -1)
             (lsp-ui-doc--hide-frame))
+
         (lsp-ui-doc-mode 1)))
 
     :bind (:map lsp-mode-map
@@ -434,6 +440,7 @@ you should place your code here."
   (message "%s" "Finished configuring LSP.")
 
   ;;; Programming Languages
+  (remove-hook 'prog-mode-hook #'smartparens-mode)
 
   ;; F#
   (message "%s" "Configuring F#.")
@@ -441,21 +448,9 @@ you should place your code here."
   (global-set-key (kbd "s-<return>") 'inferior-fsharp-eval-region)
   (message "%s" "Finished configuring F#.")
 
+  ;; Use Bulgarian keyboard
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (fsharp-mode eglot flymake jsonrpc ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
