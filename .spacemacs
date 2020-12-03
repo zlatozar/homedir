@@ -37,8 +37,9 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
 
+     ;; Did you make git update on ~/.emacs.d/?
+
      ;;; Programming
-     lsp
      (lsp :variables
           lsp-ui-doc-enable nil
           lsp-ui-doc-header t
@@ -82,12 +83,17 @@ values."
               ibuffer-group-buffers-by 'projects)
 
      ;;; Programming Languages
-     dotnet
-     fsharp2
-     (forth :variables
-            forth-executable "gforth")
-     c-c++
-     (c-c++ :variables c-c++-enable-google-style t)
+     ;; dotnet
+     ;; fsharp2
+
+     asm
+     (c-c++ :variables
+            c-c++-lsp-enable-semantic-highlight 'rainbow
+            c-c++-default-mode-for-headers 'c++-mode
+            c-c++-enable-clang-format-on-save t
+            c-c++-backend 'lsp-clangd ;;'lsp-ccls
+            c-c++-enable-google-style t
+            c-c++-enable-google-newline t)
 
      ;;; Scripting
      emacs-lisp
@@ -443,10 +449,10 @@ you should place your code here."
   (remove-hook 'prog-mode-hook #'smartparens-mode)
 
   ;; F#
-  (message "%s" "Configuring F#.")
-  (setq fsharp2-lsp-executable "/opt/install/fsharp-language-server/src/FSharpLanguageServer/bin/Release/netcoreapp2.0/linux-x64/publish")
-  (global-set-key (kbd "s-<return>") 'inferior-fsharp-eval-region)
-  (message "%s" "Finished configuring F#.")
+  ;; (message "%s" "Configuring F#.")
+  ;; (setq fsharp2-lsp-executable "/opt/install/fsharp-language-server/src/FSharpLanguageServer/bin/Release/netcoreapp2.0/linux-x64/publish")
+  ;; (global-set-key (kbd "s-<return>") 'inferior-fsharp-eval-region)
+  ;; (message "%s" "Finished configuring F#.")
 
   ;; Use Bulgarian keyboard
 
