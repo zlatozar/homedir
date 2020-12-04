@@ -60,7 +60,7 @@ Key&nbsp;Binding   | Description
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
-`M-m p p`   | List projects
+`M-m p p`   | List/Import projects
 `M-m /`     | Search project using `ag`
 `M-m *`     | Search _current_ word in project
 `M-m p f`   | Find project file

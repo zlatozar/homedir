@@ -40,7 +40,15 @@ values."
      ;; Did you make git update on ~/.emacs.d/?
 
      ;;; Programming
+
+     ;; M-x dap-gdb-lldb-setup
+     (dap :variables
+          ;; don't display the mouse buttons
+          dap-enable-ui-controls nil
+          dap-auto-configure-features '(sessions locals breakpoints expressions tooltip))
+
      (lsp :variables
+          ;; lsp-restart 'auto-restart
           lsp-ui-doc-enable nil
           lsp-ui-doc-header t
           lsp-ui-doc-include-signature nil
@@ -83,17 +91,22 @@ values."
               ibuffer-group-buffers-by 'projects)
 
      ;;; Programming Languages
-     ;; dotnet
-     ;; fsharp2
+     dotnet
+     ;; LSP should be installed by hand
+     ;; (fsharp :variables
+     ;;         fsharp-backend 'lsp)
 
      asm
      (c-c++ :variables
-            c-c++-lsp-enable-semantic-highlight 'rainbow
+            c-c++-backend 'lsp-ccls
+            c-c++-lsp-server 'ccls
+
+            c-c++-lsp-sem-highlight-method 'font-lock
+            c-c++-lsp-sem-highlight-rainbow t
             c-c++-default-mode-for-headers 'c++-mode
-            c-c++-enable-clang-format-on-save t
-            c-c++-backend 'lsp-clangd ;;'lsp-ccls
-            c-c++-enable-google-style t
-            c-c++-enable-google-newline t)
+            c-c++-enable-rtags-completion nil
+            c-c++-adopt-subprojects t
+            c-c++-enable-google-style t)
 
      ;;; Scripting
      emacs-lisp
@@ -449,10 +462,6 @@ you should place your code here."
   (remove-hook 'prog-mode-hook #'smartparens-mode)
 
   ;; F#
-  ;; (message "%s" "Configuring F#.")
-  ;; (setq fsharp2-lsp-executable "/opt/install/fsharp-language-server/src/FSharpLanguageServer/bin/Release/netcoreapp2.0/linux-x64/publish")
-  ;; (global-set-key (kbd "s-<return>") 'inferior-fsharp-eval-region)
-  ;; (message "%s" "Finished configuring F#.")
 
   ;; Use Bulgarian keyboard
 
