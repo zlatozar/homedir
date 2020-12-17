@@ -1,0 +1,388 @@
+[STYLE] All macros and constants in caps: MAX_BUFFER_SIZE, TRACKING_ID_PREFIX.
+
+[STYLE] Struct names and typedef's in camelcase: GtkWidget, TrackingOrder.
+
+[STYLE] Functions that operate on structs: gtk_widget_show(), tracking_order_process().
+
+[TIP] Don't use global variables. They are evil.
+
+[STYLE] Functions that shouldn't be called directly, or have obscure uses, or
+        whatever must start with one or more underscores at the beginning:
+        _refrobnicate_data_tables(), _destroy_cache().
+
+[STYLE] Initialize variables in there declarations.
+
+[LANG] String constant is an array of characters. The internal representation of
+       a string has a null character '\0' at the end, so physical storage
+       required is one more than the number of characters. 'strlen(s)' excludes
+       terminal '\0'.
+
+[LANG] External and static variables are initialized to zero by default.
+
+[STYLE] Use 'const' to show that you are not going to change value, especially
+        in functions parameters: int strlen(const char[])
+
+[LANG] Precedence of '&&' is higher than that of '||'.
+
+[TIP] Specify 'signed' or 'unsigned' if non-character data is to be stored
+      in 'char' variables.
+
+[LANG] Logical operations in C are 0 or 1. '!' operator inverts them.
+
+[LANG] 'floats' are not automatically converted to 'double'.
+
+[TIP] The main reason for using 'float' is to save storage in a large arrays.
+
+[LANG] x = f() + g() C do not define which function will be evaluated first.
+       It is the same for function arguments.
+
+[LANG] Non-zero means true.
+
+[STYLE] When there is no initialization and re-initialization prefer 'while'.
+
+[STYLE] Irrelevant details could be buried in the functions. In this way the
+        chance of unwanted interactions is minimized and the pieces may even
+        be useful in other programs.
+
+[TIP] Always limit C programs input with upper bound.
+
+[TIP] C programs are flat so functions are visible to any part of the entire
+      program. Make functions kind of private as declare them 'static'
+
+[TIP] Stick to onion architecture - layer can "see" only first below it.
+
+[TIP] The structure of the project is very important - it explains the
+      visibility. Do not make tricks with compilation order and keep it
+      consistent.
+
+[LANG] Functions can't be defined within functions so we can't do real
+       functional programming.
+
+[LANG] For external and static variables, the initializer must be a constant
+       expression; the initialization is done once, conceptually before the
+       program begins execution. Same in Java.
+
+[LANG] If there are fewer initializers for an array than the number specified,
+       the missing elements will be zero for external, static, and automatic
+       variables.
+
+[TIP] Do increment as usual i = i + 1; and when function is correct make it
+      prefix or postfix.
+
+[TIP] You can't nest functions but if it is needed definition should be used:
+      void reverse(char[] str) {
+          void reverser(char[] str, int i, int len);
+          reverser(str, 0, strlen(str));
+      }
+      void reverser(char[] str, int i, int len) {
+          ...
+      }
+
+[STYLE] Use #include "foo.h" for your modules and #include <..> for external.
+
+[TIP] Prefer this type of declaration int *i;
+      Is a mnemonic - what i points to has type int.
+
+[STYLE] The single most important rule when writing code is this: check the
+        surrounding code and try to imitate it. As a maintainer it is dismaying
+        to receive a patch that is obviously in a different coding style to the
+        surrounding code. This is disrespectful, like someone tromping into a
+        spotlessly-clean house with muddy shoes. So, whatever this document
+        recommends, if there is already written code and you are patching it,
+        keep its current style consistent even if it is not your favorite style.
+
+[LANG]    (*ip)++  // to increment value that ip points to
+       The parentheses are necessary; without them, the expression would
+       increment 'ip' instead of what it points to, because unary operators
+       like * and ++ associate right to left.
+
+[LANG] In some cases it is better to look at &x as anonymous pointer rather
+       than address of x. Example: void swap(&x, &y) or int* ip; ip = &a[0];
+
+[TIP] It is common for functions to use passed pointer as "wire" to set
+      values as function side-effect.
+
+[LANG] &a[i] and a+i are identical: a+i is the address of the i-th element
+       beyond a. a[i] C language converts it to *(a + i) - pointer and offset
+
+[LANG] char s[]; and char *s; are equivalent. Prefer latter. When an array name
+       is passed to a function, the function can at its convenience believe
+       that it has been handed either an array or a pointer, and manipulate it
+       accordingly.
+
+[LANG] C guarantees that zero is never a valid address for data, so a return
+       value of zero can be used to signal an abnormal event, in this case, no
+       space. Pointers and integers are not interchangeable. Zero is the sole
+       exception: the constant zero may be assigned to a pointer, and a pointer
+       may be compared with the constant zero. Check pointer with NULL.
+
+[LANG] External and static variables are initialized to zero be default.
+
+[LANG] The main reason for using float is to save storage in large arrays.
+
+[LANG] The input or output, regardless of where it originates ore where it goes to,
+       is dealt with as stream of characters.
+
+[LANG] In C, any assignment, is an expression and returns a value, which is the
+       value of the left hand side after the assignment. That's why it is
+       possible to write: while (*s++ = *t++) {;}, if s and t are pointers to
+       string. At the end assignment will return '\0' (same as 0) and the cycle
+       will exit.
+
+[TIP] Programs should act intelligently when given zero-length input or to
+      defend itself with assert()
+
+[LANG] By definition, chars are just small integers, so char variables and
+       constants are identical to ints in arithmetic expressions.
+
+[TIP] Prefer small functions. With properly designed functions, it is possible
+      to ignore how a job is done; knowing what is done is sufficient.
+
+[TIP] C language is like a Latin - gives you the base everything else are rules,
+      conventions, project structure, autotools magic and proper macros.
+
+[LANG] Function definitions can appear in any order, and in one source file or
+       several, although no function can be split between files.
+
+[LANG] Since main is a function like any other, it may return a value to its
+       caller, which is in effect the environment in which the program was
+       executed. Typically, a return value of zero implies normal termination -
+       NO ERRORS; non-zero values signal unusual or erroneous termination
+       conditions - WITH ERRORS.
+
+[LANG] int is the default return type.
+
+[LANG] "Definition" refers to the place where the variable is created or
+       assigned storage; "declaration" refers to places where the nature of the
+       variable is stated but no storage is allocated.
+
+[LANG] The first name in an enum has value 0, the next 1, and so on, unless
+       explicit values are specified.
+
+[TIP] When your build tool do compilation be sure that will recompile when
+      an included file is changed.
+
+[TIP] In pointer arithmetic look at the types as a size of memory.
+
+[TIP] You can use pointer arithmetic only when have the starting point and
+      a way to calculate offset.
+
+[LANG] malloc() use stack in it's implementation so we have to apply free() in
+       reverse order.
+
+[LANG] *--p; decrements p before fetching the value that p points to.
+       Examples:   *p++ = val;   /* push value onto stack */
+                   val = *--p;   /* pop top of the stack into val */
+
+[TRICK] The syntax a[i] is equivalent to *(a + i). Thus it is valid to say 5[a]
+        to get at the 5th element of a.
+
+[TIP] Pointer-arithmetic says that given a pointer p and an integer i, p + i the
+      pointer p advanced by i * sizeof(*p) bytes
+
+[TIP] The [] operator is defined on pointers, not arrays. In particular, it's
+      defined in terms of pointer arithmetic and pointer dereference.
+
+[TIP] A pointer is abstractly a tuple (start, length, offset) with the condition
+      that 0 <= offset <= length. Pointer arithmetic is essentially lifted
+      arithmetic on the offset, with the caveat that if the result of the
+      operation violates the pointer condition, it is an undefined value.
+      Dereferencing a pointer adds an additional constraint that offset < length.
+
+[TIP] POSIX is a superset of the standard C library, and it's important to note
+      that it defers to it. If C and POSIX is ever in conflict, C wins.
+
+[TIP] Mocking is strongly connected with the ability of dependency injection.
+      Here a technique from functional programming could be used - replace all
+      changeable steps in a workflow with functions. During testing you can
+      pass fake/mocked one.
+
+[TIP] Header files are sometimes also an appropriate location for ​struct​
+      definitions. If other parts ofthe program will make direct use of the
+      ​struct​ fields, then the definition of that ​structnecessarily must appear
+      in the header file. If that is not the case, it is better to hide the
+      ​struct definition in a .​c​ file. A common practice is to use a ​typedef​
+      statement in a header file todeclare a type for other parts of the
+      program, and hide the definition of that type.
+
+[TIP] Having a long ​main ​function indicates a lack of abstraction, meaning that
+      your code has notbeen sufficiently split into logical, smaller functions.
+
+[TIP]           int a[10][20];
+                int *b[10];     // lazy initialization
+      The definition of b only allocates 10 pointers and does not initialize
+      them; initialization must be done explicitly, either statically or with
+      code. The important advantage of the pointer array is that the rows of
+      the array may be of different lengths.
+
+[TIP] During development wishful thinking can be used.
+      At the beginning of the file declare functions that you with to have
+      and continue to work on the algorithm. In this way also compilation
+      will be fast. When definitions are added or imported you can safely
+      remove them.
+
+[LANG] (*++argv)[0]; because [] binds tighter than * and ++, the parentheses
+       are necessary. By the way **++argv; is an alternate valid form.
+
+[LANG] In expressions '[]' is with highest priority following by '->'. After
+       them are '++' and then '--', but for them keep in mind if they are used
+       as prefix or postfix operators. At last is '*' but it has some kind of
+       highest priority from '++' and '--' if they are used as postfix
+       operators(e.g. *p++)
+
+[TIP] In C language, structures can be viewed as an some kind of memory template
+      or model. Using it you can easily find out its parts or save at particular
+      place. Using it the memory becomes a city with documented infrastructure.
+
+[TIP] Glue C program during compilation through include/header_file.h.
+
+[TIP] If you constantly ask for a particular field in a struct automate access
+      with a macro e.g. #define OFFSET(s) (((struct symtab *) s) -> s_offset)
+
+[TIP] Structures saves the state of the program in an organized way.
+
+[TIP] Start writing program(or it's fragments) as first define 'in structures'
+      and 'out structures' then concentrate on actions.
+
+[LANG] Struct declaration defines as a type.
+
+[LANG] A structure declaration that is not followed by a list of variables
+       reserves no storage; it merely describes a template or the shape of a
+       structure.
+
+[LANG] Structures may not be compared.
+
+[LANG] The only legal operations on a structure are copying it or assigning to
+       it as a unit, taking its address with &, and accessing its members. Copy
+       and assignment include passing arguments to functions and returning
+       values from functions as well.
+
+[LANG] If you have to write functions to manipulate structure There are at
+       least three possible approaches: pass components separately, pass an
+       entire structure, or pass a pointer to it.
+
+[TIP] If a large structure is to be passed to a function, it is generally more
+      efficient to pass a pointer than to copy the whole structure.
+
+[TIP] Always use '->' to access structure fields.
+
+[LANG] Note that the typedef name doesn't become visible until the end of the
+       declaration. If the structure contains a pointer to itself, you have use the
+       struct version to refer to it:
+               typedef struct node {
+                   int data;
+                   struct node *next; /* can't use just "node *next" here */
+               } node;
+
+[LANG] A typedef, in spite of the name, does not define a new type; it merely
+       creates a new name for an existing type.
+
+[LANG] It is common idiom to use both typedef and struct:
+              typedef struct S {
+                  int x;
+              } S;        // same name as struct tag!
+       This gives you the convenience of the more concise typedef name but still
+       allows you to use the full struct name if you need.
+
+[LANG]       typedef struct S {
+                 int x;
+             } S;
+       Could be rewritten as:
+             struct S {  // define the identifier S within the struct name space
+                 int x;
+             };
+             typedef struct S S;
+       Last line adds a type alias S in the global name space and thus allows
+       you to just write:
+             void f(S arg); // struct keyword no longer needed
+
+[LANG]       struct foo {
+                 int n;
+             };
+       The name 'foo' is a tag; it's meaningful only when it's immediately
+       preceded by the struct keyword.
+
+[LANG]       struct foo {
+                 int n;
+             };
+       Giving the struct a name (i.e. struct foo) also enables you to provide
+       forward declarations of the struct. So in some other file, you could
+       write:
+            struct foo;
+            void doit(struct foo *ptr);
+       without having to have access to the definition.
+
+[LANG] The following code creates an anonymous struct with the alias MyStruct:
+            typedef struct {
+                int one;
+                int two;
+            } MyStruct;
+       You can't refer it without the alias because you don't specify an
+       identifier for the structure. Forward declaration also will not work:
+            struct MyStruct; // forward declaration in another file fails
+
+[LANG] Structure is a data type. You don't give values to a data type. You give
+       values to instances of data types. Here is an example:
+            struct my_struct {
+                int id;
+            } MyStruct_default = {3};
+            typedef struct my_struct MyStruct;
+            // then it is possible to initialize every instance
+            MyStruct mInstance = MyStruct_default;
+
+[LANG] The size of the array is completely determined at compile time.
+
+[LANG] A sizeof can not be used in a #if line, because the preprocessor does not
+       parse type names. But the expression in the #def ine is not evaluated by
+       the preprocessor, so the code here is legal.
+
+[TIP] To be testing/emulating/mocking easier use some of following techniques:
+          - Pass around functions (and use partial application) - this is simple
+            functional approach that will work unless you need to pass around
+            too many parameters.
+          - Use an "interpreter" pattern where the computation is written in an
+            (embedded) domain specific language that describes what computations
+            and what I/O needs to be done (without actually doing it). Then you
+            can interpret the DSL differently in real and test mode.
+          - Use pipelines for each workflow. Write a "Lego blocks" that could be
+            combined in various ways.
+          - During development plan not only production but also and testing
+            workflow.
+
+[TRICK] C treats strings as arrays of characters conventionally terminated by a
+        marker. All following statements are equivalent:
+             for (p = str; *p; p++)
+             for (p = str; *p != '\0'; p++)
+             for (p = str; *p != 0; p++)
+             for (p = str; p[0] != '\0'; p++)
+
+[LANG] Addition of two pointer is illegal but subtraction is not! If you want to
+       calculate middle of a string using pointers:
+             mid = (low + high) / 2         // WRONG
+             mid = low + (high - low) / 2   // Correct
+
+[TIP] When use pointer arithmetic you work with relative addresses so it is very
+      important to set the beginning and then calculate offset to find the right
+      place. Here is an example:
+           for (p = keytab; p < keytab + NKEYS; p++) {...
+      'keytab' is the first element in an array, so the pointer p should be set
+      to point it. It follows that the last element address is the beginning
+      plus the size of the array which forms offset: keytab + NKEYS
+
+[TIP] When calculate space to save a new string do not forget to include in
+      calculation '\0':
+           (char *) malloc(strlen(s) + 1); // +1 for '\0'
+
+[TIP] When write a function that do some operation on a structure always as
+      first argument pass the structure:
+          struct tnode *addtree(struct tnode *p, char *s)
+      this is the convention in many functional languages.
+
+[TIP]     struct tnode {
+              char *word;
+              int count;
+              struct tnode *left;   // pointer to the left
+              struct tnode *right;
+          };
+      Tree is recursive structure that's why tnode is a tree
+      and tree is tnode.

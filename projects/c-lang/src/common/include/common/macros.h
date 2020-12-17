@@ -4,65 +4,106 @@
 #ifndef COMMON_MACROS_H
 #define COMMON_MACROS_H
 
-#define INT16 short
-#define INT32 long
+// _____________________________________________________________________________
+//                                                                         Lang
 
-/// Least significant bit
-#define LSB(x) ((x) ^ ((x) - 1) & (x))
+/* LOCAL void foo (void); makes clear that 'foo' is local in its module */
+#define LOCAL   static
 
-#define MIN(x, y) ((x) < (y) ? (x) : (y))
-#define MAX(x, y) ((x) > (y) ? (x) : (y))
+#define SUCC    0
+#define FAIL    1
+#define IS      ==
 
-#define IS_ODD(num) ((num) & 1)
+#define NOT     !
+#define AND     &&
+#define OR      ||
 
-#define IS_EVEN(num) (!IS_ODD( (num) ))
+#define INT32   long
+#define INT16   short
+#define UINT16  unsigned short
+#define INT64   long long
+#define UINT64  unsigned long long
 
-#define IS_BETWEEN(num_to_test, num_low, num_high) \
-        ((unsigned char)((num_to_test) >= (num_low) && (num_to_test) <= (num_high)))
+/*
+ * Placed at the beginning of a function it suppress compiler
+ * warnings about unused parameters.
+ */
+#define UNUSED(param_name)                               \
+  ((void)(0 ? ((param_name) = (param_name)) : (param_name)))
 
-#define COMPARE(x, y) (((x) > (y)) - ((x) < (y)))
+// _____________________________________________________________________________
+//                                                                         Math
 
-#define SIGN(x) COMPARE(x, 0)
+#define PI             3.14159265
 
-#define SWAP(x, y, T) do { T tmp = (x); (x) = (y); (y) = tmp; } while(0)
+#define MIN(x, y)      ((x) < (y) ? (x) : (y))
+#define MAX(x, y)      ((x) > (y) ? (x) : (y))
 
-#define COUNT_OF(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
+#define IS_ODD(num)    ((num) & 1)
+#define IS_EVEN(num)   (!IS_ODD( (num) ))
+#define IS_BETWEEN(num_to_test, num_low, num_high)  \
+  ((unsigned char)((num_to_test) >= (num_low) && (num_to_test) <= (num_high)))
 
-#define COLUMNS(S, E) [(E) - (S) + 1]
+#define COMPARE(x, y)  (((x) > (y)) - ((x) < (y)))
+#define SWAP(T, x, y)  do { T tmp = (x); (x) = (y); (y) = tmp; } while(0)
 
-// Compare strings
-#define STRCMP(A, o, B) (strcmp((A), (B)) o 0)
+// _____________________________________________________________________________
+//                                                                         Bits
 
-// Compare memory
-#define MEMCMP(A, o, B) (memcmp((A), (B)) o 0)
+#define BIT(x)           (1 << (x))
+#define SETBIT(x, p)     ((x) | (1 << (p)))
+#define CLEARBIT(x, p)   ((x) & (~(1 << (p))))
+#define GETBIT(x, p)     (((x) >> (p)) & 1)
+#define TOGGLEBIT(x, p)  ((x) ^ (1 << (p)))
+#define LSB(x)           ((x) ^ ((x) - 1) & (x))
+
+// _____________________________________________________________________________
+//                                                                       Arrays
+
+#define IS_ARRAY(a)      ((void *)&a == (void *)a)
+#define ARRAY_SIZE(a)    ((sizeof(a)/sizeof(0[a])) / ((size_t)(!(sizeof(a) % sizeof(0[a])))))
+
+// _____________________________________________________________________________
+//                                                                      Strings
+
+#define IS_BLANK(c)         ((c) == '\t' || (c) == ' ')
+
+#define CONCAT(str1, str2)  (str1 "" str2)
+#define STRCMP(A, o, B)     (strcmp((A), (B)) o 0)
+#define MEMCMP(A, o, B)     (memcmp((A), (B)) o 0)
 
 // _____________________________________________________________________________
 //                                                                      Testing
 
-#define debug(fmt, ...)                                               \
-  do { if (DEBUG) fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__,       \
-                          __LINE__, __func__, __VA_ARGS__); } while (0)
+#define DEBUG(fmt, ...)                                          \
+  do { if (DEBUG) fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__,  \
+                      __LINE__, __func__, __VA_ARGS__); } while (0)
 
-/// Continue with next if first is true.
-///     Example: assert(IMPLIES(n > 0, array != NULL));
-#define IMPLIES(x, y) (!(x) || (y))
+/* Example: assert(IMPLIES(n > 0, array != NULL)); */
+#define IMPLIES(x, y)  (!(x) || (y))
 
 // _____________________________________________________________________________
 //                                                                   Structures
 
-/// Obtain the offset of a field in a structure
-#define GET_FIELD_OFFSET(struct_name, field_name) \
-        ((short)(long)(&((struct_name *)NULL) -> field_name))
+/* Obtain the offset of a field in a structure */
+#define GET_FIELD_OFFSET(struct_name, field_name)     \
+  ((short)(long)(&((struct_name *)NULL) -> field_name))
 
-/// Obtain the struct element at the specified offset given the struct ptr
-#define GET_FIELD_PTR(pStruct, offset) \
-        ((void *)(((char *)pStruct) + (offset)))
+/* Obtain the struct element at the specified offset */
+#define GET_FIELD_PTR(p_struct, offset)   \
+  ((void *)(((char *)p_struct) + (offset)))
 
-/// Allocates a structure given the structure name and returns a pointer to
-/// that allocated structure.
-#define ALLOC_STRUCT(struct_name) ((struct_name *)malloc( sizeof(struct_name) ))
+/*
+ * Allocates a structure given the structure name and returns a pointer to
+ * that allocated structure.
+ */
+#define ALLOC_STRUCT(struct_name)              \
+  ((struct_name *)malloc( sizeof(struct_name) ))
 
-#endif
+/* Initializes the given structure to zeroes */
+#define ZERO_INIT_STRUCT(p_struct) (memset( p_struct, '\0', sizeof( *(p_struct) )))
+
+#endif /* COMMON_MACROS_H */
 
 /*
  * Copyright (c) 1997-2021 by ...

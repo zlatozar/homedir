@@ -9,67 +9,70 @@
 ├── configure.ac
 ├── bin
 ├── docs
-├── devops
+├── dev_ops
 ├── deps
+│   ├── bin
+│   └── src
+├── config
 │
-├── libs
-│   ├── lib1
-│   │   ├── src
-│   │   │   ├── file1.c
-│   │   │   ...
-│   │   │
-│   │   ├── include/
-│   │   │      │
-│   │   │      └── lib1
-│   │   │           │
-│   │   │           ├── lib1public_interface.h
-│   │   │           ...
-│   │   ├── mock_include/
-│   │   │      │
-│   │   │      └── lib1
-│   │   │           │
-│   │   │           ...
-│   │   │
-│   │   ├── extern/
-│   │   │     │
-│   │   │     ...
-│   │   ├── README.md
-│   │   ├── Makefile.am
-│   │   └── tests
-│   │       ├── Makefile.am
-│   │       └── lib_test.c
-│   │
-│   ├── lib2
+└── src
+    ├── lib1
+    │   ├── src
+    │   │   ├── file1.c
+    │   │   ...
+    │   │
+    │   ├── include/
+    │   │      │
+    │   │      └── lib1
+    │   │           │
+    │   │           ├── public_interface.h
+    │   │           ...
+    │   ├── mock_include/
+    │   │      │
+    │   │      └── lib1
+    │   │           │
+    │   │           ...
+    │   │
+    │   ├── extern/
+    │   │     │
+    │   │     ...
+    │   ├── README.md
+    │   ├── Makefile.am
+    │   └── tests
+    │       ├── Makefile.am
+    │       └── lib_test.c
+    │
+    ├── lib2
         ├ ...
-...     ...
-|   |
-│   └── macros
-│       ├── README.md
-│       ├── Makefile.am
-│       ├── macros.h
-│       ...
-│
-├── reconf
-└── src (core)
-    ├── Makefile.am
-    ├── file1.c
-    └── main.c
-    └── fake_main.c (use mocked functions)
-
+    ... ...
+    |
+    ├── macros
+    │   ├── README.md
+    │   ├── Makefile.am
+    │   ├── macros.h
+    │   ...
+    │
+    └── core (domain logic)
+        ├── Makefile.am
+        ├── file1.c
+        ├── main.c (entri point)
+        └── fake_main.c (use mocked functions)
 ```
 
 ```
+.gitmodules  projects that are in diferent repository
+             builded and used as binaries
+
 bin/     binaries
 res/     data files for compilation but not source files
-libs/    libraries
+deps/    external libraries builded and used as binaries
 log/     program logs
 obj/     build object files
 src/     source files
-include/      header files
-mock/         contains functions that emulate real behavior
-extern/       external common libs accessed through symbolic links
-doc/          documentation
-devops/       DevOps team
+include/     header files
+mock/        contains functions that emulate real behavior
+doc/         documentation
+dev_ops/     DevOps team
 ```
 
 ## Dependencies
@@ -81,12 +84,13 @@ devops/       DevOps team
 [Unity](https://github.com/ThrowTheSwitch/Unity)
 
 ### Neural Network
-[Tiny Neural Network](https://github.com/glouw/tinn)
+[Tiny Neural Network](https://github.com/glouw/tinn) <br/>
 [Genann](https://github.com/codeplea/genann)
 
 ## Tools
-1. [Doxygen](https://www.doxygen.nl/index.html)
-2. [Valgrind](https://valgrind.org/)
+1. [Doxygen](https://www.doxygen.nl/index.html) <br/>
+2. [Valgrind](https://valgrind.org/)            <br/>
+3. [AStyle](http://astyle.sourceforge.net/)     <br/>
 
 ## Books
 
@@ -100,14 +104,18 @@ devops/       DevOps team
 - [Introduction to C](http://ix.cs.uoregon.edu/~norris/cis330books/ThinkingInC/Index.html)
 - _"The C Programming Language"_ by Kernighan, Ritchie
 
+### Standard Library Reference
+
+[C Standard Library Headers](https://en.cppreference.com/w/c/header)
+
 #### C Philosophy
+- _"Pointers on C"_ by Kenneth Reek
 - [Programming Paradigms lectures from Stanford](https://www.youtube.com/watch?v=Ps8jOj7diA0&list=PL5BD86273FEF4DB0B)
-- _"Pointers on C Paperback"_ by Kenneth Reek
 - [C exercism](https://exercism.io/tracks/c)
 - _Effective C: An Introduction to Professional C Programming"_ by Robert C. Seacord
-- _"C Interfaces and Implementations: Techniques for Creating Reusable Software"_ by David Hanson
+- _"C Interfaces and Implementations: Techniques for Creating Reusable Software"_ by David Hanson  <br/>
   [source code](https://github.com/zlatozar/cii)
-- _"Functional C"_ by Hartel
+- _"Functional C"_ by Hartel  <br/>
   [book and source](https://research.utwente.nl/en/publications/functional-c)
 
 
@@ -118,22 +126,20 @@ devops/       DevOps team
 - _"Linux & Unix Shell Programming"_ by David Tansley
 
 ### LEX&YACC
-- _"Compiler Engineering Using Pascal"_ by Peter Capon and Pete Jinks
-  [source code](http://www.cs.man.ac.uk/~pjj/book.html)
 - _"Introduction to Compiler Construction with Unix"_ by Axel T. Schreiner
 
+- _"Let's build a compiler"_ by by Jack Crenshaw (free book)  <br/>
+  [source code](https://github.com/lotabout/Let-s-build-a-compiler)
 
 ### Domain Driven Design
-- _"Domain Modeling Made Functional"_ by Scott Wlaschin
-   NOTE: Using functional way allow us to group nicely to code and also
+- _"Domain Modeling Made Functional"_ by Scott Wlaschin   <br/>
+   NOTE: Using functional way allow us to group nicely to code and also  <br/>
          introduce dependency injection using substitution of the dependent functions.
 - _"Patterns, Principles, and Practices of Domain-Driven Design"_ by Scott Millett and Nick Tune
-
 
 ### OS
 - _"The Logical Design of Operating Systems"_ by Alan C. Shaw
 - _"Understanding UNIX/LINUX Programming: A Guide to Theory and Practice"_ by Bruce Molay
-
 
 ### OS Advanced Level
 - _"Operating Systems: A Design Oriented Approach"_ by Crowley
