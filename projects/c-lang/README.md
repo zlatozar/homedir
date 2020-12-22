@@ -55,7 +55,7 @@
     └── core (domain logic)
         ├── Makefile.am
         ├── file1.c
-        ├── main.c (entri point)
+        ├── main.c (entry point)
         └── fake_main.c (use mocked functions)
 ```
 

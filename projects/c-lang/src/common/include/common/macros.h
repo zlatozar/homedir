@@ -66,14 +66,16 @@
 // _____________________________________________________________________________
 //                                                                      Strings
 
-#define IS_BLANK(c)         ((c) == '\t' || (c) == ' ')
+#define NEWSTR(str)         (char *)malloc(strlen(str) + 1)
 
+#define IS_BLANK(c)         ((c) == '\t' || (c) == ' ')
 #define CONCAT(str1, str2)  (str1 "" str2)
 #define STRCMP(A, o, B)     (strcmp((A), (B)) o 0)
-#define MEMCMP(A, o, B)     (memcmp((A), (B)) o 0)
 
 // _____________________________________________________________________________
 //                                                                      Testing
+
+#define MEMCMP(A, o, B)     (memcmp((A), (B)) o 0)
 
 #define DEBUG(fmt, ...)                                          \
   do { if (DEBUG) fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__,  \
