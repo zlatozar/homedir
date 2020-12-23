@@ -10,26 +10,15 @@
 /* LOCAL void foo (void); makes clear that 'foo' is local in its module */
 #define LOCAL   static
 
-#define SUCC    0
-#define FAIL    1
-#define IS      ==
-
-#define NOT     !
-#define AND     &&
-#define OR      ||
-
-#define INT32   long
 #define INT16   short
 #define UINT16  unsigned short
+#define INT32   long
 #define INT64   long long
 #define UINT64  unsigned long long
 
-/*
- * Placed at the beginning of a function it suppress compiler
- * warnings about unused parameters.
- */
-#define UNUSED(param_name)                               \
-  ((void)(0 ? ((param_name) = (param_name)) : (param_name)))
+typedef enum { OK, ERROR } status;
+
+typedef void* generic_ptr;
 
 // _____________________________________________________________________________
 //                                                                         Math
@@ -41,11 +30,10 @@
 
 #define IS_ODD(num)    ((num) & 1)
 #define IS_EVEN(num)   (!IS_ODD( (num) ))
-#define IS_BETWEEN(num_to_test, num_low, num_high)  \
+#define IS_BETWEEN(num_to_test, num_low, num_high)                           \
   ((unsigned char)((num_to_test) >= (num_low) && (num_to_test) <= (num_high)))
 
 #define COMPARE(x, y)  (((x) > (y)) - ((x) < (y)))
-#define SWAP(T, x, y)  do { T tmp = (x); (x) = (y); (y) = tmp; } while(0)
 
 // _____________________________________________________________________________
 //                                                                         Bits
@@ -58,31 +46,36 @@
 #define LSB(x)           ((x) ^ ((x) - 1) & (x))
 
 // _____________________________________________________________________________
-//                                                                       Arrays
+//                                                       Array/String/Character
 
-#define IS_ARRAY(a)      ((void *)&a == (void *)a)
+#define SWAP(T, x, y)    do { T tmp = (x); (x) = (y); (y) = tmp; } while(0)
 #define ARRAY_SIZE(a)    ((sizeof(a)/sizeof(0[a])) / ((size_t)(!(sizeof(a) % sizeof(0[a])))))
 
-// _____________________________________________________________________________
-//                                                                      Strings
+#define STR_ALLOC(str)          (char *)malloc(strlen(str) + 1)
+#define STR_CONCAT(str1, str2)  (str1 "" str2)
+#define STR_CMP(A, o, B)        (strcmp((A), (B)) o 0)
 
-#define NEWSTR(str)         (char *)malloc(strlen(str) + 1)
-
-#define IS_BLANK(c)         ((c) == '\t' || (c) == ' ')
-#define CONCAT(str1, str2)  (str1 "" str2)
-#define STRCMP(A, o, B)     (strcmp((A), (B)) o 0)
+#define ISBLANK(c)              ((c) == '\t' || (c) == ' ')
 
 // _____________________________________________________________________________
-//                                                                      Testing
+//                                                            Testing/Debugging
 
-#define MEMCMP(A, o, B)     (memcmp((A), (B)) o 0)
+#define IS_ARRAY(a)      ((void *)&a == (void *)a)
+#define MEMCMP(A, o, B)  (memcmp((A), (B)) o 0)
 
 #define DEBUG(fmt, ...)                                          \
   do { if (DEBUG) fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__,  \
                       __LINE__, __func__, __VA_ARGS__); } while (0)
 
 /* Example: assert(IMPLIES(n > 0, array != NULL)); */
-#define IMPLIES(x, y)  (!(x) || (y))
+#define IMPLIES(x, y)    (!(x) || (y))
+
+/*
+ * Placed at the beginning of a function it suppress compiler
+ * warnings about unused parameters.
+ */
+#define UNUSED(param_name)                                 \
+  ((void)(0 ? ((param_name) = (param_name)) : (param_name)))
 
 // _____________________________________________________________________________
 //                                                                   Structures

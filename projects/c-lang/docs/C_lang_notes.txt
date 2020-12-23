@@ -632,3 +632,20 @@
       call free(), it simply looks at the extra information to find out how big
       the block is. That's why you can pass to free() any kind of pointer, even
       (void *).
+
+[TIP] Two goals in developing functions are to make the interfaces as clean as
+      possible and to make the source code as readable as possible.
+
+[TIP] Thinks of the types as kind of shaped piece of memory that could be
+      chained (pointers as signpost). Path in this maze will give you program
+      logic and direct access is vie pointers.
+
+[LANG] It would be more correct to say that stdin, stdout, and stderr are "I/O
+       streams" rather than files. But the Unix philosophy, as far as I/O is
+       concerned, is "everything is a file".
+
+[LANG] A width or precision of printf may be specified at runtime using *, in
+       which case the value is computed by converting the next argument (which
+       must be an int). For example, to print at most max characters from a
+       string s:
+             printf("%.*s", max, s);
