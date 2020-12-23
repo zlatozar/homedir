@@ -12,11 +12,16 @@
 ├── dev_ops
 ├── deps
 │   ├── bin
+│   ├── obj
 │   └── src
+        ├─ proj1
+        ...
 ├── config
 │
 └── src
-    ├── lib1
+    ├── lib1(bounded context)
+    │   ├── bin
+    │   ├── obj
     │   ├── src
     │   │   ├── file1.c
     │   │   ...
@@ -24,14 +29,12 @@
     │   ├── include/
     │   │      │
     │   │      └── lib1
-    │   │           │
-    │   │           ├── public_interface.h
-    │   │           ...
-    │   ├── mock_include/
-    │   │      │
-    │   │      └── lib1
-    │   │           │
-    │   │           ...
+    │   │          │
+    │   │          ├── public_interface.h
+    │   │          ...
+    │   ├── mocks
+    │   │   ├── file1.c
+    │   │   ...
     │   │
     │   ├── extern/
     │   │     │
@@ -44,8 +47,8 @@
     │
     ├── lib2
         ├ ...
-    ... ...
-    |
+   ... ...
+    │
     ├── macros
     │   ├── README.md
     │   ├── Makefile.am
@@ -109,10 +112,9 @@ dev_ops/     DevOps team
 [C Standard Library Headers](https://en.cppreference.com/w/c/header)
 
 #### C Philosophy
-- _"Pointers on C"_ by Kenneth Reek
 - [Programming Paradigms lectures from Stanford](https://www.youtube.com/watch?v=Ps8jOj7diA0&list=PL5BD86273FEF4DB0B)
 - [C exercism](https://exercism.io/tracks/c)
-- _Effective C: An Introduction to Professional C Programming"_ by Robert C. Seacord
+- _"Data Structures: An Advanced Approach Using C"_ by Jeffry Esakov <br/>
 - _"C Interfaces and Implementations: Techniques for Creating Reusable Software"_ by David Hanson  <br/>
   [source code](https://github.com/zlatozar/cii)
 - _"Functional C"_ by Hartel  <br/>
