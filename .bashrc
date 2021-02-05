@@ -87,11 +87,6 @@ else # normal
     PS1="(\[\033[0;36m\]\t\[\e[0m\]) [\[\033[1;31m\]\w\[\033[0;31m\]\[\e[1;30m\]\$(__git_ps1)\[\e[0m\]]$ "
 fi
 
-# https://gnunn1.github.io/tilix-web/manual/vteconfig/
-if [ $TERMINIX_ID ] || [ $VTE_VERSION ]; then
-    source /etc/profile.d/vte.sh
-fi
-
 # for scripts debug
 export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
 
@@ -155,13 +150,6 @@ alias tree='tree -Csu'            # nice alternative to 'ls'
 complete -W "$(echo `cat ~/.bash_history | egrep '^ssh ' | sort | uniq | sed 's/^ssh //'`;)" ssh
 
 #------------------------------#
-# Key bindings                 #
-#------------------------------#
-
-# appends 2>&1 |less
-bind "'\C-o': '\C-e 2>&1 |less -R'"
-
-#------------------------------#
 # Usefull functions            #
 #------------------------------#
 
@@ -197,10 +185,6 @@ function fe() { find . -type f -name $1 -exec "${2:-file}" {} \;  ; }
 
 # Find a file(s)... who is the newest file in a directory
 function newest() { find ${1:-\.} -type f |xargs ls -lrt ; }
-
-function fname() {
-    find . ! -name '*.svn*' ! -name '*.git*' ! -name '*.hg*' ! -name '*.metadata*' -iname "*$@*";
-}
 
 function psgrep() { ps axuf | grep -v grep | grep "$@" -i --color=auto; }
 
@@ -249,11 +233,6 @@ function up() {
     cd $upstr
 }
 
-function remindme() {
-    let minutes=$1*60
-    sleep $minutes && zenity --warning --title="REMINDER" --text="IT'S TIME!" &
-}
-
 # Find all duplicate files
 function duplics() {
     find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 \
@@ -283,11 +262,6 @@ function urlcap() {
 
 function pid2command() {
     ps $1 | tail -1 | awk '{i=5; while (i<NF) {printf "%s ", $i; i++}; print $NF}'
-}
-
-function search() {
-    find -regex '.*~$\|.*/\.\(git\|hg\|svn\|bin\|metadata\project\|classpath\)\(/\|$\)' \
-         -prune -o -type f -print0 | xargs -r0 grep -HnI "$1"
 }
 
 #------------------------------#
@@ -340,35 +314,11 @@ export J2RE_HOME=${JAVA_HOME}/jre
 # ANLR and RIHNO are global
 export CLASSPATH=.:/opt/antlr/antlr-4.0-complete.jar:/opt/rhino/js.jar
 
-# Tomcat installed by hand
-export CATALINA_HOME=/opt/tomcat
-export TOMCAT_HOME=/opt/tomcat
-
-# Ant
-export ANT_OPTS="-Xms512m -Xmx1024m"
-
 # Maven
 export MAVEN_OPTS="-Xms512m -Xmx1024m"
 
 # Maven bash-completion
 # See: https://github.com/juven/maven-bash-completion
-
-# Groovy (use SDKMan to install)
-
-#
-# PYTHON
-#
-# When install: python setup.py install --record files.txt
-# Then remove:  cat files.txt | xargs rm -rf
-
-#export PYTHONPATH=
-alias ipy='ipython --pylab'
-
-export WORKON_HOME=~/.virtualenvs/
-source /usr/local/bin/virtualenvwrapper.sh
-
-# MIT Scheme
-alias scm='rlwrap guile'
 
 #
 # LISP settings
@@ -403,24 +353,19 @@ function git-history-clean() {
     fi;
 }
 
-function irebase() {
-    echo "--== Start interactive Git rebase ==--"
-    if [ "$#" -ne 1 ]; then
-        git rebase -i HEAD~2
-    else
-        git rebase -i HEAD~$1
-    fi
-}
-
 #
 # Docker
 #
-# Docker containers
-alias dls='docker ps -a -l'
-alias drm='docker ps -a -q | xargs --no-run-if-empty docker rm -f'
-alias dstop='docker stop $(docker ps -a -q)'
-alias dlog='docker logs -f $(docker ps -lq)'
-alias dport='docker port $(docker ps -lq) | cut -d " " -f3'
+alias d-clean='docker system prune'
+alias d-list='docker container ls -a --format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Status}}"'
+alias d-stop-all='docker stop $(docker container ls -q)'
+
+# Docker Compose
+alias dc-start='docker-compose up -d'
+alias dc-build='docker-compose build'
+alias dc-stop='docker-compose down --remove-orphans'
+alias dc-restart='docker-compose up -d --force-recreate'
+alias dc-rebuild='docker-compose down --remove-orphans && docker-compose build && docker-compose up -d'
 
 #
 # F# and .Net
