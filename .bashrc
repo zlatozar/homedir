@@ -38,10 +38,6 @@ export HISTCONTROL=erasedups
 shopt -u mailwarn
 unset MAILCHECK
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
 # causes output from background processes to be output
 set -b
 # notify when jobs running in background terminate
@@ -52,10 +48,6 @@ set bell-style none
 set completion-ignore-case on
 # necessary for bash completion
 shopt -s extglob
-# bash history is only saved when close terminal, not after each command and this fixes it
-shopt -s histappend histreedit histverify
-# pathname expansion will be treated as case-insensitive
-shopt -s nocaseglob
 # no empty completion
 shopt -s no_empty_cmd_completion
 # (core file size) don't want any coredumps
@@ -79,6 +71,7 @@ export PAGER="less --quit-if-one-screen -Mg"
 export GIT_EDITOR=emacsclient
 
 # If id command returns zero, you’ve root access.
+GIT_PS1_SHOWDIRTYSTATE=true
 if [ $(id -u) -eq 0 ];
 then # you are root, set red colour prompt
     PS1="\\[$(tput setaf 1)\\]\\u@\\h:\\w # \\[$(tput sgr0)\\]"
@@ -121,15 +114,6 @@ alias proc='ps jfx'
 alias ports='netstat -ltnp'
 alias connections='sudo lsof -n -P -i +c 15'
 
-# less colors for man pages
-export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
-export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
-export LESS_TERMCAP_me=$'\E[0m'           # end mode
-export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
-export LESS_TERMCAP_so=$'\E[33;01;44m'    # begin standout-mode - info box
-export LESS_TERMCAP_ue=$'\E[0m'           # end underline
-export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
-
 # ls section
 export LC_COLLATE=C
 
@@ -145,9 +129,6 @@ alias lu="ls -lur"                # sort by access time
 alias lsd='ls -l | grep "^d"'     # list only directories
 alias lsize='ls --sort=size -lhr' # list by size
 alias tree='tree -Csu'            # nice alternative to 'ls'
-
-# autocomplete ssh commands
-complete -W "$(echo `cat ~/.bash_history | egrep '^ssh ' | sort | uniq | sed 's/^ssh //'`;)" ssh
 
 #------------------------------#
 # Usefull functions            #
@@ -275,21 +256,6 @@ function jthread() {
     jstack $PID | grep -A500 $NID | grep -m1 "^$" -B 500
 }
 
-# Search JARs for a given class
-function findInJar() {
-    LOOK_FOR=$1
-
-    for i in `find . -name "*jar"`
-    do
-        echo "Looking in $i ..."
-        jar tvf $i | grep $LOOK_FOR > /dev/null
-        if [ $? == 0 ]
-        then
-            echo "==> Found \"$LOOK_FOR\" in $i"
-        fi
-    done
-}
-
 #
 # HTTP
 # https://httpie.org/
@@ -299,59 +265,23 @@ function findInJar() {
 #
 alias objdump='objdump -d -S -hrt'
 
-export GLOG_ROOT=/opt/local/include/glog
-export BOOST_ROOT=/opt/local/include/boost
-
-export LD_LIBRARY_PATH=${GLOG_ROOT}/lib:${BOOST_ROOT}/lib
-
 #
-# JAVA settings (OS specific)
+# JAVA settings: Install and the `-develop` package.
 #
-export JAVA_HOME=/usr/lib/jvm/java
-export JRE_HOME=${JAVA_HOME}/jre
-export J2RE_HOME=${JAVA_HOME}/jre
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.11.0.9-0.fc34.x86_64/
 
 # ANLR and RIHNO are global
-export CLASSPATH=.:/opt/antlr/antlr-4.0-complete.jar:/opt/rhino/js.jar
+#export CLASSPATH=.:/opt/antlr/antlr-4.0-complete.jar:/opt/rhino/js.jar
 
 # Maven
-export MAVEN_OPTS="-Xms512m -Xmx1024m"
 
 # Maven bash-completion
 # See: https://github.com/juven/maven-bash-completion
 
-#
-# LISP settings
-#
-alias lisp='rlwrap sbcl'
-
-#
-# OCaml
-#
-
-export OCAML_TOPLEVEL_PATH="$HOME/.opam/system/lib/toplevel"
-
-alias ocaml='rlwrap ocaml'
-alias utop='utop -safe-string'
-
-#
-# Git
-#
-export GIT_PS1_SHOWDIRTYSTATE=1
-
-function git-history-clean() {
-    echo "--== Will expire reflog and run GC for current branch ==--"
-    branch_refs=$(git symbolic-ref HEAD 2>/dev/null)
-    if [ $branch_refs ]; then
-        echo "Current branch refs: ($branch_refs)"
-        git reflog expire --expire=10.minute $branch_refs
-        git fsck --unreachable
-        git prune
-        git gc
-    else
-        echo "ERROR: Current directory is not under Git version control."
-    fi;
-}
+export M2_HOME=/opt/install/apache-maven-3.8.1
+export M2=$M2_HOME/bin
+export MAVEN_OPTS="-Xms512m -Xmx1024m"
+export PATH=$M2:$PATH 
 
 #
 # Docker
@@ -372,3 +302,8 @@ alias dc-rebuild='docker-compose down --remove-orphans && docker-compose build &
 #
 alias fsi="cd /opt/dotnet/paket && fsharpi; cd -"
 alias paket="cd /opt/dotnet/paket && mono paket.exe $@; cd -"
+
+#
+# Git
+#
+source ~/.git-prompt.sh
