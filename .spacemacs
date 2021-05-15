@@ -44,9 +44,14 @@ This function should only modify configuration layer settings."
      ;;; Programming
 
      (lsp :variables
-          lsp-ui-doc-enable t
-          lsp-ui-sideline-enable nil
-          lsp-restart 'auto-restart)
+          lsp-signature-auto-activate nil
+          lsp-modeline-diagnostics-enable t
+          lsp-ui-doc-position 'top
+          lsp-ui-doc-show-with-cursor nil
+          lsp-ui-doc-alignment 'window
+          lsp-modeline-code-actions-enable nil
+          lsp-headerline-breadcrumb-enable nil
+          lsp-lens-enable nil)
 
      git
      (version-control :variables
@@ -64,12 +69,15 @@ This function should only modify configuration layer settings."
               ibuffer-group-buffers-by 'projects)
 
      ;;; Programming Languages
-     dotnet
-     ;; LSP should be installed by hand
+
+     ;; dotnet
      ;; (fsharp :variables
      ;;         fsharp-backend 'lsp)
 
      asm
+
+     ;; Install `clang-tools-extra.x86_64`, `lldb` and `bear`
+     ;; Create compilation database: bear -- make
      (c-c++ :variables
             c-c++-backend 'lsp-clangd
             c-c++-dap-adapters 'dap-lldb
@@ -80,6 +88,9 @@ This function should only modify configuration layer settings."
             c-c++-default-mode-for-headers 'c++-mode
             c-c++-adopt-subprojects t)
 
+     (cmake :variables
+            cmake-backend 'lsp)
+
      ;;; Scripting
      emacs-lisp
      shell-scripts
@@ -88,6 +99,8 @@ This function should only modify configuration layer settings."
             shell-default-position 'bottom)
 
      ;;; Tooling
+     helm
+
      (auto-completion :variables
                       auto-completion-return-key-behavior 'complete
                       auto-completion-tab-key-behavior 'cycle
@@ -96,13 +109,12 @@ This function should only modify configuration layer settings."
                       auto-completion-private-snippets-directory nil
                       auto-completion-enable-snippets-in-popup nil)
 
-     better-defaults
-
      spell-checking
      syntax-checking
-     helpful
 
-     helm
+     helpful
+     better-defaults
+
      unicode-fonts
      themes-megapack
      )
@@ -615,28 +627,14 @@ before packages are loaded."
   (message "%s" "Configuring LSP.")
   (use-package lsp-ui
     :preface
-    (defun my/toggle-lsp-ui-doc ()
-      (interactive)
-      (if lsp-ui-doc-mode
-          (progn
-            (lsp-ui-doc-mode -1)
-            (lsp-ui-doc--hide-frame))
-
-        (lsp-ui-doc-mode 1)))
-
     :bind (:map lsp-mode-map
                 ("C-c C-r" . lsp-ui-peek-find-references)
                 ("C-c C-d" . lsp-ui-peek-find-definitions)
                 ("C-c i"   . lsp-ui-peek-find-implementation)
                 ("C-c m"   . lsp-ui-imenu)
-                ("C-c r"   . lsp-rename)
-                ("C-c s"   . lsp-ui-sideline-mode)
-                ("C-c d"   . my/toggle-lsp-ui-doc))
+                ("C-c r"   . lsp-rename))
 
-    :hook ((lsp-after-open . lsp-ui-mode))
-    :custom-face
-    (lsp-ui-doc-background ((t (:background nil))))
-    (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic))))))
+    :hook ((lsp-after-open . lsp-ui-mode)))
   (message "%s" "Finished configuring LSP.")
 
   ;;; Programming Languages
