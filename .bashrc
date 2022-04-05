@@ -71,13 +71,14 @@ export PAGER="less --quit-if-one-screen -Mg"
 export GIT_EDITOR=emacsclient
 
 # If id command returns zero, you’ve root access.
+
 GIT_PS1_SHOWDIRTYSTATE=true
 if [ $(id -u) -eq 0 ];
 then # you are root, set red colour prompt
     PS1="\\[$(tput setaf 1)\\]\\u@\\h:\\w # \\[$(tput sgr0)\\]"
 else # normal
     # PS1="(\[\033[0;36m\]\t\[\e[0m\]) [\[\033[1;37m\]\w\[\033[0;37m\]\[\e[1;30m\]\$(__git_ps1)\[\e[0m\]]$ "
-    PS1="(\[\033[0;36m\]\t\[\e[0m\]) [\[\033[1;31m\]\w\[\033[0;31m\]\[\e[1;30m\]\$(__git_ps1)\[\e[0m\]]$ "
+    PS1="(\[\033[0;36m\]\t\[\e[0m\]) [\[\033[1;31m\]\w\[\033[0;31m\]\[\e[1;36m\]\$(__git_ps1)\[\e[0m\]]$ "
 fi
 
 # for scripts debug
