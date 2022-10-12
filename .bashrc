@@ -29,10 +29,18 @@ fi
 # Additional system settings   #
 #------------------------------#
 
-HISTSIZE=10000
-HISTFILESIZE=20000
-# Erase duplicates in history
-export HISTCONTROL=erasedups
+HISTCONTROL=ignoreboth:erasedups
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=5000
+HISTFILESIZE=10000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
 
 # no new mail notifications
 shopt -u mailwarn
@@ -307,4 +315,5 @@ alias paket="cd /opt/dotnet/paket && mono paket.exe $@; cd -"
 #
 # Git
 #
+# curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh > ~/.git-prompt.sh
 source ~/.git-prompt.sh
