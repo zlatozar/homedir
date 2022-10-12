@@ -275,22 +275,13 @@ function jthread() {
 alias objdump='objdump -d -S -hrt'
 
 #
-# JAVA settings: Install and the `-develop` package.
+# JAVA settings
 #
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.11.0.9-0.fc34.x86_64/
+export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 
-# ANLR and RIHNO are global
-#export CLASSPATH=.:/opt/antlr/antlr-4.0-complete.jar:/opt/rhino/js.jar
-
-# Maven
-
-# Maven bash-completion
+# Maven and maven-bash-completion could be installed form Linux packages
 # See: https://github.com/juven/maven-bash-completion
-
-export M2_HOME=/opt/install/apache-maven-3.8.1
-export M2=$M2_HOME/bin
-export MAVEN_OPTS="-Xms512m -Xmx1024m"
-export PATH=$M2:$PATH 
+# export MAVEN_OPTS="-Xms512m -Xmx1024m"
 
 #
 # Docker
