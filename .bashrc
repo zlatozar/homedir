@@ -254,6 +254,25 @@ function pid2command() {
     ps $1 | tail -1 | awk '{i=5; while (i<NF) {printf "%s ", $i; i++}; print $NF}'
 }
 
+# Track all config files
+
+# dotfiles config --local status.showUntrackedFiles no
+alias dotfiles='git --git-dir=/home/zlatozar/.dotfiles --work-tree=/'
+
+dot() {
+  if [[ "$#" -eq 0 ]]; then
+    (cd /
+    for i in $(dotfiles ls-files); do
+      echo -n "$(dotfiles -c color.status=always status $i -s | sed "s#$i##")"
+      echo -e "¬/$i¬\e[0;33m$(dotfiles -c color.ui=always log -1 --format="%s" -- $i)\e[0m"
+    done
+    ) | column -t --separator=¬ -T2
+  else
+    dotfiles $*
+  fi
+}
+
+
 #------------------------------#
 # My Programming environment   #
 #------------------------------#
