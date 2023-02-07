@@ -51,17 +51,30 @@ This function should only modify configuration layer settings."
 
     ;;; Programming
 
-    (lsp :variables
-          lsp-signature-auto-activate nil
-          lsp-modeline-diagnostics-enable t
-          lsp-ui-doc-position 'top
-          lsp-ui-doc-show-with-cursor nil
-          lsp-ui-doc-alignment 'window
-          lsp-modeline-code-actions-enable nil
-          lsp-headerline-breadcrumb-enable nil
-          lsp-lens-enable nil
+     (lsp :variables
+          lsp-ui-sideline-enable nil
+          lsp-eldoc-render-all nil
+          lsp-idle-delay 0.6
+          lsp-enable-file-watchers t
+          lsp-file-watch-threshold 20000
 
-          lsp-rust-server 'rust-analyzer)
+          ;; enable/disable the hints as you prefer:
+          lsp-ui-doc-enable nil
+          lsp-lens-enable t
+
+          lsp-rust-server 'rust-analyzer
+
+          lsp-rust-analyzer-cargo-watch-command "clippy"
+          lsp-rust-analyzer-server-display-inlay-hints t
+          lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial"
+
+          lsp-rust-analyzer-display-chaining-hints t
+          lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names t
+          lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil
+          lsp-rust-analyzer-display-closure-return-type-hints nil
+          lsp-rust-analyzer-display-parameter-hints nil
+          lsp-rust-analyzer-proc-macro-enable nil
+          lsp-rust-analyzer-display-reborrow-hints nil)
 
     dap
     git
@@ -118,6 +131,7 @@ This function should only modify configuration layer settings."
     helm
 
     (auto-completion :variables
+                     auto-completion-enable-help-tooltip nil
                      auto-completion-return-key-behavior 'complete
                      auto-completion-tab-key-behavior 'cycle
                      auto-completion-enable-sort-by-usage t
@@ -126,7 +140,10 @@ This function should only modify configuration layer settings."
                      auto-completion-enable-snippets-in-popup nil)
 
     spell-checking
-    syntax-checking
+    (syntax-checking :variables
+                     syntax-checking-enable-tooltips nil
+                     ;; syntax-checking-auto-hide-tooltips 1
+                     syntax-checking-enable-by-default nil)
 
     helpful
     better-defaults
@@ -494,7 +511,7 @@ It should only modify the values of Spacemacs settings."
    ;;   :size-limit-kb 1000)
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers 'visual
 
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
@@ -643,8 +660,10 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  ;;; Lines
-  (global-visual-line-mode t)
+  (setq confirm-kill-emacs 'y-or-n-p)
+
+  ;; `aspell' should be installed
+  (setq ispell-program-name "aspell")
 
   ;;; Week starts on Monday
   (setq calendar-week-start-day 1)
@@ -658,18 +677,31 @@ before packages are loaded."
         '(24-hours ":" minutes))
 
   ;; Programming
-  (use-package lsp-ui
-    :preface
-    :bind (:map lsp-mode-map
-                ("C-c C-r" . lsp-ui-peek-find-references)
-                ("C-c C-d" . lsp-ui-peek-find-definitions)
-                ("C-c i"   . lsp-ui-peek-find-implementation)
-                ("C-c m"   . lsp-ui-imenu)
-                ("C-c r"   . lsp-rename))
 
-    :hook ((lsp-after-open . lsp-ui-mode)))
+  ;; (use-package lsp-ui
+  ;;   :preface
+  ;;   :bind (:map lsp-mode-map
+  ;;               ("M-j" . lsp-ui-imenu)
+  ;;               ("M-?" . lsp-find-references)
+  ;;               ("C-c C-c e" . flycheck-list-errors)
+  ;;               ("C-c C-c a" . lsp-execute-code-action)
+  ;;               ("C-c C-c i" . lsp-ui-peek-find-implementation)
+  ;;               ("C-c C-c r" . lsp-rename)
+  ;;               ("C-c C-c q" . lsp-workspace-restart)
+  ;;               ("C-c C-c Q" . lsp-workspace-shutdown))
 
-  )
+  ;;   :hook ((lsp-after-open . lsp-ui-mode)))
+
+  ;; (use-package rustic
+  ;;   :ensure
+  ;;   :bind (:map rustic-mode-map
+  ;;               ("C-c C-c c" . rustic-cargo-run)
+  ;;               ("C-c C-c d" . lsp-rust-analyzer-open-external-docs)
+  ;;               ("C-c C-c t" . lsp-rust-analyzer-related-tests)
+  ;;               ("C-c C-c o" . lsp-rust-analyzer-open-cargo-toml)
+  ;;               ("C-c C-c s" . lsp-rust-analyzer-status)))
+
+)
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
