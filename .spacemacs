@@ -49,21 +49,25 @@ This function should only modify configuration layer settings."
                      osx-right-option-as  'meta
                      osx-right-control-as 'control)
 
-    ;;; Programming
+     ;;; Programming
 
+     ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
      (lsp :variables
           lsp-ui-sideline-enable nil
           lsp-eldoc-render-all nil
+          lsp-eldoc-enable-hover nil
           lsp-idle-delay 0.6
           lsp-enable-file-watchers t
           lsp-file-watch-threshold 20000
 
-          ;; enable/disable the hints as you prefer:
+          lsp-signature-render-documentation nil
+
           lsp-ui-doc-enable nil
           lsp-lens-enable t
 
           lsp-rust-server 'rust-analyzer
 
+          ;; enable/disable the hints as you prefer:
           lsp-rust-analyzer-cargo-watch-command "clippy"
           lsp-rust-analyzer-server-display-inlay-hints t
           lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial"
