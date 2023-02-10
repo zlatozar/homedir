@@ -53,31 +53,27 @@ This function should only modify configuration layer settings."
 
      ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
      (lsp :variables
-          lsp-ui-sideline-enable nil
-          lsp-eldoc-render-all nil
-          lsp-eldoc-enable-hover nil
-          lsp-idle-delay 0.6
-          lsp-enable-file-watchers t
-          lsp-file-watch-threshold 20000
+          lsp-ui-doc-enable nil
+          lsp-ui-sideline-show-hover nil
+          lsp-ui-sideline-show-code-actions nil
+          lsp-ui-sideline-show-diagnostics t
 
           lsp-signature-render-documentation nil
 
-          lsp-ui-doc-enable nil
           lsp-lens-enable t
+          lsp-completion-show-kind t
+          lsp-completion-show-detail t
 
           lsp-rust-server 'rust-analyzer
-
-          ;; enable/disable the hints as you prefer:
+          lsp-rust-analyzer-proc-macro-enable nil
           lsp-rust-analyzer-cargo-watch-command "clippy"
           lsp-rust-analyzer-server-display-inlay-hints t
-          lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial"
 
           lsp-rust-analyzer-display-chaining-hints t
+          lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial"
           lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names t
-          lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil
           lsp-rust-analyzer-display-closure-return-type-hints nil
           lsp-rust-analyzer-display-parameter-hints nil
-          lsp-rust-analyzer-proc-macro-enable nil
           lsp-rust-analyzer-display-reborrow-hints nil)
 
     dap
