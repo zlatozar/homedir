@@ -53,13 +53,14 @@ This function should only modify configuration layer settings."
 
      ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
      (lsp :variables
+          lsp-enable-semantic-highlighting t
+
           lsp-ui-doc-enable nil
           lsp-ui-sideline-show-hover nil
           lsp-ui-sideline-show-code-actions nil
           lsp-ui-sideline-show-diagnostics t
 
           lsp-signature-render-documentation nil
-
           lsp-lens-enable t
           lsp-completion-show-kind t
           lsp-completion-show-detail t
@@ -67,6 +68,7 @@ This function should only modify configuration layer settings."
           lsp-rust-server 'rust-analyzer
           lsp-rust-analyzer-proc-macro-enable nil
           lsp-rust-analyzer-cargo-watch-command "clippy"
+
           lsp-rust-analyzer-server-display-inlay-hints t
 
           lsp-rust-analyzer-display-chaining-hints t
@@ -513,7 +515,7 @@ It should only modify the values of Spacemacs settings."
    ;;   :size-limit-kb 1000)
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
-   dotspacemacs-line-numbers 'visual
+   dotspacemacs-line-numbers 't
 
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
@@ -680,28 +682,18 @@ before packages are loaded."
 
   ;; Programming
 
-  ;; (use-package lsp-ui
-  ;;   :preface
-  ;;   :bind (:map lsp-mode-map
-  ;;               ("M-j" . lsp-ui-imenu)
-  ;;               ("M-?" . lsp-find-references)
-  ;;               ("C-c C-c e" . flycheck-list-errors)
-  ;;               ("C-c C-c a" . lsp-execute-code-action)
-  ;;               ("C-c C-c i" . lsp-ui-peek-find-implementation)
-  ;;               ("C-c C-c r" . lsp-rename)
-  ;;               ("C-c C-c q" . lsp-workspace-restart)
-  ;;               ("C-c C-c Q" . lsp-workspace-shutdown))
+  (use-package lsp-ui
+    :preface
+    :bind (:map lsp-mode-map
+                ("M-j" . lsp-ui-imenu)
+                ("M-?" . lsp-find-references)
+                ("C-c C-c e" . flycheck-list-errors)
+                ("C-c C-c a" . lsp-execute-code-action)
+                ("C-c C-c r" . lsp-rename)
+                ("C-c C-c q" . lsp-workspace-restart)
+                ("C-c C-c Q" . lsp-workspace-shutdown))
 
-  ;;   :hook ((lsp-after-open . lsp-ui-mode)))
-
-  ;; (use-package rustic
-  ;;   :ensure
-  ;;   :bind (:map rustic-mode-map
-  ;;               ("C-c C-c c" . rustic-cargo-run)
-  ;;               ("C-c C-c d" . lsp-rust-analyzer-open-external-docs)
-  ;;               ("C-c C-c t" . lsp-rust-analyzer-related-tests)
-  ;;               ("C-c C-c o" . lsp-rust-analyzer-open-cargo-toml)
-  ;;               ("C-c C-c s" . lsp-rust-analyzer-status)))
+    :hook ((lsp-after-open . lsp-ui-mode)))
 
 )
 

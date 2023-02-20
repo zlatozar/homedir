@@ -28,7 +28,7 @@ Key&nbsp;Binding   | Description
 Key&nbsp;Binding   | Description
 ---------   | --------------
 `M-m w m`   | Toggle many to one windows
-`Alt-1, 2..9 | Jump window
+`Alt-1, 2..9` | Jump window
 
 #### Jumps
 
@@ -99,11 +99,10 @@ Key&nbsp;Binding   | Description
 `M-m j j`   | `avy-timer` (type and go)
 `M-m x w d` | Meaning of the word at point
 `M-m ;`     | Comment region
-`C-c C-r`   | Find referenced (my)
-`C-c C-d`   | Find definition (my)
-`C-c i`     | Find implementation (my)
-`C-c m`     | Show methods (my)
-`C-c r`     | Rename
+`M-j`       | imenu (my)
+`M-?`       | Find referenced (my)
+`C-c C-c r` | Rename (my)
+`C-c C-c a` | Execute code action
 
 ### Misc
 

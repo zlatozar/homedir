@@ -259,6 +259,7 @@ function pid2command() {
 # dotfiles config --local status.showUntrackedFiles no
 alias dotfiles='git --git-dir=/home/zlatozar/.dotfiles --work-tree=/'
 
+# Show dotfiles repository
 dot() {
   if [[ "$#" -eq 0 ]]; then
     (cd /
@@ -271,7 +272,6 @@ dot() {
     dotfiles $*
   fi
 }
-
 
 #------------------------------#
 # My Programming environment   #
