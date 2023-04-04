@@ -90,10 +90,9 @@ Key&nbsp;Binding   | Description
 `C-c C-s`   | Start REPL
 `M-m j (`   | Check parents
 `M-m j c`   | Go to last change
-`M-m j i`   | Jump to function
+`M-m j f`   | Find function
 `M-m s s`   | Helm `swoop`
 `M-m s o`   | Overlay symbol
-`M-m p a`   | Switch between impl/test
 `M-m j 0`   | Add mark
 `M-m r m`   | Show all marks
 `M-m j j`   | `avy-timer` (type and go)
@@ -108,6 +107,10 @@ Key&nbsp;Binding   | Description
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
-`M-m m`     | Describe current major mode
 `M-m S a`   | Add word at point in dictionary
 `M-m C-v m` | Rectangle mark
+
+### Rust
+Key&nbsp;Binding   | Description
+---------   | --------------
+`M-m m`   | _(meta)_ Major mode prefix

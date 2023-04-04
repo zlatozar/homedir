@@ -65,6 +65,7 @@ This function should only modify configuration layer settings."
           lsp-completion-show-kind t
           lsp-completion-show-detail t
 
+          ;; Rust
           lsp-rust-server 'rust-analyzer
           lsp-rust-analyzer-proc-macro-enable nil
           lsp-rust-analyzer-cargo-watch-command "clippy"
@@ -81,6 +82,7 @@ This function should only modify configuration layer settings."
     dap
     git
     (version-control :variables
+                     ;; Install `difftastic'
                      version-control-diff-tool 'diff-hl
                      version-control-diff-side 'left
                      version-control-global-margin t)
@@ -695,6 +697,11 @@ before packages are loaded."
 
     :hook ((lsp-after-open . lsp-ui-mode)))
 
+  ;; Enable paredit mode
+  (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+  (add-hook 'emacs-lips-mode-hook 'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook 'enable-paredit-mode)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will

@@ -317,10 +317,9 @@ alias dc-restart='docker-compose up -d --force-recreate'
 alias dc-rebuild='docker-compose down --remove-orphans && docker-compose build && docker-compose up -d'
 
 #
-# F# and .Net
+# Rust
 #
-alias fsi="cd /opt/dotnet/paket && fsharpi; cd -"
-alias paket="cd /opt/dotnet/paket && mono paket.exe $@; cd -"
+alias rcheck='cargo clippy --all -- -W clippy::pedantic -W clippy::nursery -W clippy::unwrap_used -W clippy::cargo -D warnings'
 
 #
 # Git
