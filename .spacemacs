@@ -94,6 +94,8 @@ This function should only modify configuration layer settings."
 
     ;;; Programming Languages
 
+    (scheme :variables
+            scheme-implementations '(guile racket)) 
     rust
 
     ;; dotnet
