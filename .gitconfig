@@ -111,6 +111,7 @@
 	lg = log --graph --abbrev-commit --decorate --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%C(magenta)\\ [%cn]" --decorate --numstat
 	hist = log --graph --abbrev-commit --date=short --decorate --all --pretty=format:'%Cred%h %Cgreen(%ad)%Creset| -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset'
+	dev = log --graph --abbrev-commit --decorate --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --first-parent develop
 
 	# See what you are going to push
 	out = "!f() { if `git push -n &>/dev/null`; then git push -n 2>&1 |tail -1 |awk {'print $1;'} |xargs git log; else echo "Not in sync or uncommitted changes exist"; fi; } ; f"
