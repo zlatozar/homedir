@@ -120,7 +120,7 @@ alias cpu="ps -e -o pcpu,cpu,nice,state,cputime,args --sort pcpu | sed '/^ 0.0 /
 alias memu='ps -e -o rss=,args= | sort -b -k1,1n | pr -TW$COLUMNS'
 alias pst='pstree -hAcpul'
 alias proc='ps jfx'
-alias ports='netstat -ltnp'
+alias ports='netstat -ltnp |grep LISTEN'
 alias connections='sudo lsof -n -P -i +c 15'
 
 # ls section
