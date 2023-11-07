@@ -303,6 +303,15 @@ export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 # export MAVEN_OPTS="-Xms512m -Xmx1024m"
 
 #
+# Python settings
+#
+#export PYTHONPATH="${PYTHONPATH}:    "
+
+# Installed: pyenv-virtualenv
+# Packages: pip3 install flake8 isort black python-lsp-server
+export PATH="${PATH}:/Users/zlatozar.zhelyazkov/Library/Python/3.9/bin"
+
+#
 # Docker
 #
 alias d-clean='docker system prune'

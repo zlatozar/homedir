@@ -99,8 +99,19 @@ This function should only modify configuration layer settings."
     ;;; Programming Languages
 
     (scheme :variables
-            scheme-implementations '(guile racket)) 
+            scheme-implementations '(racket guile))
     rust
+    (python :variables
+             python-backend 'lsp
+             python-lsp-server 'pylsp
+             python-format-on-save t
+             python-formatter 'black
+             python-pipenv-activate t
+             python-sort-imports-on-save t
+             python-tab-width 2
+             python-test-runner 'pytest
+             python-auto-set-local-pyenv-version 'on-project-switch
+             python-auto-set-local-pyvenv-virtualenv 'on-project-switch)
 
     ;; dotnet
     ;; (fsharp :variables
@@ -165,7 +176,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(use-package)
+   dotspacemacs-additional-packages '()
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -582,7 +593,7 @@ It should only modify the values of Spacemacs settings."
    ;; performance issues, instead of calculating the frame title by
    ;; `spacemacs/title-prepare' all the time.
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%I@%S"
+   dotspacemacs-frame-title-format "%I@%S - %m - %t"
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
@@ -684,19 +695,23 @@ before packages are loaded."
 
   ;; Programming
 
-  (use-package lsp-ui
-    :preface
-    :bind (:map lsp-mode-map
-                ("M-j" . lsp-ui-imenu)
-                ("M-?" . lsp-find-references)
-                ("C-c C-c e" . flycheck-list-errors)
-                ("C-c C-c a" . lsp-execute-code-action)
-                ("C-c C-c r" . lsp-rename)
-                ("C-c C-c q" . lsp-workspace-restart)
-                ("C-c C-c Q" . lsp-workspace-shutdown))
+  ;; (use-package lsp-ui
+  ;;   :preface
+  ;;   :bind (:map lsp-mode-map
+  ;;               ("M-j" . lsp-ui-imenu)
+  ;;               ("M-?" . lsp-find-references)
+  ;;               ("C-c C-c e" . flycheck-list-errors)
+  ;;               ("C-c C-c a" . lsp-execute-code-action)
+  ;;               ("C-c C-c r" . lsp-rename)
+  ;;               ("C-c C-c q" . lsp-workspace-restart)
+  ;;               ("C-c C-c Q" . lsp-workspace-shutdown))
 
-    :hook ((lsp-after-open . lsp-ui-mode)))
+  ;;   :hook ((lsp-after-open . lsp-ui-mode)))
 
+  ;; Python
+  (setq flycheck-python-pycompile-executable "python3")
+  (setq-default python-indent-offset 4)
+  
   ;; Enable paredit mode
   (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
   (add-hook 'emacs-lips-mode-hook 'enable-paredit-mode)
