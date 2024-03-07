@@ -307,9 +307,8 @@ export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 #
 #export PYTHONPATH="${PYTHONPATH}:    "
 
-# Installed: pyenv-virtualenv
-# Packages: pip3 install flake8 isort black python-lsp-server
-export PATH="${PATH}:/Users/zlatozar.zhelyazkov/Library/Python/3.9/bin"
+# Installed: pyenv and pyenv-virtualenv plugin
+# Packages in system python: pip3 install flake8 isort black python-lsp-server
 
 #
 # Docker
