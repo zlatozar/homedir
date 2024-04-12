@@ -33,7 +33,6 @@
 
 [diff]
 	renames = copies
-	external = difft
 
 [branch]
 	# Always setup 'git pull' to rebase instead of merge
@@ -82,7 +81,6 @@
 	# Rollbacks
 	uncommit = reset --soft HEAD^
 	unstage = reset HEAD --
-	amend = commit --amend --no-edit
 
 	# When you need more information
 	info = "!f() { git remote -v; git branch -rv; }; f"
@@ -94,7 +92,7 @@
 
 	st = status -sb
 	ci = commit -s -v
-	cl = clean -dfx --exclude=**/.* --exclude=**/target
+	jcl = clean -dfx --exclude=**/.* --exclude=**/target
 	br = branch -a
 	track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
 	up = "!f() { git remote update; git pull --rebase ; } ; f"
@@ -120,18 +118,15 @@
 	# See what you are going to pull
 	in = pull --dry-run --verbose
 
-	# Use Gerrit for code review
-	publish = "!f() { git push -u ${1:-origin} HEAD:`git config branch.$(git name-rev --name-only HEAD).merge | sed -e 's@refs/heads/@refs/for/@'`; }; f"
-
 	wdiff = diff --word-diff
-	wshow = show --color-words
+	difft = -c diff.external=difft diff
 
 	# Have merge conflicts and want to quickly solve them using an editor and then add them
 	edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; $EDITOR `f`"
 
 	# Quickly take file versions
-	ours = "!f() { git checkout --ours $@ && git add $@; }; f"
-	theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
+	mine = "!f() { git checkout --ours $@ && git add $@; }; f"
+	not-mine = "!f() { git checkout --theirs $@ && git add $@; }; f"
 
 	# Prune all tracking local branches that have been removed from remote
 	prune-all = !git remote | xargs -n 1 git remote prune
