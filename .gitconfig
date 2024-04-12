@@ -33,6 +33,7 @@
 
 [diff]
 	renames = copies
+	external = difft
 
 [branch]
 	# Always setup 'git pull' to rebase instead of merge
