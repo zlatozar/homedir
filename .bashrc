@@ -302,6 +302,17 @@ export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 # See: https://github.com/juven/maven-bash-completion
 # export MAVEN_OPTS="-Xms512m -Xmx1024m"
 
+# Find all deps with differen versions
+#mvn dependency:list -Dsort=true | # list all deps
+#  grep "^\[INFO\]    " |          # grep for the deps list only
+#  awk '{print $2}' |              # remove the INFO prefix
+#  cut -f1-4 -d: |                 # removes the dep scope
+#  sort |                          # sort (duh)
+#  uniq |                          # remove duplicates
+#  cut -f1-3 -d: |                 # removes the version
+#  uniq -c |                       # count line groups
+#  grep -v '^ *1 '                 # grep groups that repeat
+
 #
 # Python settings
 #
