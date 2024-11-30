@@ -318,8 +318,11 @@ export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 #
 #export PYTHONPATH="${PYTHONPATH}:    "
 
-# Installed: pyenv and pyenv-virtualenv plugin
-# Packages in system python: pip3 install flake8 isort black python-lsp-server
+# Installed: python -m venv my-project-name                                                                             
+# Packages:  my-project-name/bin/pip install flake8 isort black 'python-language-server[all]' importmagic pydocstyle     
+# Usage:     source my-project/bin/activate                                                                                 
+#            deactivate                                                                                                     
+export PIPENV_VENV_IN_PROJECT=1
 
 #
 # Docker
