@@ -318,10 +318,14 @@ export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 #
 #export PYTHONPATH="${PYTHONPATH}:    "
 
-# Installed: python -m venv my-project-name                                                                             
-# Packages:  my-project-name/bin/pip install flake8 isort black 'python-language-server[all]' importmagic pydocstyle     
-# Usage:     source my-project/bin/activate                                                                                 
-#            deactivate                                                                                                     
+# Install:  pyenv
+#           pyenv install <python vesrision>
+#           python global <python version>
+# Make virtual env: 
+#           python -m venv .venv                                                                            
+#           source .venv/bin/activate
+#           pip install ipython jupyterlab numpy scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
+#           deactivate     
 export PIPENV_VENV_IN_PROJECT=1
 
 #
