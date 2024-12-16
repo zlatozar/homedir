@@ -96,6 +96,7 @@
 	br = branch -a
 	track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
 	up = "!f() { git remote update; git pull --rebase ; } ; f"
+        sup = submodule update --recursive --remote
 
 	# Patching and picking
 	pick = cherry-pick
