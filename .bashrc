@@ -314,17 +314,23 @@ export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 #  grep -v '^ *1 '                 # grep groups that repeat
 
 #
-# Python settings
+# Python settings.
+#
+# Global installed modules:
+#   pip install 'python-lsp-server[all]'
 #
 #export PYTHONPATH="${PYTHONPATH}:    "
 
 # Install:  pyenv
-#           pyenv install <python vesrision>
+#           pyenv install <python version>
 #           python global <python version>
 # Make virtual env: 
 #           python -m venv .venv                                                                            
 #           source .venv/bin/activate
-#           pip install ipython jupyterlab numpy scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
+#           # In requirements.txt file
+#           pip install ipython jupyterlab numpy scipy matplotlib scikit-learn 
+#                       "fastapi[standard]" "uvicorn[standard]" pydantic 
+#                       sqlalchemy alembic line_profiler memory_profiler
 #           deactivate     
 export PIPENV_VENV_IN_PROJECT=1
 
