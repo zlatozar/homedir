@@ -321,7 +321,7 @@ export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 # Install as follow project's instructions:  pyenv, pipenv (install from pip)
 #
 # Global installed modules:
-#   pip install 'python-lsp-server[all]' black isort
+#   pip install 'python-lsp-server[all]' black isort flake8 pyflakes
 #
 # Make virtual env in project dir: 
 #   pyenv local <version>
