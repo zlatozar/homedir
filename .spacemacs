@@ -32,7 +32,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(csv
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -41,13 +41,14 @@ This function should only modify configuration layer settings."
 
      ;; Did you make git update on ~/.emacs.d/?
 
-     (osx :variables osx-command-as       'hyper
-                     osx-option-as        'meta
-                     osx-control-as       'control
-                     osx-function-as      'control
-                     osx-right-command-as 'control
-                     osx-right-option-as  'meta
-                     osx-right-control-as 'control)
+     (osx :variables
+          osx-command-as       'hyper
+          osx-option-as        'meta
+          osx-control-as       'control
+          osx-function-as      'control
+          osx-right-command-as 'control
+          osx-right-option-as  'meta
+          osx-right-control-as 'control)
 
      ;;; Programming
 
@@ -60,113 +61,99 @@ This function should only modify configuration layer settings."
           lsp-ui-sideline-show-code-actions nil
           lsp-ui-sideline-show-diagnostics t
 
+          lsp-headerline-breadcrumb-enable t
           lsp-signature-render-documentation nil
           lsp-lens-enable t
           lsp-completion-show-kind t
-          lsp-completion-show-detail t
+          lsp-completion-show-detail t)
 
-          ;; Rust
-          lsp-rust-server 'rust-analyzer
-          lsp-rust-analyzer-proc-macro-enable nil
-          lsp-rust-analyzer-cargo-watch-command "clippy"
+     dap
+     git
+     (version-control :variables
+                      ;; Install `difftastic'
+                      version-control-diff-tool 'diff-hl
+                      version-control-diff-side 'left
+                      version-control-global-margin t)
 
-          lsp-rust-analyzer-server-display-inlay-hints t
+     (treemacs :variables
+               treemacs-use-filewatch-mode t
+               treemacs-use-git-mode 'deferred)
+     markdown
+     yaml
 
-          lsp-rust-analyzer-display-chaining-hints t
-          lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial"
-          lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names t
-          lsp-rust-analyzer-display-closure-return-type-hints nil
-          lsp-rust-analyzer-display-parameter-hints nil
-          lsp-rust-analyzer-display-reborrow-hints nil)
-
-    dap
-    git
-    (version-control :variables
-                     ;; Install `difftastic'
-                     version-control-diff-tool 'diff-hl
-                     version-control-diff-side 'left
-                     version-control-global-margin t)
-
-    (treemacs :variables
-              treemacs-use-filewatch-mode t
-              treemacs-use-git-mode 'deferred)
-    ;; markdown
-    yaml
-
-    (ibuffer :variables
-             ibuffer-group-buffers-by 'projects)
+     (ibuffer :variables
+              ibuffer-group-buffers-by 'projects)
 
     ;;; Programming Languages
 
-    (scheme :variables
-            scheme-implementations '(racket guile))
-    rust
-    (python :variables
+     (scheme :variables
+             scheme-implementations '(racket guile))
+
+     (python :variables
              python-backend 'lsp
              python-lsp-server 'pylsp
              python-format-on-save t
              python-formatter 'black
+             python-fill-column 99
              python-pipenv-activate t
              python-sort-imports-on-save t
-             python-tab-width 2
              python-test-runner 'pytest
-             python-auto-set-local-pyenv-version 'on-project-switch
-             python-auto-set-local-pyvenv-virtualenv 'on-project-switch)
+             python-auto-set-local-pyenv-version 'on-project-switch)
 
-    ;; dotnet
-    ;; (fsharp :variables
-    ;;         fsharp-backend 'lsp)
+     ;; dotnet
+     ;; (fsharp :variables
+     ;;         fsharp-backend 'lsp)
 
-    asm
+     asm
 
-    ;; Install `clang-tools-extra.x86_64`, `lldb` and `bear`
-    ;; Create compilation database: bear -- make
-    (c-c++ :variables
-           c-c++-backend 'lsp-clangd
-           c-c++-dap-adapters 'dap-lldb
+     ;; Install `clang-tools-extra.x86_64`, `lldb` and `bear`
+     ;; Create compilation database: bear -- make
+     (c-c++ :variables
+            c-c++-backend 'lsp-clangd
+            c-c++-dap-adapters 'dap-lldb
 
-           c-c++-lsp-sem-highlight-method 'font-lock
-           c-c++-lsp-semantic-highlight-method 'overlay
-           c-c++-lsp-cache-dir ".cache"
-           c-c++-default-mode-for-headers 'c++-mode
-           c-c++-adopt-subprojects t)
+            c-c++-lsp-sem-highlight-method 'font-lock
+            c-c++-lsp-semantic-highlight-method 'overlay
+            c-c++-lsp-cache-dir ".cache"
+            c-c++-default-mode-for-headers 'c++-mode
+            c-c++-adopt-subprojects t)
 
-    (cmake :variables
-           cmake-backend 'lsp)
+     (cmake :variables
+            cmake-backend 'lsp)
 
-    (debug :variables
-           debug-additional-debuggers '("lldb"))
+     (debug :variables
+            debug-additional-debuggers '("lldb"))
 
     ;;; Scripting
-    emacs-lisp
-    shell-scripts
-    (shell :variables
-           shell-default-height 30
-           shell-default-position 'bottom)
+     emacs-lisp
+     shell-scripts
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
 
     ;;; Tooling
-    helm
+     helm
 
-    (auto-completion :variables
-                     auto-completion-enable-help-tooltip nil
-                     auto-completion-return-key-behavior 'complete
-                     auto-completion-tab-key-behavior 'cycle
-                     auto-completion-enable-sort-by-usage t
-                     auto-completion-complete-with-key-sequence nil
-                     auto-completion-private-snippets-directory nil
-                     auto-completion-enable-snippets-in-popup nil)
+     (auto-completion :variables
+                      auto-completion-enable-help-tooltip nil
+                      auto-completion-return-key-behavior 'complete
+                      auto-completion-tab-key-behavior 'cycle
+                      auto-completion-enable-sort-by-usage t
+                      auto-completion-complete-with-key-sequence nil
+                      auto-completion-private-snippets-directory nil
+                      auto-completion-enable-snippets-in-popup nil)
 
-    spell-checking
-    (syntax-checking :variables
-                     syntax-checking-enable-tooltips nil
-                     ;; syntax-checking-auto-hide-tooltips 1
-                     syntax-checking-enable-by-default nil)
+     spell-checking
+     (syntax-checking :variables
+                      syntax-checking-enable-tooltips nil
+                      ;; syntax-checking-auto-hide-tooltips 1
+                      syntax-checking-enable-by-default nil)
 
-    helpful
-    better-defaults
+     helpful
+     better-defaults
 
-    unicode-fonts
-    themes-megapack)
+     unicode-fonts
+     themes-megapack)
 
    ;; List of additional packages that will be installed without being wrapped
    ;; in a layer (generally the packages are installed only and should still be
@@ -277,7 +264,7 @@ It should only modify the values of Spacemacs settings."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'emacs
+   dotspacemacs-editing-style 'hybrid
 
    ;; If non-nil show the version string in the Spacemacs buffer. It will
    ;; appear as (spacemacs version)@(emacs version)
@@ -464,7 +451,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
-   dotspacemacs-fullscreen-at-startup t
+   dotspacemacs-fullscreen-at-startup nil
 
    ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
@@ -651,7 +638,7 @@ default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
   (spacemacs/load-spacemacs-env)
-)
+  )
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
@@ -659,7 +646,7 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-)
+  )
 
 
 (defun dotspacemacs/user-load ()
@@ -667,7 +654,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
-)
+  )
 
 
 (defun dotspacemacs/user-config ()
@@ -695,6 +682,7 @@ before packages are loaded."
 
   ;; Programming
 
+  ;;(setq python-shell-completion-native-disabled-interpreters '("python3"))
   ;; (use-package lsp-ui
   ;;   :preface
   ;;   :bind (:map lsp-mode-map
@@ -710,14 +698,14 @@ before packages are loaded."
 
   ;; Python
   (setq flycheck-python-pycompile-executable "python3")
-  (setq-default python-indent-offset 4)
-  
+  (setq flycheck-flake8-maximum-line-length 99)
+
   ;; Enable paredit mode
   (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
   (add-hook 'emacs-lips-mode-hook 'enable-paredit-mode)
   (add-hook 'lisp-mode-hook 'enable-paredit-mode)
   (add-hook 'scheme-mode-hook 'enable-paredit-mode)
-)
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
