@@ -321,17 +321,13 @@ export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 #
 #export PYTHONPATH="${PYTHONPATH}:    "
 
-# Install:  pyenv
-#           pyenv install <python version>
-#           python global <python version>
-# Make virtual env: 
-#           python -m venv .venv                                                                            
-#           source .venv/bin/activate
-#           # In requirements.txt file
-#           pip install ipython jupyterlab numpy scipy matplotlib scikit-learn 
-#                       "fastapi[standard]" "uvicorn[standard]" pydantic 
-#                       sqlalchemy alembic line_profiler memory_profiler
-#           deactivate     
+# Install as follow project's instructions:  pyenv, pipenv (install from pip)
+#
+# Make virtual env in project dir: 
+#           pyenv local <version>
+#           pipenv install ipython jupyterlab numpy pandas scipy matplotlib scikit-learn 
+#                          "fastapi[standard]" "uvicorn[standard]" pydantic 
+#                          sqlalchemy alembic line_profiler memory_profiler
 export PIPENV_VENV_IN_PROJECT=1
 
 #
