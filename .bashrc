@@ -316,18 +316,18 @@ export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 #
 # Python settings.
 #
-# Global installed modules:
-#   pip install 'python-lsp-server[all]'
-#
 #export PYTHONPATH="${PYTHONPATH}:    "
 
 # Install as follow project's instructions:  pyenv, pipenv (install from pip)
 #
+# Global installed modules:
+#   pip install 'python-lsp-server[all]' black isort
+#
 # Make virtual env in project dir: 
-#           pyenv local <version>
-#           pipenv install ipython jupyterlab numpy pandas scipy matplotlib scikit-learn 
-#                          "fastapi[standard]" "uvicorn[standard]" pydantic 
-#                          sqlalchemy alembic line_profiler memory_profiler
+#   pyenv local <version>
+#   pipenv install ipython jupyterlab numpy pandas scipy matplotlib scikit-learn 
+#                  "fastapi[standard]" "uvicorn[standard]" pydantic 
+#                  sqlalchemy alembic line_profiler memory_profiler
 export PIPENV_VENV_IN_PROJECT=1
 
 #
