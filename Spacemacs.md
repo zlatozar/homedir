@@ -15,6 +15,7 @@ Key&nbsp;Binding   | Description
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
+`C-x`        | _(meta)_ Emacs bindings
 `M-f`, `M-b` | Word foreword/backward
 `C-n`, `C-p` | Next/Previous line
 `C-x C-t`    | Transpose lines
@@ -83,6 +84,7 @@ Key&nbsp;Binding   | Description
 `M-m c c`   | Compile project
 `M-m g`     | _(meta)_ Git commands
 `M-m g s`   | Git status
+`M-m d`     | _(meta)_ Debug commands
 `M-m a u`   | Visual undo tree
 `M-m e`     | _(meta)_ Errors
 `M-m e l`   | Toggle errors list
@@ -90,17 +92,14 @@ Key&nbsp;Binding   | Description
 `C-c C-s`   | Start REPL
 `M-m j (`   | Check parents
 `M-m j c`   | Go to last change
-`M-m j f`   | Find function
 `M-m s s`   | Helm `swoop`
 `M-m s o`   | Overlay symbol
 `M-m j 0`   | Add mark
 `M-m r m`   | Show all marks
-`M-m j j`   | `avy-timer` (type and go)
+`M-m j j`   | `avy-timer` (type and move to)
 `M-m x w d` | Meaning of the word at point
 `M-m ;`     | Comment region
-`M-j`       | imenu (my)
-`M-?`       | Find referenced (my)
-`C-c C-c r` | Rename (my)
+`M-m g/G`   | _(meta)_ LSP **go to** commands
 `C-c C-c a` | Execute code action
 
 ### Misc

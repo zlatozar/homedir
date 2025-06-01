@@ -84,7 +84,7 @@ This function should only modify configuration layer settings."
      (ibuffer :variables
               ibuffer-group-buffers-by 'projects)
 
-    ;;; Programming Languages
+     ;;; Programming Languages
 
      (scheme :variables
              scheme-implementations '(racket guile))
@@ -124,14 +124,14 @@ This function should only modify configuration layer settings."
      (debug :variables
             debug-additional-debuggers '("lldb"))
 
-    ;;; Scripting
+     ;;; Scripting
      emacs-lisp
      shell-scripts
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
 
-    ;;; Tooling
+     ;;; Tooling
      helm
 
      (auto-completion :variables
@@ -680,21 +680,7 @@ before packages are loaded."
   (setq calendar-time-display-form
         '(24-hours ":" minutes))
 
-  ;; Programming
-
-  ;;(setq python-shell-completion-native-disabled-interpreters '("python3"))
-  ;; (use-package lsp-ui
-  ;;   :preface
-  ;;   :bind (:map lsp-mode-map
-  ;;               ("M-j" . lsp-ui-imenu)
-  ;;               ("M-?" . lsp-find-references)
-  ;;               ("C-c C-c e" . flycheck-list-errors)
-  ;;               ("C-c C-c a" . lsp-execute-code-action)
-  ;;               ("C-c C-c r" . lsp-rename)
-  ;;               ("C-c C-c q" . lsp-workspace-restart)
-  ;;               ("C-c C-c Q" . lsp-workspace-shutdown))
-
-  ;;   :hook ((lsp-after-open . lsp-ui-mode)))
+  ;;; Programming
 
   ;; Python
   (setq flycheck-python-pycompile-executable "python3")
