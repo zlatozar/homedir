@@ -257,7 +257,7 @@ function pid2command() {
 # Track all config files
 
 # dotfiles config --local status.showUntrackedFiles no
-alias dotfiles='git --git-dir=/home/zlatozar/.dotfiles --work-tree=/'
+alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=/'
 
 # Show dotfiles repository
 dot() {
