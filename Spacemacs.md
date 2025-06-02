@@ -112,4 +112,5 @@ Key&nbsp;Binding   | Description
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
+
 `SPC m`   | _(meta)_ Main major modes
