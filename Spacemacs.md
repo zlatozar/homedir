@@ -5,11 +5,10 @@
 Key&nbsp;Binding   | Description
 ---------   | --------------
 `C-h`       | _(meta)_ Various options
-`M-m ?`     | Search key bindings
-`M-m F1`    | Search command definitions
-`M-m h d`   | _(meta)_ Descriptions
-`M-m h d m` | Describe current mode
-`M-m f e R` | Reload `.spacemacs`
+`SPC ?`     | Search key major mode bindings
+`SPC F1`    | Search command definitions
+`SPC h d`   | _(meta)_ Descriptions
+`SPC h d m` | Describe current mode
 
 ### Emacs
 
@@ -28,88 +27,89 @@ Key&nbsp;Binding   | Description
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
-`M-m w m`   | Toggle many to one windows
+`SPC w m`   | Toggle many to one windows
 `Alt-1, 2..9` | Jump window
 
 #### Jumps
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
-`M-m j l`   | Jump to line
-`M-m j w`   | Jump to word
-`M-m j D`   | Jump to file directory
+`SPC j l`   | Jump to line
+`SPC j w`   | Jump to word
+`SPC j D`   | Jump to file directory
 
 #### Rings
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
-`M-m r`     | _(meta)_ Rings
-`M-m r y`   | Show killing ring
+`SPC r`     | _(meta)_ Rings
+`SPC r y`   | Show killing ring
 
 #### Files
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
-`M-m f f`   | Find file relative from current dir
-`M-m f E`   | **sudo** edit
-`M-m f j`   | Jump from dir
-`M-m f L`   | Search file everywhere
-`M-m f r`   | Show recent files
-`M-m f t`   | Toggle `treemax` explorer
-`M-m q s`   | Save all files and exit
+`SPC f f`   | Find file relative from current dir
+`SPC f E`   | **sudo** edit
+`SPC f j`   | Jump from dir
+`SPC f S`   | Save all files
+`SPC f r`   | Show recent files
+`SPC f t`   | Toggle `treemax` explorer
+`SPC q s`   | Save all files and exit
 
 ### Projects
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
-`M-m p p`   | List/Import projects
-`M-m /`     | Search project using `ag`
-`M-m *`     | Search _current_ word in project
-`M-m p f`   | Find project file
-`M-m p b`   | Show open project buffers
-`M-m p !`   | Open shell in project root dir
-`M-m p t`   | Toggle project `treemax`
-`M-m p &`   | Async shell command run (relative to project root)
-`M-m p k`   | Kill all project buffers
-`M-m p r`   | Recent project files
-`M-m p R`   | Project search and replace
-`M-m s a P` | Search project with `ag`
+`SPC p p`   | Switch/Import projects
+`SPC /`     | Search project using `ag`
+`SPC *`     | Search _current_ word in project
+`SPC p f`   | Find project file
+`SPC p b`   | Show open project buffers
+`SPC p !`   | Open shell in project root dir
+`SPC p t`   | Toggle project `treemax`
+`SPC p &`   | Async shell command run (relative to project root)
+`SPC p k`   | Kill all project buffers
+`SPC p r`   | Recent project files
+`SPC p R`   | Project search and replace
 
 ### Development
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
-`C-c`       | _(meta)_ Various options
-`M-m c`     | _(meta)_ Compilation
-`M-m c c`   | Compile project
-`M-m g`     | _(meta)_ Git commands
-`M-m g s`   | Git status
-`M-m d`     | _(meta)_ Debug commands
-`M-m a u`   | Visual undo tree
-`M-m e`     | _(meta)_ Errors
-`M-m e l`   | Toggle errors list
-`M-m e .`   | Browse errors
+`C-c`       | _(meta)_ Various major mode options
+`SPC c`     | _(meta)_ Compilation
+`SPC c c`   | Compile project
+`SPC g`     | _(meta)_ Git commands
+`SPC g s`   | Git status
+`SPC d`     | _(meta)_ Debug commands
+`SPC a u`   | Visual undo tree
+`SPC e`     | _(meta)_ Errors
+`SPC e l`   | Toggle errors list
 `C-c C-s`   | Start REPL
-`M-m j (`   | Check parents
-`M-m j c`   | Go to last change
-`M-m s s`   | Helm `swoop`
-`M-m s o`   | Overlay symbol
-`M-m j 0`   | Add mark
-`M-m r m`   | Show all marks
-`M-m j j`   | `avy-timer` (type and move to)
-`M-m x w d` | Meaning of the word at point
-`M-m ;`     | Comment region
-`M-m g/G`   | _(meta)_ LSP **go to** commands
-`C-c C-c a` | Execute code action
+`SPC j (`   | Check parents
+`SPC j c`   | Go to last change
+`SPC s s`   | Helm `swoop`
+`SPC s o`   | Overlay symbol
+`SPC j 0`   | Add mark
+`SPC r m`   | Show all marks
+`SPC j j`   | `avy-timer` (type and move to)
+`SPC x w d` | Meaning of the word at point
+`SPC ;`     | Comment region
+`SPC m S e` | Add Sphinx doc to the method
+`SPC m g/G` | _(meta)_ LSP **go to** commands
+`C-c >`     | Indent right selected region
 
 ### Misc
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
-`M-m S a`   | Add word at point in dictionary
-`M-m C-v m` | Rectangle mark
+`SPC S a`   | Add word at point in dictionary
+`SPC C-v m` | Rectangle mark
+`SPC f e R` | Reload `.spacemacs`
 
-### Rust
+### Major mode bindings
+
 Key&nbsp;Binding   | Description
 ---------   | --------------
-`M-m m`   | _(meta)_ Major mode prefix
+`SPC m`   | _(meta)_ Main major modes
