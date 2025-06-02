@@ -98,6 +98,7 @@ Key&nbsp;Binding   | Description
 `SPC ;`     | Comment region
 `SPC m S e` | Add Sphinx doc to the method
 `SPC m g/G` | _(meta)_ LSP **go to** commands
+`SPC g s`   | Git status (type '?' for a next Git operation)
 `C-c >`     | Indent right selected region
 
 ### Misc
@@ -112,5 +113,4 @@ Key&nbsp;Binding   | Description
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
-
 `SPC m`   | _(meta)_ Main major modes
