@@ -3,12 +3,12 @@
 ### Help
 
 Key&nbsp;Binding   | Description
----------   | --------------
-`C-h`       | _(meta)_ Various options
-`SPC ?`     | Search key major mode bindings
-`SPC F1`    | Search command definitions
-`SPC h d`   | _(meta)_ Descriptions
-`SPC h d m` | Describe current mode
+--------- | --------------
+`C-h`     | _(meta)_ Various options
+`C-h m`   | Describe current major mode
+`SPC ?`   | Search key major mode bindings
+`SPC F1`  | Search command definitions
+`SPC h d` | _(meta)_ Descriptions
 
 ### Emacs
 
@@ -27,8 +27,11 @@ Key&nbsp;Binding   | Description
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
+`SPC w 4`   | Windows split
 `SPC w m`   | Toggle many to one windows
 `Alt-1, 2..9` | Jump window
+`SPC w W`   | Ace jump window
+`SPC w H`   | Move window far left
 
 #### Jumps
 

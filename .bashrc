@@ -323,10 +323,10 @@ export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 # Global installed modules:
 #   pip install 'python-lsp-server[all]' black isort flake8 pyflakes
 #
-# Make virtual env in project dir: 
+# Make virtual env in project dir:
 #   pyenv local <version>
-#   pipenv install ipython jupyterlab numpy pandas scipy matplotlib scikit-learn 
-#                  "fastapi[standard]" "uvicorn[standard]" pydantic 
+#   pipenv install ipython jupyterlab numpy pandas scipy matplotlib scikit-learn
+#                  "fastapi[standard]" "uvicorn[standard]" pydantic
 #                  sqlalchemy alembic line_profiler memory_profiler
 export PIPENV_VENV_IN_PROJECT=1
 
@@ -343,6 +343,9 @@ alias dc-build='docker-compose build'
 alias dc-stop='docker-compose down --remove-orphans'
 alias dc-restart='docker-compose up -d --force-recreate'
 alias dc-rebuild='docker-compose down --remove-orphans && docker-compose build && docker-compose up -d'
+
+# Ripgrep
+export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 #
 # Rust

@@ -1,0 +1,6 @@
+# Follow symbolic links.
+--follow
+
+# Exclude directories.
+--glob=!{Pipfile*, !Pipfile.*}
+

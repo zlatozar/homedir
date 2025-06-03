@@ -1,4 +1,0 @@
-1. Copy the .ttf file and paste it here.
-2. Run
-
-$ sudo fc-cache -fv
