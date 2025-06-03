@@ -1,4 +1,0 @@
-#/bin/sh
-
-# How to use it: http://pymotw.com/2/pdb/
-exec python -m pdb "$@"
