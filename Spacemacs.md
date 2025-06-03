@@ -83,8 +83,6 @@ Key&nbsp;Binding   | Description
 `C-c`       | _(meta)_ Various major mode options
 `SPC c`     | _(meta)_ Compilation
 `SPC c c`   | Compile project
-`SPC g`     | _(meta)_ Git commands
-`SPC g s`   | Git status
 `SPC d`     | _(meta)_ Debug commands
 `SPC a u`   | Visual undo tree
 `SPC e`     | _(meta)_ Errors
@@ -101,6 +99,7 @@ Key&nbsp;Binding   | Description
 `SPC ;`     | Comment region
 `SPC m S e` | Add Sphinx doc to the method
 `SPC m g/G` | _(meta)_ LSP **go to** commands
+`SPC g`     | _(meta)_ (ma)Git commands
 `SPC g s`   | Git status (type '?' for a next Git operation)
 `C-c >`     | Indent right selected region
 
