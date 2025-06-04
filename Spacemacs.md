@@ -19,6 +19,7 @@ Key&nbsp;Binding   | Description
 `C-x`        | _(meta)_ Emacs bindings
 `M-f`, `M-b` | Word foreword/backward
 `C-n`, `C-p` | Next/Previous line
+`M-v`, `C-v` | Page up/down
 `C-x C-t`    | Transpose lines
 `C-s`, `C-r` | Search foreword/backward
 `C-g g`      | Go to line
@@ -78,11 +79,21 @@ Key&nbsp;Binding   | Description
 `SPC p r`   | Recent project files
 `SPC p R`   | Project search and replace
 
+### REPL
+
+Key&nbsp;Binding   | Description
+---------   | --------------
+`C-c C-p`   | Open REPL
+`C-c C-c`   | Send file
+`C-c C-r`   | Send region
+`C-c C-z`   | Go to REPL
+
 ### Development
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
 `C-c`       | _(meta)_ Various major mode options
+`SPC m h`   | _(meta)_ Documentation
 `SPC c`     | _(meta)_ Compilation
 `SPC c c`   | Compile project
 `SPC d`     | _(meta)_ Debug commands

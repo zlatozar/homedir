@@ -94,7 +94,6 @@ This function should only modify configuration layer settings."
              python-lsp-server 'pylsp
              python-format-on-save t
              python-formatter 'black
-             python-fill-column 99
              python-pipenv-activate t
              python-sort-imports-on-save t
              python-test-runner 'pytest
@@ -138,7 +137,7 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-help-tooltip nil
                       auto-completion-return-key-behavior 'complete
                       auto-completion-tab-key-behavior 'cycle
-                      auto-completion-enable-sort-by-usage t
+                      auto-completion-enable-sort-by-usage nil
                       auto-completion-complete-with-key-sequence nil
                       auto-completion-private-snippets-directory nil
                       auto-completion-enable-snippets-in-popup nil)
@@ -683,14 +682,16 @@ before packages are loaded."
   ;;; Programming
 
   ;; Python
-  (setq flycheck-python-pycompile-executable "python3")
-  (setq flycheck-flake8-maximum-line-length 99)
+  (add-hook 'python-mode-hook (lambda ()
+                                (setq-local require-final-newline nil)))
 
   ;; Enable paredit mode
-  (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+  (autoload 'enable-paredit-mode "paredit"
+    "Turn on pseudo-structural editing of Lisp code." t)
   (add-hook 'emacs-lips-mode-hook 'enable-paredit-mode)
   (add-hook 'lisp-mode-hook 'enable-paredit-mode)
   (add-hook 'scheme-mode-hook 'enable-paredit-mode)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
