@@ -3,12 +3,14 @@
 ### Help
 
 Key&nbsp;Binding   | Description
---------- | --------------
-`C-h`     | _(meta)_ Various options
-`C-h m`   | Describe current major mode
-`SPC ?`   | Search key major mode bindings
-`SPC F1`  | Search command definitions
-`SPC h d` | _(meta)_ Descriptions
+---------  | --------------
+`C-h`      | _(meta)_ Various options
+`C-h m`    | Describe current major mode
+`SPC ?`    | Search key major mode bindings
+`SPC F1`   | Search command definitions
+`SPC h d`  | _(meta)_ Descriptions
+`SPC h T e`| Emacs tutorial
+`SPC h T v`| Vi tutorial
 
 ### Emacs
 
@@ -114,5 +116,5 @@ Key&nbsp;Binding   | Description
 ### Major mode bindings
 
 Key&nbsp;Binding   | Description
----------   | --------------
+--------- | --------------
 `SPC m`   | _(meta)_ Main major modes
