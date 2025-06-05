@@ -19,12 +19,6 @@ fi
 
 # User specific aliases and functions
 
-# Enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    eval "`dircolors -b`"
-    alias ls='ls --color=auto'
-fi
-
 #------------------------------#
 # Additional system settings   #
 #------------------------------#
@@ -100,7 +94,8 @@ export GREP_COLOR='1;31'
 
 alias g='grep -inIEr'
 
-alias L='less --ignore-case --line-numbers --hilite-unread --hilite-search --LONG-PROMPT --no-init --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS'
+alias L='less --ignore-case --line-numbers --hilite-unread --hilite-search --LONG-PROMPT --no-init --quit-if-one-screen --quit-on-intr
+--RAW-CONTROL-CHARS'
 
 alias diff=colordiff
 
@@ -120,7 +115,7 @@ alias cpu="ps -e -o pcpu,cpu,nice,state,cputime,args --sort pcpu | sed '/^ 0.0 /
 alias memu='ps -e -o rss=,args= | sort -b -k1,1n | pr -TW$COLUMNS'
 alias pst='pstree -hAcpul'
 alias proc='ps jfx'
-alias ports='netstat -ltnp |grep LISTEN'
+alias ports='sudo lsof -PiTCP -sTCP:LISTEN'
 alias connections='sudo lsof -n -P -i +c 15'
 
 # ls section
@@ -250,29 +245,6 @@ function urlcap() {
     sudo tcpflow -p -c -i eth0 | grep -oE '(GET|POST|HEAD) .* HTTP/1.[01]|Host: .*'
 }
 
-function pid2command() {
-    ps $1 | tail -1 | awk '{i=5; while (i<NF) {printf "%s ", $i; i++}; print $NF}'
-}
-
-# Track all config files
-
-# dotfiles config --local status.showUntrackedFiles no
-alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=/'
-
-# Show dotfiles repository
-dot() {
-  if [[ "$#" -eq 0 ]]; then
-    (cd /
-    for i in $(dotfiles ls-files); do
-      echo -n "$(dotfiles -c color.status=always status $i -s | sed "s#$i##")"
-      echo -e "¬/$i¬\e[0;33m$(dotfiles -c color.ui=always log -1 --format="%s" -- $i)\e[0m"
-    done
-    ) | column -t --separator=¬ -T2
-  else
-    dotfiles $*
-  fi
-}
-
 #------------------------------#
 # My Programming environment   #
 #------------------------------#
@@ -285,10 +257,6 @@ function jthread() {
 }
 
 #
-# HTTP
-# https://httpie.org/
-
-#
 # C/C++ settings
 #
 alias objdump='objdump -d -S -hrt'
@@ -296,38 +264,21 @@ alias objdump='objdump -d -S -hrt'
 #
 # JAVA settings
 #
-export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
+#export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 
 # Maven and maven-bash-completion could be installed form Linux packages
 # See: https://github.com/juven/maven-bash-completion
 # export MAVEN_OPTS="-Xms512m -Xmx1024m"
 
-# Find all deps with differen versions
-#mvn dependency:list -Dsort=true | # list all deps
-#  grep "^\[INFO\]    " |          # grep for the deps list only
-#  awk '{print $2}' |              # remove the INFO prefix
-#  cut -f1-4 -d: |                 # removes the dep scope
-#  sort |                          # sort (duh)
-#  uniq |                          # remove duplicates
-#  cut -f1-3 -d: |                 # removes the version
-#  uniq -c |                       # count line groups
-#  grep -v '^ *1 '                 # grep groups that repeat
-
 #
-# Python settings.
+# Python settings
 #
 #export PYTHONPATH="${PYTHONPATH}:    "
 
-# Install as follow project's instructions:  pyenv, pipenv (install from pip)
-#
-# Global installed modules:
-#   pip install 'python-lsp-server[all]' black isort flake8 pyflakes
-#
-# Make virtual env in project dir:
-#   pyenv local <version>
-#   pipenv install ipython jupyterlab numpy pandas scipy matplotlib scikit-learn
-#                  "fastapi[standard]" "uvicorn[standard]" pydantic
-#                  sqlalchemy alembic line_profiler memory_profiler
+# PyEnv
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - bash)"
 export PIPENV_VENV_IN_PROJECT=1
 
 #
@@ -357,3 +308,9 @@ alias rcheck='cargo clippy --all -- -W clippy::pedantic -W clippy::nursery -W cl
 #
 # curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh > ~/.git-prompt.sh
 source ~/.git-prompt.sh
+
+#
+# GPG sign
+#
+GPG_TTY=$(tty)
+export GPG_TTY

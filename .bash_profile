@@ -10,21 +10,26 @@ if [ -n "$BASH_VERSION" ]; then
 fi
 
 export CLICOLOR=1
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
 
 export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
-
-# Python: brew install pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+export PATH="/opt/homebrew/sbin:$PATH"
 
 # Use bash-completion, if available
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
-export PATH="/opt/homebrew/sbin:$PATH"
-
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
+
+# Python: brew install pyenv
+#export PYENV_ROOT="$HOME/.pyenv"
+#export PATH="$PYENV_ROOT/bin:$PATH"
+#eval "$(pyenv init -)"
+
+# PyEnv
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - bash)"
+
+# PipEnv
+export PATH=$HOME/.local/bin:$PATH

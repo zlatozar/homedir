@@ -101,6 +101,7 @@ Key&nbsp;Binding   | Description
 `SPC e`     | _(meta)_ Errors
 `SPC e l`   | Toggle errors list
 `C-c C-s`   | Start REPL
+`C-c m r`   | LSP refactor
 `SPC j (`   | Check parents
 `SPC j c`   | Go to last change
 `SPC s s`   | Helm `swoop`
