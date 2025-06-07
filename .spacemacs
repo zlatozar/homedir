@@ -92,12 +92,21 @@ This function should only modify configuration layer settings."
      (python :variables
              python-backend 'lsp
              python-lsp-server 'pylsp
+             python-shell-interpreter "python3"
              python-format-on-save t
              python-formatter 'black
              python-pipenv-activate t
              python-sort-imports-on-save t
              python-test-runner 'pytest
-             python-auto-set-local-pyenv-version 'on-project-switch)
+             ;;python-auto-set-local-pyenv-version 'on-project-switch
+             )
+
+     (sql :variables
+          sql-backend 'lsp
+          sql-capitalize-keywords t
+          ;; .sqls/config.json for DB connections
+          sql-lsp-sqls-workspace-config-path 'workspace
+          sql-auto-indent nil)
 
      ;; dotnet
      ;; (fsharp :variables

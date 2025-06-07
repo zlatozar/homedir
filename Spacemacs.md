@@ -4,6 +4,7 @@
 
 Key&nbsp;Binding   | Description
 ---------  | --------------
+`C-x`      | _(meta)_ Help menu
 `C-h`      | _(meta)_ Various options
 `C-h m`    | Describe current major mode
 `SPC ?`    | Search key major mode bindings
@@ -12,11 +13,17 @@ Key&nbsp;Binding   | Description
 `SPC h T e`| Emacs tutorial
 `SPC h T v`| Vi tutorial
 
+### Vim
+
+Key&nbsp;Binding   | Description
+---------  | --------------
+`[`, `]` | _(meta)_ Vim help menu
+
+
 ### Emacs
 
 Key&nbsp;Binding   | Description
 ---------   | --------------
-`C-x`        | _(meta)_ Emacs bindings
 `M-f`, `M-b` | Word foreword/backward
 `C-n`, `C-p` | Next/Previous line
 `M-v`, `C-v` | Page up/down
@@ -25,6 +32,7 @@ Key&nbsp;Binding   | Description
 `C-g g`      | Go to line
 `C-x (`      | Start macro
 `C-x )`      | End macro
+`M-\`        | Delete all white spaces between
 
 #### Windows
 
@@ -32,7 +40,7 @@ Key&nbsp;Binding   | Description
 ---------   | --------------
 `SPC w 4`   | Windows split
 `SPC w m`   | Toggle many to one windows
-`Alt-1, 2..9` | Jump window
+`M-1, 2..9` | Jump window
 `SPC w W`   | Ace jump window
 `SPC w H`   | Move window far left
 
@@ -73,11 +81,18 @@ Key&nbsp;Binding   | Description
 `SPC p f`   | Find project file
 `SPC p b`   | Show open project buffers
 `SPC p !`   | Open shell in project root dir
-`SPC p t`   | Toggle project `treemax`
+`M-0`       | Toggle project `treemax`
 `SPC p &`   | Async shell command run (relative to project root)
 `SPC p k`   | Kill all project buffers
 `SPC p r`   | Recent project files
 `SPC p R`   | Project search and replace
+
+### Auto Complete
+
+Key&nbsp;Binding   | Description
+--------- | --------------
+`M-d`   | (in menu) Show documentation
+`C-/`   | (after the dot) Show Helm for fuzzy search
 
 ### REPL
 
@@ -85,7 +100,7 @@ Key&nbsp;Binding   | Description
 ---------   | --------------
 `C-c C-p`   | Open REPL
 `C-c C-c`   | Send file
-`C-c C-r`   | Send region
+`C-c C-e`   | Send statement
 `C-c C-z`   | Go to REPL
 
 ### Development
