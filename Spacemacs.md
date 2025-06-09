@@ -132,6 +132,15 @@ Key&nbsp;Binding   | Description
 `SPC g s`   | Git status (type '?' for a next Git operation)
 `C-c >`     | Indent right selected region
 
+#### SQL
+
+Key&nbsp;Binding   | Description
+---------   | --------------
+`SPC m b c` | Open SQLi
+`SPC m b S` | (in SQLi) Save connection
+`SPC m s L` | Send line
+`M-TAB`     | Complete
+
 ### Misc
 
 Key&nbsp;Binding   | Description

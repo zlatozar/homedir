@@ -106,7 +106,8 @@ This function should only modify configuration layer settings."
           sql-backend 'lsp
           sql-capitalize-keywords t
           ;; .sqls/config.json for DB connections
-          sql-lsp-sqls-workspace-config-path 'workspace
+          sql-capitalize-keywords-blacklist '("id" "varchar")
+          sql-lsp-sqls-workspace-config-path nil
           sql-auto-indent nil)
 
      ;; dotnet
@@ -697,6 +698,12 @@ before packages are loaded."
   (add-hook 'python-mode-hook (lambda ()
                                 (setq-local require-final-newline nil)))
 
+  ;; SQL
+  (setq lsp-sqls-connections
+        '(
+          ((driver . "postgresql")
+           (dataSourceName . "host=127.0.0.1 port=5432 user=zlatozar password=zlatozar dbname=data_science sslmode=disable"))))
+
   ;; Enable paredit mode
   (autoload 'enable-paredit-mode "paredit"
     "Turn on pseudo-structural editing of Lisp code." t)
@@ -708,3 +715,24 @@ before packages are loaded."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(sql-connection-alist
+     '(("Data_Science_DB" (sql-product 'postgres) (sql-user "zlatozar")
+        (sql-database "data_science") (sql-server "localhost")))))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   )
+  )
