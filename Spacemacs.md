@@ -92,7 +92,7 @@ Key&nbsp;Binding   | Description
 Key&nbsp;Binding   | Description
 --------- | --------------
 `M-d`   | (in menu) Show documentation
-`C-/`   | (after the dot) Show Helm for fuzzy search
+`C-/`   | (in menu) Show Helm for fuzzy search
 
 ### REPL
 

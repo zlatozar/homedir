@@ -13,13 +13,23 @@ pyenv global 3
 # Check
 python —version
 
-pip install 'python-lsp-server[all]' black isort
+pip --user install 'python-lsp-server[all]' black isort
 
 cd data_science
 pipenv install
-pipenv install ipython jupyterlab line_profiler memory_profiler numpy pandas scipy matplotlib scikit-learn \
+pipenv install ipython jupyterlab notebook ipykernel line_profiler memory_profiler numpy pandas scipy matplotlib scikit-learn \
 "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
 pipenv graph
+```
+
+## Jupyter Notebook
+
+To work in `Pipenv`.
+```shell
+pipenv shell
+ipython kernel install --name=`basename $VIRTUAL_ENV` --user
+jupyther notebook
+# select .venv kernel
 ```
 
 ## SQL notes
