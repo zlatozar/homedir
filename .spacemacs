@@ -78,6 +78,7 @@ This function should only modify configuration layer settings."
      (treemacs :variables
                treemacs-use-filewatch-mode t
                treemacs-use-git-mode 'deferred)
+
      csv
      markdown
      yaml
@@ -87,8 +88,9 @@ This function should only modify configuration layer settings."
 
      ;;; Programming Languages
 
+     racket
      (scheme :variables
-             scheme-implementations '(racket guile))
+             scheme-implementations '(guile))
 
      (python :variables
              python-backend 'lsp
@@ -710,7 +712,7 @@ before packages are loaded."
   (add-hook 'emacs-lips-mode-hook 'enable-paredit-mode)
   (add-hook 'lisp-mode-hook 'enable-paredit-mode)
   (add-hook 'scheme-mode-hook 'enable-paredit-mode)
-
+  (add-hook 'racket-mode-hook 'enable-paredit-mode)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
