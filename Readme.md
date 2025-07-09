@@ -17,8 +17,8 @@ pip --user install 'python-lsp-server[all]' black isort
 
 cd data_science
 pipenv install
-pipenv install ipython jupyterlab notebook ipykernel line_profiler memory_profiler numpy pandas scipy matplotlib scikit-learn \
-"fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
+pipenv install ipython jupyterlab notebook ipykernel line_profiler memory_profiler numpy pandas seaborn \
+scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
 pipenv graph
 ```
 
@@ -66,14 +66,14 @@ go install github.com/sqls-server/sqls@latest
 
 ## Bibliography
 
-"Calculus Made Easy" by Silvanus P. Thompson
-"Calculus: An Intuitive and Physical Approach" by Morris Kline
-"Essence of statistics" 1982 by Geoffrey Loftus
-"Probability and Stochastic Processes" 1987 by Frederick Solomon
-"First Course in Linear Algebra" 1973 by Raymond Beauregard
+"Calculus Made Easy" by Silvanus P. Thompson<br/>
+"Calculus: An Intuitive and Physical Approach" by Morris Kline<br/>
+"Essence of statistics" 1982 by Geoffrey Loftus<br/>
+"Probability and Stochastic Processes" 1987 by Frederick Solomon<br/>
+"First Course in Linear Algebra" 1973 by Raymond Beauregard<br/>
 
-"Leveling Up with SQL - Advanced Techniques for Transforming Data into Insights" 2023 by Mark Simon
-"Python Distilled" 2021 by David Beazley
+"Leveling Up with SQL - Advanced Techniques for Transforming Data into Insights" 2023 by Mark Simon<br/>
+"Python Distilled" 2021 by David Beazley<br/>
 
-"Python Data Science Handbook - Essential Tools for Working with Data" 2023 by Jake VanderPlas
-"A First Course in Machine Learning" 2016 by Simon Rogers, Mark Girolami
+"Python Data Science Handbook - Essential Tools for Working with Data" 2023 by Jake VanderPlas<br/>
+"A First Course in Machine Learning" 2016 by Simon Rogers, Mark Girolami<br/>
