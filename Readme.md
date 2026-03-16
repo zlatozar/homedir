@@ -1,35 +1,53 @@
 Contains configuration files in my home directory.
 
+## Update Spacemacs
+
+```shell
+cd ~/.emacs.d/
+git remote update
+git pull --rebase
+```
+
+Update packages after the run: `SPC f e U` and then reload with `SPC f e R`
+
 ## Python notes
 
 ```shell
-brew install pyenv
+brew install uv
+```
 
-# Setup .bashrc and .bash_profile
+Be sure that UV bin is in your path
+Add in  ~/.bash_profile following line:
 
-pyenv install 3
-pyenv global 3
+# Python UV in path
+export PATH=$HOME/.local/bin:$PATH
 
+```shell
 # Check
 python —version
 
-pip --user install 'python-lsp-server[all]' black isort
+uv tool install 'python-lsp-server[all]'
+uv tool install black
+uv tool install isort
 
+mkdir data_science
 cd data_science
-pipenv install
-pipenv install ipython jupyterlab notebook ipykernel line_profiler memory_profiler numpy pandas seaborn \
-scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
-pipenv graph
+# Init project (if need to specify Python version)
+uv init --python 3.13 data_science
+
+uv add  numpy pandas seaborn scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
+uv --dev add ipython jupyterlab notebook ipykernel line_profiler memory_profiler pytest
+uv tree
 ```
 
 ## Jupyter Notebook
 
-To work in `Pipenv`.
+To work in particular environment
 ```shell
-pipenv shell
-ipython kernel install --name=`basename $VIRTUAL_ENV` --user
+source .venv/bin/activate
+ipython
 jupyther notebook
-# select .venv kernel
+deactivate
 ```
 
 ## SQL notes
@@ -66,7 +84,7 @@ go install github.com/sqls-server/sqls@latest
 
 ## Bibliography
 
-"Calculus Made Easy" by Silvanus P. Thompson<br/>
+_"Calculus Made Easy"_ by Silvanus P. Thompson<br/>
 "Calculus: An Intuitive and Physical Approach" by Morris Kline<br/>
 "Essence of statistics" 1982 by Geoffrey Loftus<br/>
 "Probability and Stochastic Processes" 1987 by Frederick Solomon<br/>

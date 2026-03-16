@@ -1,5 +1,7 @@
 ## Spacemacs key bindings
 
+Update packages after the run: `SPC f e U` and then reload with `SPC f e R`
+
 ### Help
 
 Key&nbsp;Binding   | Description
