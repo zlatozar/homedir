@@ -99,16 +99,17 @@ target-version = "py313"
 line-length = 100
 [tool.ruff.lint]
 select = [
-    "E",      # pycodestyle errors
-    "W",      # pycodestyle warnings
-    "F",      # pyflakes
-    "I",      # isort
-    "N",      # pep8-naming
-    "UP",     # pyupgrade
-    "B",      # flake8-bugbear
-    "C4",     # flake8-comprehensions
-    "SIM",    # flake8-simplify
-    "TCH",    # flake8-type-checking
+    "E", "W",   # pycodestyle
+    "F",        # Pyflakes
+    "I",        # isort (imports)
+    "B",        # flake8-bugbear (common bugs)
+    "C4",       # flake8-comprehensions
+    "UP",       # pyupgrade (modern syntax)
+    "ARG",      # flake8-unused-arguments
+    "PTH",      # flake8-use-pathlib
+    "SIM",      # flake8-simplify
+    "RUF",      # Ruff-specific rules
+    "TID",      # flake8-tidy-imports (ban relative imports)
 ]
 ignore = [
     "E501",   # line too long (handled by formatter)
