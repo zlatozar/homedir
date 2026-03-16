@@ -27,16 +27,23 @@ export PATH=$HOME/.local/bin:$PATH
 python —version
 
 uv tool install 'python-lsp-server[all]'
-uv tool install black
-uv tool install isort
+uv tool install ruff
+uv tool install mypy
+uv tool install pre-commit
+uv tool install ipython
+uv tool install jupyterlab
+uv tool install notebook
+uv tool install ipykernel
+uv tool install line_profiler
+uv tool install memory_profiler
 
 mkdir data_science
 cd data_science
 # Init project (if need to specify Python version)
 uv init --python 3.13 data_science
 
-uv add  numpy pandas seaborn scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
-uv --dev add ipython jupyterlab notebook ipykernel line_profiler memory_profiler pytest
+uv add numpy pandas seaborn scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
+uv --dev add pytest
 uv tree
 ```
 
@@ -81,6 +88,47 @@ brew install sql-lint sqlfmt golang
 go install github.com/sqls-server/sqls@latest
 # export PATH=$HOME/go/bin:$PATH
 ```
+
+## Project file
+
+In pyproject.toml add something like this:
+
+```toml
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "N",      # pep8-naming
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "SIM",    # flake8-simplify
+    "TCH",    # flake8-type-checking
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+]
+[tool.ruff.lint.isort]
+known-first-party = ["your_project"]
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+```
+
+Details are here: https://simone-carolini.medium.com/modern-python-code-quality-setup-uv-ruff-and-mypy-8038c6549dcc
 
 ## Bibliography
 

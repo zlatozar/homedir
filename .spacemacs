@@ -92,16 +92,18 @@ This function should only modify configuration layer settings."
      (scheme :variables
              scheme-implementations '(guile))
 
+     toml
      (python :variables
              python-backend 'lsp
              python-lsp-server 'pylsp
-             python-shell-interpreter "python3"
+             python-shell-interpreter "uv"
+             python-enable-tools '(uv)
+             ;;python-virtualenv-management 'pet
+             python-shell-interpreter-args "run -q ipython -i --simple-prompt"
              python-format-on-save t
-             python-formatter 'black
-             python-pipenv-activate t
+             python-formatter 'ruff
              python-sort-imports-on-save t
              python-test-runner 'pytest
-             ;;python-auto-set-local-pyenv-version 'on-project-switch
              )
 
      (sql :variables
@@ -245,7 +247,7 @@ It should only modify the values of Spacemacs settings."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'hybrid
+   dotspacemacs-editing-style 'emacs
 
    ;; If non-nil show the version string in the Spacemacs buffer. It will
    ;; appear as (spacemacs version)@(emacs version)
@@ -572,7 +574,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
+   ;; dotspacemacs-search-tools '(rg ag pt ack grep)
 
    ;; The backend used for undo/redo functionality. Possible values are
    ;; `undo-fu', `undo-redo' and `undo-tree' see also `evil-undo-system'.
@@ -718,23 +720,3 @@ before packages are loaded."
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(sql-connection-alist
-     '(("Data_Science_DB" (sql-product 'postgres) (sql-user "zlatozar")
-        (sql-database "data_science") (sql-server "localhost")))))
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   )
-  )
