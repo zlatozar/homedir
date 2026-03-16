@@ -17,7 +17,7 @@ brew install uv
 ```
 
 Be sure that UV bin is in your path
-Add in  ~/.bash_profile following line:
+Add in  `~/.bash_profile` following line:
 
 # Python UV in path
 export PATH=$HOME/.local/bin:$PATH
@@ -27,9 +27,6 @@ export PATH=$HOME/.local/bin:$PATH
 python —version
 
 uv tool install 'python-lsp-server[all]'
-uv tool install ruff
-uv tool install mypy
-uv tool install pre-commit
 uv tool install ipython
 uv tool install jupyterlab
 uv tool install notebook
@@ -39,11 +36,13 @@ uv tool install memory_profiler
 
 mkdir data_science
 cd data_science
+
 # Init project (if need to specify Python version)
 uv init --python 3.13 data_science
+uv python pin 3.13
 
 uv add numpy pandas seaborn scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
-uv --dev add pytest
+uv --dev add ruff mypy pre-commit pytest pytest-cov
 uv tree
 ```
 
@@ -52,8 +51,7 @@ uv tree
 To work in particular environment
 ```shell
 source .venv/bin/activate
-ipython
-jupyther notebook
+#...
 deactivate
 ```
 
@@ -91,7 +89,7 @@ go install github.com/sqls-server/sqls@latest
 
 ## Project file
 
-In pyproject.toml add something like this:
+In `pyproject.toml` add something like this:
 
 ```toml
 [tool.ruff]
@@ -112,7 +110,7 @@ select = [
     "TID",      # flake8-tidy-imports (ban relative imports)
 ]
 ignore = [
-    "E501",   # line too long (handled by formatter)
+    "E501",     # line too long (handled by formatter)
 ]
 [tool.ruff.lint.isort]
 known-first-party = ["your_project"]
@@ -127,6 +125,13 @@ check_untyped_defs = true
 no_implicit_reexport = true
 warn_redundant_casts = true
 warn_unused_ignores = true
+
+plugins = ["pydantic.mypy"]
+warn_unreachable = true
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
 ```
 
 Details are here: https://simone-carolini.medium.com/modern-python-code-quality-setup-uv-ruff-and-mypy-8038c6549dcc
@@ -134,13 +139,13 @@ Details are here: https://simone-carolini.medium.com/modern-python-code-quality-
 ## Bibliography
 
 _"Calculus Made Easy"_ by Silvanus P. Thompson<br/>
-"Calculus: An Intuitive and Physical Approach" by Morris Kline<br/>
-"Essence of statistics" 1982 by Geoffrey Loftus<br/>
-"Probability and Stochastic Processes" 1987 by Frederick Solomon<br/>
-"First Course in Linear Algebra" 1973 by Raymond Beauregard<br/>
+_"Calculus: An Intuitive and Physical Approach"__ by Morris Kline<br/>
+_"Essence of statistics"_ 1982 by Geoffrey Loftus<br/>
+_"Probability and Stochastic Processes"_ 1987 by Frederick Solomon<br/>
+_"First Course in Linear Algebra"_ 1973 by Raymond Beauregard<br/>
 
-"Leveling Up with SQL - Advanced Techniques for Transforming Data into Insights" 2023 by Mark Simon<br/>
-"Python Distilled" 2021 by David Beazley<br/>
+_"Leveling Up with SQL - Advanced Techniques for Transforming Data into Insights"_ 2023 by Mark Simon<br/>
+_"Python Distilled"_ 2021 by David Beazley<br/>
 
-"Python Data Science Handbook - Essential Tools for Working with Data" 2023 by Jake VanderPlas<br/>
-"A First Course in Machine Learning" 2016 by Simon Rogers, Mark Girolami<br/>
+_"Python Data Science Handbook - Essential Tools for Working with Data"_ 2023 by Jake VanderPlas<br/>
+_"A First Course in Machine Learning"_ 2016 by Simon Rogers, Mark Girolami<br/>
