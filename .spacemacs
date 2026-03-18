@@ -751,14 +751,19 @@ before packages are loaded."
 
     :config
     (setq minuet-provider 'openai-fim-compatible)
-    (setq minuet-n-completions 2)
+    (setq minuet-n-completions 1)
     (setq minuet-context-window 512)
     (plist-put minuet-openai-fim-compatible-options :end-point "http://localhost:11434/v1/completions")
     (plist-put minuet-openai-fim-compatible-options :name "Ollama")
     (plist-put minuet-openai-fim-compatible-options :api-key "TERM")
     (plist-put minuet-openai-fim-compatible-options :model "qwen2.5-coder:7b")
 
-    (minuet-set-optional-options minuet-openai-fim-compatible-options :max_tokens 56))
+    (minuet-set-optional-options minuet-openai-fim-compatible-options :max_tokens 56)
+
+    (defun conf--block-minuet ()
+      (not (bound-and-true-p meow-insert-mode)))
+
+    (setq minuet-auto-suggestion-block-functions 'conf--block-minuet))
 
 
   ;; Python
