@@ -1,14 +1,4 @@
-Contains configuration files in my home directory.
-
-## Update Spacemacs
-
-```shell
-cd ~/.emacs.d/
-git remote update
-git pull --rebase
-```
-
-Update packages after the run: `SPC f e U` and then reload with `SPC f e R`
+Contains configuration notes for my ML projects
 
 ## Python notes
 
@@ -94,7 +84,9 @@ In `pyproject.toml` add something like this:
 ```toml
 [tool.ruff]
 target-version = "py313"
-line-length = 100
+line-length = 88
+indent-width = 4
+
 [tool.ruff.lint]
 select = [
     "E", "W",   # pycodestyle
@@ -112,8 +104,10 @@ select = [
 ignore = [
     "E501",     # line too long (handled by formatter)
 ]
+
 [tool.ruff.lint.isort]
-known-first-party = ["your_project"]
+known-first-party = ["your project name"]
+
 [tool.mypy]
 python_version = "3.13"
 strict = true
@@ -126,12 +120,14 @@ no_implicit_reexport = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 
-plugins = ["pydantic.mypy"]
-warn_unreachable = true
-[tool.pydantic-mypy]
-init_forbid_extra = true
-init_typed = true
-warn_required_dynamic_aliases = true
+[tool.pylsp]
+plugins = {
+    "pycodestyle" = { enabled = false },
+    "pyflakes" = { enabled = false },
+    "pydocstyle" = { enabled = false },
+    "pylint" = { enabled = false },
+    "ruff" = { enabled = true }  # Let Ruff handle linting
+}
 ```
 
 Details are here: https://simone-carolini.medium.com/modern-python-code-quality-setup-uv-ruff-and-mypy-8038c6549dcc
@@ -139,7 +135,7 @@ Details are here: https://simone-carolini.medium.com/modern-python-code-quality-
 ## Bibliography
 
 _"Calculus Made Easy"_ by Silvanus P. Thompson<br/>
-_"Calculus: An Intuitive and Physical Approach"__ by Morris Kline<br/>
+_"Calculus: An Intuitive and Physical Approach"_ by Morris Kline<br/>
 _"Essence of statistics"_ 1982 by Geoffrey Loftus<br/>
 _"Probability and Stochastic Processes"_ 1987 by Frederick Solomon<br/>
 _"First Course in Linear Algebra"_ 1973 by Raymond Beauregard<br/>

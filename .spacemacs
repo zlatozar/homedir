@@ -52,6 +52,9 @@ This function should only modify configuration layer settings."
 
      ;;; Programming
 
+     (llm-client :variables
+                 llm-client-enable-gptel t)
+
      ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
      (lsp :variables
           lsp-enable-semantic-highlighting t
@@ -177,7 +180,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(minuet)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -697,6 +700,66 @@ before packages are loaded."
         '(24-hours ":" minutes))
 
   ;;; Programming
+
+  (use-package gptel
+    :ensure t
+    :custom
+    (gptel-default-mode 'markdown-mode)
+    (gptel-stream t)
+    (gptel-temperature 0.7)
+    (gptel-model 'deepseek-r1:14b)
+    (gptel-include-reasoning nil)            ;; Not needed for local
+    (gptel-use-curl nil)                     ;; Use url-retrieve instead
+    :config
+    ;; Ollama backend with all your local models
+    (gptel-make-ollama "Ollama"
+      :host "localhost:11434"
+      :stream t
+      :models '(deepseek-r1:14b                ;; Your chosen model
+                deepseek-coder:6.7b            ;; Pure coding model
+                qwen2.5-coder:7b               ;; Another great coder
+                ))
+
+    (setq gptel-backend (gptel-get-backend "Ollama")))
+
+  ;; Helper function to check if Ollama is running
+  (defun gptel-ollama-status ()
+    "Check if Ollama server is running and show available models."
+    (interactive)
+    (let* ((url "http://localhost:11434/api/tags")
+           (buf (url-retrieve-synchronously url)))
+      (if buf
+          (with-current-buffer buf
+            (goto-char (point-min))
+            (if (search-forward "models" nil t)
+                (message "✅ Ollama is running with: %s"
+                         (buffer-substring (point) (point-at-eol)))
+              (message "❌ Ollama returned unexpected response")))
+        (message "❌ Ollama not running! Start with: ollama serve"))))
+
+  (use-package minuet
+    :bind
+    (("M-i" . #'minuet-show-suggestion)
+     ("M-I" . #'minuet-complete-with-minibuffer)
+     ("C-c m" . #'minuet-configure-provider)
+
+     :map minuet-active-mode-map
+     ("M-a" . #'minuet-accept-suggestion-line)
+     ("M-A" . #'minuet-accept-suggestion)
+     ("M-n" . #'minuet-next-suggestion)
+     ("M-p" . #'minuet-previous-suggestion))
+
+    :config
+    (setq minuet-provider 'openai-fim-compatible)
+    (setq minuet-n-completions 2)
+    (setq minuet-context-window 512)
+    (plist-put minuet-openai-fim-compatible-options :end-point "http://localhost:11434/v1/completions")
+    (plist-put minuet-openai-fim-compatible-options :name "Ollama")
+    (plist-put minuet-openai-fim-compatible-options :api-key "TERM")
+    (plist-put minuet-openai-fim-compatible-options :model "qwen2.5-coder:7b")
+
+    (minuet-set-optional-options minuet-openai-fim-compatible-options :max_tokens 56))
+
 
   ;; Python
   (add-hook 'python-mode-hook (lambda ()

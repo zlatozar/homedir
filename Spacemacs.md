@@ -1,6 +1,14 @@
-## Spacemacs key bindings
+## Update Spacemacs
+
+```shell
+cd ~/.emacs.d/
+git remote update
+git pull --rebase
+```
 
 Update packages after the run: `SPC f e U` and then reload with `SPC f e R`
+
+## Spacemacs key bindings
 
 ### Help
 
