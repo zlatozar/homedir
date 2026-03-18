@@ -704,12 +704,12 @@ before packages are loaded."
   (use-package gptel
     :ensure t
     :custom
-    (gptel-default-mode 'markdown-mode)
+    (gptel-default-mode 'org-mode)
     (gptel-stream t)
     (gptel-temperature 0.7)
-    (gptel-model 'deepseek-r1:14b)
     (gptel-include-reasoning nil)            ;; Not needed for local
     (gptel-use-curl nil)                     ;; Use url-retrieve instead
+    (gptel-model 'deepseek-r1:14b)
     :config
     ;; Ollama backend with all your local models
     (gptel-make-ollama "Ollama"
@@ -721,6 +721,107 @@ before packages are loaded."
                 ))
 
     (setq gptel-backend (gptel-get-backend "Ollama")))
+
+
+  (defun conf--gptel-start-rewrite-session ()
+    (interactive)
+    (let ((buffer-name (generate-new-buffer-name "*gptel-rewrite*")))
+      (gptel buffer-name nil "* @rewrite ")
+      (switch-to-buffer buffer-name)))
+
+  (global-set-key (kbd "C-c , r") 'gptel-rewrite)
+  (global-set-key (kbd "C-c , R") 'conf--gptel-start-rewrite-session)
+
+  (setq gptel-default-mode 'org-mode)
+  (setq gptel-include-tool-results t)
+  (setq gptel--set-buffer-locally t)
+
+  (add-hook 'gptel-mode-hook
+            (lambda () (when (derived-mode-p 'org-mode)
+                         (setq-local require-final-newline nil))))
+
+  (defun gptel-review-code ()
+    "Send current region or buffer for code review in a dedicated buffer."
+    (interactive)
+    (let* ((review-buffer (get-buffer-create "*Code Review*"))
+           (code-text (if (use-region-p)
+                          (buffer-substring-no-properties (region-beginning) (region-end))
+                        (buffer-substring-no-properties (point-min) (point-max))))
+           (source-info (format "Code review for %s:\n" (buffer-name)))
+           (prompt (concat "Please review this code:\n\n=\n" code-text "\n=")))
+
+      ;; Setup the review buffer
+      (with-current-buffer review-buffer
+        (erase-buffer)
+        (markdown-mode)
+        (insert source-info)
+        (insert "=" (make-string 50 ?=) "=\n\n")
+        (insert "Requesting code review...\n\n"))
+
+      ;; Send request directly to the review buffer
+      (gptel-request prompt
+        :buffer review-buffer
+        :position (with-current-buffer review-buffer (point-max))
+        :system "You are a code reviewer. Provide a concise review focusing on critical issues, bugs, and immediate improvements. Keep responses brief."
+        :stream t)
+
+      ;; Show the buffer
+      (pop-to-buffer review-buffer)))
+
+  (defun gptel-collapse-tool-blocks ()
+    "Collapse all #+begin_tool blocks in the current org buffer."
+    (interactive)
+    (org-block-map
+     (lambda ()
+       (when (save-excursion
+               (beginning-of-line 1)
+               (looking-at "^[ \t]*#\\+begin_tool\\b"))
+         (org-fold-hide-block-toggle t)))))
+
+  (defun conf--gptel-add-auto-local-var ()
+    "Ensure that this file opens with `gptel-mode' enabled."
+    (save-excursion
+      (let ((enable-local-variables t))  ; Ensure we can modify local variables
+        (if (and (save-excursion
+                   (goto-char (point-min))
+                   (looking-at ".*-\\*-")))  ; If there's a -*- line
+            ;; First remove any existing eval, then add the new one
+            (modify-file-local-variable-prop-line
+             'eval nil 'delete))
+        ;; Always add our eval
+        (add-file-local-variable-prop-line
+         'eval '(and (fboundp 'gptel-mode) (gptel-mode 1))))))
+
+  (add-hook 'gptel-save-state-hook #'conf--gptel-add-auto-local-var)
+
+  (defvar conf--gptel-save-directory "~/gptel-chats/"
+    "Directory where gptel conversations are saved.")
+
+  (defun conf--gptel-save-buffer ()
+    "Save the current gptel buffer with proper integration.
+If the buffer is not yet associated with a file, prompt for a filename
+and prepend it with a timestamp. Otherwise, save normally."
+    (interactive)
+    (if (buffer-file-name)
+        ;; Buffer already has a file, just save it normally
+        (save-buffer)
+      ;; Buffer doesn't have a file yet, create timestamped filename
+      (unless (file-exists-p conf--gptel-save-directory)
+        (make-directory conf--gptel-save-directory t))
+
+      (let* ((timestamp (format-time-string "%Y%m%dT%H%M%S"))
+             (user-filename (read-string "Filename: "))
+             (full-filename (concat timestamp "--" (string-replace " " "-" user-filename) ".org"))
+             (filepath (expand-file-name full-filename conf--gptel-save-directory)))
+
+        ;; Set the buffer's file name and save
+        (set-visited-file-name filepath)
+        (save-buffer)
+        (message "Saved to %s" filepath))))
+
+  ;; Add the keybinding to gptel-mode-map
+  (with-eval-after-load 'gptel
+    (define-key gptel-mode-map (kbd "M-s") #'conf--gptel-save-buffer))
 
   ;; Helper function to check if Ollama is running
   (defun gptel-ollama-status ()
@@ -783,6 +884,7 @@ before packages are loaded."
   (add-hook 'lisp-mode-hook 'enable-paredit-mode)
   (add-hook 'scheme-mode-hook 'enable-paredit-mode)
   (add-hook 'racket-mode-hook 'enable-paredit-mode)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
