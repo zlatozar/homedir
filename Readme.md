@@ -18,9 +18,6 @@ python —version
 
 uv tool install 'python-lsp-server[all]'
 uv tool install ipython
-uv tool install jupyterlab
-uv tool install notebook
-uv tool install ipykernel
 uv tool install line_profiler
 uv tool install memory_profiler
 
@@ -28,17 +25,18 @@ mkdir data_science
 cd data_science
 
 # Init project (if need to specify Python version)
-uv init --python 3.13 data_science
+uv init
 uv python pin 3.13
 
-uv add numpy pandas seaborn scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
-uv --dev add ruff mypy pre-commit pytest pytest-cov
+uv add numpy pandas pandas-stubs seaborn scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
+uv add --dev ipykernel ruff mypy pre-commit pytest pytest-cov
 uv tree
 ```
 
 ## Jupyter Notebook
 
-To work in particular environment
+To work in particular environment there is no need to activate or deactivate - `uv` do the job.
+
 ```shell
 source .venv/bin/activate
 #...
