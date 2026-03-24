@@ -30,18 +30,31 @@ uv python pin 3.13
 
 uv add numpy pandas pandas-stubs seaborn scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
 uv add --dev ipykernel ruff mypy pre-commit pytest pytest-cov
+
 uv tree
 ```
+
+Add following `pre-commit` configuration to skip committing Jupyter meta data.
+
+```yaml
+# file name: .pre-commit-config.yaml
+
+# Force the use of 'uv' for all hooks
+default_install_hook_types: [pre-commit]
+default_stages: [pre-commit]
+
+repos:
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.9.1
+    hooks:
+      - id: nbstripout
+```
+
+then run: `uv run pre-commit install`
 
 ## Jupyter Notebook
 
 To work in particular environment there is no need to activate or deactivate - `uv` do the job.
-
-```shell
-source .venv/bin/activate
-#...
-deactivate
-```
 
 ## SQL notes
 
