@@ -30,6 +30,7 @@ uv python pin 3.13
 
 uv add numpy pandas pandas-stubs seaborn scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
 uv add --dev ipykernel ruff mypy pre-commit pytest pytest-cov
+# TODO: Replace 'mypy' with 'ty'
 
 uv tree
 ```
