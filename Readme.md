@@ -28,8 +28,8 @@ cd data_science
 uv init
 uv python pin 3.13
 
-uv add numpy pandas pandas-stubs seaborn scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
-uv add --dev ipykernel ruff mypy pre-commit pytest pytest-cov
+uv add numpy pandas seaborn scipy matplotlib scikit-learn "fastapi[standard]" "uvicorn[standard]" pydantic sqlalchemy alembic
+uv add --dev ipykernel ruff mypy pre-commit pytest pytest-cov pandas-stubs scipy-stubs numpy-stubs
 # TODO: Replace 'mypy' with 'ty'
 
 uv tree
